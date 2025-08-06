@@ -24,6 +24,9 @@ public class PlayerCamera : MonoBehaviour
     {
         float xInput = Input.GetAxis("Horizontal");
         float zInput = Input.GetAxis("Vertical");
+
+        Vector3 dir = new Vector3(xInput, 0, zInput);
+        transform.position += dir * speed * Time.deltaTime;
     }
     void Zoom()
     {
