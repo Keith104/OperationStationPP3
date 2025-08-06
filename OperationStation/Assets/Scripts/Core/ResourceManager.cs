@@ -20,6 +20,7 @@ public class ResourceManager : MonoBehaviour
     [Header("Debug Tools")]
     [SerializeField] bool debug;
     [SerializeField] int amountToDebug;
+    [SerializeField] ResourceSO.ResourceType resourceType;
     private void Awake()
     {
         if(instance == null)
@@ -37,13 +38,13 @@ public class ResourceManager : MonoBehaviour
     {
         if(debug)
         {
-            if (Input.GetKeyDown(KeyCode.F))
+            if (Input.GetKeyDown(KeyCode.F1))
             {
-                AddResource(ResourceSO.ResourceType.Tritium, amountToDebug);
+                AddResource(resourceType, amountToDebug);
             }
-            else if (Input.GetKeyDown(KeyCode.G))
+            else if (Input.GetKeyDown(KeyCode.F2))
             {
-                RemoveResource(ResourceSO.ResourceType.Tritium, amountToDebug);
+                RemoveResource(resourceType, amountToDebug);
             }
         }
 

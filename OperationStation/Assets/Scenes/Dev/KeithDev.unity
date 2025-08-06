@@ -436,7 +436,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2864387738640098489, guid: d0ebaa8b88692814f900f151a1ce0b04, type: 3}
       propertyPath: debug
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2864387738640098489, guid: d0ebaa8b88692814f900f151a1ce0b04, type: 3}
+      propertyPath: amountToAddDebugged
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5317987858511298610, guid: d0ebaa8b88692814f900f151a1ce0b04, type: 3}
       propertyPath: m_LocalPosition.x
