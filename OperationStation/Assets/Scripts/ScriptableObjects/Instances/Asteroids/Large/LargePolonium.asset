@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0add063217cb8e84fbfb54314e765d11, type: 3}
+  m_Name: LargePolonium
+  m_EditorClassIdentifier: 
+  asteroidSize: 1
+  asteroidObject: {fileID: 0}
+  resource: {fileID: 11400000, guid: abe65e6ea76cb30498a0705794b4b2f1, type: 2}
+  minAmount: 10
+  maxAmount: 25
+  bonusAmount: 15

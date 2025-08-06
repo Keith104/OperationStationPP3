@@ -5,7 +5,7 @@ public class Asteroid : MonoBehaviour, IDamage
 {
     [Header("Asteroid Settings")]
     [SerializeField] float health;
-    [SerializeField] ResourceSO resource;
+    [SerializeField] AsteroidSO asteroid;
 
     [Header("Resource")]
     [SerializeField] int minAmount;
@@ -26,6 +26,14 @@ public class Asteroid : MonoBehaviour, IDamage
         origColor = meshRenderer.material.color;
     }
 
+    private void Start()
+    {
+        health = asteroid.health;
+        minAmount = asteroid.minAmount;
+        maxAmount = asteroid.maxAmount;
+        bonusAmount = asteroid.bonusAmount;
+    }
+
     private void Update()
     {
         if(debug)
@@ -43,12 +51,12 @@ public class Asteroid : MonoBehaviour, IDamage
         if(health <= 0)
         {
 
-            ResourceManager.instance.AddResource(resource.resourceType, Random.Range(minAmount, maxAmount) + bonusAmount);
+            ResourceManager.instance.AddResource(asteroid.resource.resourceType, Random.Range(minAmount, maxAmount) + bonusAmount);
             Destroy(gameObject);
         }
         else
         {
-            ResourceManager.instance.AddResource(resource.resourceType, Random.Range(minAmount, maxAmount));
+            ResourceManager.instance.AddResource(asteroid.resource.resourceType, Random.Range(minAmount, maxAmount));
         }
     }
 
