@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   asteroidSize: 0
   asteroidObject: {fileID: 0}
+  health: 15
   resource: {fileID: 11400000, guid: abe65e6ea76cb30498a0705794b4b2f1, type: 2}
   minAmount: 1
   maxAmount: 3
