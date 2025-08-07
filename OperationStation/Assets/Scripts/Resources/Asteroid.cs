@@ -116,6 +116,11 @@ public class Asteroid : MonoBehaviour, IDamage
         }
     }
 
+    public void DestroyAsteroid()
+    {
+        Destroy(gameObject);
+    }
+
     private IEnumerator FlashRed()
     {
         if (meshRenderer != null)
