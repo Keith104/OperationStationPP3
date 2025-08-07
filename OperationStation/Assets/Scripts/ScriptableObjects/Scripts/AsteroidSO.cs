@@ -21,4 +21,12 @@ public class AsteroidSO : ScriptableObject
     public int maxAmount;
     public int bonusAmount;
 
+    [Header("Movement Settings")]
+    public float minMoveSpeed;
+    public float maxMoveSpeed;
+
+    [Header("Rotation Settings")]
+    public Vector3 minRotSpeed;
+    public Vector3 maxRotSpeed;
+
 }

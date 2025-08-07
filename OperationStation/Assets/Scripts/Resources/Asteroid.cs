@@ -1,8 +1,15 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class Asteroid : MonoBehaviour, IDamage
 {
+    [Header("Movement")]
+    [SerializeField] float moveSpeed;
+
+    [Header("Rotation")]
+    [SerializeField] Vector3 rotationSpeed;
+
     [Header("Asteroid Settings")]
     [SerializeField] float health;
     [SerializeField] AsteroidSO asteroid;
@@ -28,6 +35,13 @@ public class Asteroid : MonoBehaviour, IDamage
 
     private void Start()
     {
+        moveSpeed = Random.Range(asteroid.minMoveSpeed, asteroid.maxMoveSpeed);
+        rotationSpeed = new Vector3(
+            Random.Range(asteroid.minRotSpeed.x, asteroid.maxRotSpeed.x),
+            Random.Range(asteroid.minRotSpeed.y, asteroid.maxRotSpeed.y),
+            Random.Range(asteroid.minRotSpeed.z, asteroid.maxRotSpeed.z)
+            );
+
         health = asteroid.health;
         minAmount = asteroid.minAmount;
         maxAmount = asteroid.maxAmount;
@@ -43,6 +57,9 @@ public class Asteroid : MonoBehaviour, IDamage
                 TakeDamage(1);
             }
         }
+
+        transform.parent.transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
+        transform.Rotate(rotationSpeed * Time.deltaTime, Space.Self);
     }
     public void TakeDamage(float damage)
     {
