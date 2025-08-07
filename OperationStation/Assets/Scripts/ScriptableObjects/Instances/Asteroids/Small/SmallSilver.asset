@@ -13,9 +13,13 @@ MonoBehaviour:
   m_Name: SmallSilver
   m_EditorClassIdentifier: 
   asteroidSize: 0
-  asteroidObject: {fileID: 0}
+  asteroidObject: {fileID: 34360845235334891, guid: d2a6014774cc73748851c7d63a39947c, type: 3}
   health: 25
   resource: {fileID: 11400000, guid: 8ce94c1c8f11e6640bed8fa2e20a8521, type: 2}
   minAmount: 1
   maxAmount: 5
   bonusAmount: 10
+  minMoveSpeed: 1
+  maxMoveSpeed: 2
+  minRotSpeed: -30
+  maxRotSpeed: 30

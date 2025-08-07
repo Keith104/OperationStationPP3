@@ -12,10 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0add063217cb8e84fbfb54314e765d11, type: 3}
   m_Name: LargeTritium
   m_EditorClassIdentifier: 
-  asteroidSize: 1
-  asteroidObject: {fileID: 0}
+  asteroidSize: 2
+  asteroidObject: {fileID: 34360845235334891, guid: d2a6014774cc73748851c7d63a39947c, type: 3}
   health: 100
   resource: {fileID: 11400000, guid: 0a2d335928aabf84eb723ab6ff15501c, type: 2}
   minAmount: 15
   maxAmount: 30
   bonusAmount: 50
+  minMoveSpeed: 0.1
+  maxMoveSpeed: 0.8
+  minRotSpeed: -10
+  maxRotSpeed: 10

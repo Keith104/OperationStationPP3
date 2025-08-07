@@ -13,9 +13,13 @@ MonoBehaviour:
   m_Name: SmallPolonium
   m_EditorClassIdentifier: 
   asteroidSize: 0
-  asteroidObject: {fileID: 0}
+  asteroidObject: {fileID: 34360845235334891, guid: d2a6014774cc73748851c7d63a39947c, type: 3}
   health: 15
   resource: {fileID: 11400000, guid: abe65e6ea76cb30498a0705794b4b2f1, type: 2}
   minAmount: 1
   maxAmount: 3
   bonusAmount: 5
+  minMoveSpeed: 1
+  maxMoveSpeed: 2
+  minRotSpeed: -30
+  maxRotSpeed: 30

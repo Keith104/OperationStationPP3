@@ -12,10 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0add063217cb8e84fbfb54314e765d11, type: 3}
   m_Name: LargePolonium
   m_EditorClassIdentifier: 
-  asteroidSize: 1
-  asteroidObject: {fileID: 0}
+  asteroidSize: 2
+  asteroidObject: {fileID: 34360845235334891, guid: d2a6014774cc73748851c7d63a39947c, type: 3}
   health: 45
   resource: {fileID: 11400000, guid: abe65e6ea76cb30498a0705794b4b2f1, type: 2}
   minAmount: 10
   maxAmount: 25
   bonusAmount: 15
+  minMoveSpeed: 0.1
+  maxMoveSpeed: 0.8
+  minRotSpeed: -10
+  maxRotSpeed: 10
