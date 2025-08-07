@@ -1,16 +1,19 @@
+using System.Collections;
 using UnityEngine;
 
 public class Damage : MonoBehaviour
 {
+    public enum damageType { bullet, explosion }
+    [SerializeField] damageType type;
     [SerializeField] Rigidbody rb;
     [SerializeField] int regSpeed;
 
     public int damageAmount;
-    public int destoryTime;
+    public float destroyTime;
 
     void Start()
     {
-        Destroy(gameObject, destoryTime);
+        Destroy(gameObject, destroyTime);
 
         rb.linearVelocity = transform.forward * regSpeed;
     }
@@ -22,12 +25,12 @@ public class Damage : MonoBehaviour
 
     void DealDamage(Collider other)
     {
-        Debug.Log("Check");
-        IDamage dmg = other.GetComponent<IDamage>();
-
+       Debug.Log("Check");
+       IDamage dmg = other.GetComponent<IDamage>();
+       
         if (dmg != null)
-        {
+       {
             dmg.TakeDamage(damageAmount);
-        }
+       }
     }
 }
