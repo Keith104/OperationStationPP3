@@ -50,7 +50,7 @@ public class PlayerCamera : MonoBehaviour
     }
     void Focus()
     {
-
+        // I forgot so it's a Trello thing for later
     }
 
     void Select()
@@ -68,7 +68,10 @@ public class PlayerCamera : MonoBehaviour
             if (Physics.Raycast(ray, out hit))
             {
                 if (selected.Contains(hit.collider.gameObject) == false)
+                {
                     selected.Add(hit.collider.gameObject);
+                    TrySelect(hit.collider.gameObject);
+                }
                 else
                     selected.Remove(hit.collider.gameObject);
             }
@@ -96,9 +99,6 @@ public class PlayerCamera : MonoBehaviour
 
     void DragDetect()
     {
-        //Vector3 worldPointStart = Camera.main.ScreenPointToRay(startMousePos).origin;
-        //Vector3 worldPointEnd = Camera.main.ScreenPointToRay(Input.mousePosition).origin;
-
         Vector3 worldPointStart = Camera.main.ScreenToWorldPoint
             (new Vector3(startMousePos.x, startMousePos.y, Camera.main.nearClipPlane));
         Vector3 worldPointEnd = Camera.main.ScreenToWorldPoint
@@ -133,7 +133,21 @@ public class PlayerCamera : MonoBehaviour
         foreach (RaycastHit hit in raycastHits)
         {
             if (selected.Contains(hit.collider.gameObject) == false)
+            {
                 selected.Add(hit.collider.gameObject);
+                TrySelect(hit.collider.gameObject);
+            }
+        }
+    }
+
+    void TrySelect(GameObject selected)
+    {
+        Debug.Log("Check");
+        ISelectable selectable = selected.GetComponent<ISelectable>();
+
+        if (selectable != null)
+        {
+            selectable.TakeControl();
         }
     }
 }
