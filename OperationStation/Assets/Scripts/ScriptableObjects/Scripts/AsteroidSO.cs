@@ -26,7 +26,7 @@ public class AsteroidSO : ScriptableObject
     public float maxMoveSpeed;
 
     [Header("Rotation Settings")]
-    public Vector3 minRotSpeed;
-    public Vector3 maxRotSpeed;
+    public float minRotSpeed;
+    public float maxRotSpeed;
 
 }

@@ -7,9 +7,6 @@ public class Asteroid : MonoBehaviour, IDamage
     [Header("Movement")]
     [SerializeField] float moveSpeed;
 
-    [Header("Rotation")]
-    [SerializeField] Vector3 rotationSpeed;
-
     [Header("Asteroid Settings")]
     [SerializeField] float health;
     [SerializeField] AsteroidSO asteroid;
@@ -25,6 +22,11 @@ public class Asteroid : MonoBehaviour, IDamage
 
     [Header("Debug")]
     [SerializeField] bool debug;
+
+    private Vector3 rotationAxis;
+    private float angularSpeed;
+
+    private Transform parent;
     
     MeshRenderer meshRenderer;
     private void Awake()
@@ -35,13 +37,21 @@ public class Asteroid : MonoBehaviour, IDamage
 
     private void Start()
     {
+        // Move Values for the asteroid
         moveSpeed = Random.Range(asteroid.minMoveSpeed, asteroid.maxMoveSpeed);
-        rotationSpeed = new Vector3(
-            Random.Range(asteroid.minRotSpeed.x, asteroid.maxRotSpeed.x),
-            Random.Range(asteroid.minRotSpeed.y, asteroid.maxRotSpeed.y),
-            Random.Range(asteroid.minRotSpeed.z, asteroid.maxRotSpeed.z)
-            );
+        transform.localRotation = Random.rotation;
+        rotationAxis = Random.onUnitSphere;
+        angularSpeed = Random.Range(asteroid.minRotSpeed, asteroid.maxRotSpeed);
+        //rotationSpeed = new Vector3(
+        //    Random.Range(asteroid.minRotSpeed.x, asteroid.maxRotSpeed.x),
+        //    Random.Range(asteroid.minRotSpeed.y, asteroid.maxRotSpeed.y),
+        //    Random.Range(asteroid.minRotSpeed.z, asteroid.maxRotSpeed.z)
+        //    );
 
+        // Caching the parent on start
+        parent = transform.parent;
+
+        // Asteroid Values
         health = asteroid.health;
         minAmount = asteroid.minAmount;
         maxAmount = asteroid.maxAmount;
@@ -58,8 +68,8 @@ public class Asteroid : MonoBehaviour, IDamage
             }
         }
 
-        transform.parent.transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
-        transform.Rotate(rotationSpeed * Time.deltaTime, Space.Self);
+        parent.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
+        transform.Rotate(rotationAxis ,angularSpeed * Time.deltaTime, Space.Self);
     }
     public void TakeDamage(float damage)
     {
