@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Rendering;
 
+[RequireComponent(typeof(Rigidbody))]
 public class Asteroid : MonoBehaviour, IDamage
 {
     [Header("Movement")]
@@ -17,41 +17,61 @@ public class Asteroid : MonoBehaviour, IDamage
     [SerializeField] int bonusAmount;
 
     [Header("Color")]
-    [SerializeField] Color origColor;
     [SerializeField] Color hitColor = Color.red;
+    private Color origColor;
 
     [Header("Debug")]
     [SerializeField] bool debug;
 
+    private Transform graphicTransform;
+    private MeshRenderer meshRenderer;
     private Vector3 rotationAxis;
     private float angularSpeed;
+    private Rigidbody rb;
 
-    private Transform parent;
-    
-    MeshRenderer meshRenderer;
+    public void Initialize(AsteroidSO data)
+    {
+        asteroid = data;
+    }
+
     private void Awake()
     {
-        meshRenderer = GetComponent<MeshRenderer>();
-        origColor = meshRenderer.material.color;
+        rb = GetComponent<Rigidbody>();
+
+        meshRenderer = GetComponentInChildren<MeshRenderer>();
+        if (meshRenderer != null)
+        {
+            origColor = meshRenderer.material.color;
+            graphicTransform = meshRenderer.transform;
+        }
+        else
+        {
+            graphicTransform = transform;
+        }
     }
 
     private void Start()
     {
-        // Move Values for the asteroid
+        float scaleFactor = 1f;
+        switch (asteroid.asteroidSize)
+        {
+            case AsteroidSO.Size.Medium:
+                scaleFactor = 1.5f;
+                break;
+            case AsteroidSO.Size.Large:
+                scaleFactor = 2f;
+                break;
+        }
+        transform.localScale *= scaleFactor;
+
         moveSpeed = Random.Range(asteroid.minMoveSpeed, asteroid.maxMoveSpeed);
-        transform.localRotation = Random.rotation;
+
+        rb.linearVelocity = transform.forward * moveSpeed;
+
         rotationAxis = Random.onUnitSphere;
         angularSpeed = Random.Range(asteroid.minRotSpeed, asteroid.maxRotSpeed);
-        //rotationSpeed = new Vector3(
-        //    Random.Range(asteroid.minRotSpeed.x, asteroid.maxRotSpeed.x),
-        //    Random.Range(asteroid.minRotSpeed.y, asteroid.maxRotSpeed.y),
-        //    Random.Range(asteroid.minRotSpeed.z, asteroid.maxRotSpeed.z)
-        //    );
+        graphicTransform.localRotation = Random.rotation;
 
-        // Caching the parent on start
-        parent = transform.parent;
-
-        // Asteroid Values
         health = asteroid.health;
         minAmount = asteroid.minAmount;
         maxAmount = asteroid.maxAmount;
@@ -60,39 +80,59 @@ public class Asteroid : MonoBehaviour, IDamage
 
     private void Update()
     {
-        if(debug)
-        {
-            if(Input.GetKeyDown(KeyCode.F3))
-            {
-                TakeDamage(1);
-            }
-        }
+        if (debug && Input.GetKeyDown(KeyCode.F3))
+            TakeDamage(1);
 
-        parent.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
-        transform.Rotate(rotationAxis ,angularSpeed * Time.deltaTime, Space.Self);
+        graphicTransform.Rotate(rotationAxis, angularSpeed * Time.deltaTime, Space.Self);
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (!collision.gameObject.CompareTag("Asteroid")) return;
+
+        // Get the contact point normal
+        ContactPoint contact = collision.contacts[0];
+        Vector3 bounceDir = contact.normal;
+
+        // Apply force away from the collision point
+        float bounceForce = rb.linearVelocity.magnitude * 1.5f; // scale with speed
+        rb.AddForce(bounceDir * bounceForce, ForceMode.Impulse);
+
+        StartCoroutine(Delay(collision));
+    }
+
     public void TakeDamage(float damage)
     {
         health -= damage;
         StartCoroutine(FlashRed());
-        if(health <= 0)
-        {
 
-            ResourceManager.instance.AddResource(asteroid.resource.resourceType, Random.Range(minAmount, maxAmount) + bonusAmount);
+        int amount = Random.Range(minAmount, maxAmount);
+        if (health <= 0)
+        {
+            ResourceManager.instance.AddResource(asteroid.resource.resourceType, amount + bonusAmount);
             Destroy(gameObject);
         }
         else
         {
-            ResourceManager.instance.AddResource(asteroid.resource.resourceType, Random.Range(minAmount, maxAmount));
+            ResourceManager.instance.AddResource(asteroid.resource.resourceType, amount);
         }
     }
 
     private IEnumerator FlashRed()
     {
-        meshRenderer.material.color = hitColor;
+        if (meshRenderer != null)
+            meshRenderer.material.color = hitColor;
+
         yield return new WaitForSeconds(0.1f);
-        meshRenderer.material.color = origColor;
 
+        if (meshRenderer != null)
+            meshRenderer.material.color = origColor;
+    }
 
+    private IEnumerator Delay(Collision collider)
+    {
+        collider.collider.enabled = false;
+        yield return new WaitForSeconds(0.5f);
+        collider.collider.enabled = true;
     }
 }
