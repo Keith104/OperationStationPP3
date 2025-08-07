@@ -20,8 +20,10 @@ MonoBehaviour:
     end of Urath"
   unitHealth: 0
   cost:
-  - resource: {fileID: 0}
-    cost: 0
+  - resource: {fileID: 11400000, guid: 970e168191dfd5148b0e650e88b982d4, type: 2}
+    cost: 1
+  - resource: {fileID: 11400000, guid: b8bad2688c7804c46877b667b917ad98, type: 2}
+    cost: 1
   buildPercent: 0
   isBase: 1
   attackDamage: 0
