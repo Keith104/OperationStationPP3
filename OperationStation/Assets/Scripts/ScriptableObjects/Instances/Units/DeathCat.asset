@@ -19,7 +19,10 @@ MonoBehaviour:
     taker of life. Cat the death cat\u2019s arrival is the end of the game and the
     end of Urath"
   unitHealth: 0
-  builtPercent: 0
+  cost:
+  - resource: {fileID: 0}
+    cost: 0
+  buildPercent: 0
   isBase: 1
   attackDamage: 0
   miningDamage: 0

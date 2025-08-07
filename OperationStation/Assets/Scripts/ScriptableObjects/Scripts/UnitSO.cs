@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 [CreateAssetMenu(fileName = "NewUnit", menuName = "OperationStation/New Unit")]
 public class UnitSO : ScriptableObject
@@ -14,11 +15,16 @@ public class UnitSO : ScriptableObject
     public string unitDescription;
     public float unitHealth;
 
+    [Header("Resource Cost")]
+    public ResourceCost[] cost;
+
     [Header("Module Data")]
-    public float builtPercent;
+    public float buildPercent;
     public bool isBase;
+
     [Header("Defense Data")]
     public float attackDamage;
+
     [Header("Mining Data")]
     public float miningDamage;
 
@@ -33,4 +39,11 @@ public class UnitSO : ScriptableObject
     {
         
     }
+}
+
+[Serializable]
+public class ResourceCost
+{
+    public ResourceSO resource;
+    public int cost;
 }
