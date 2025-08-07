@@ -13,9 +13,13 @@ MonoBehaviour:
   m_Name: MediumTritium
   m_EditorClassIdentifier: 
   asteroidSize: 1
-  asteroidObject: {fileID: 0}
+  asteroidObject: {fileID: 34360845235334891, guid: d2a6014774cc73748851c7d63a39947c, type: 3}
   health: 50
   resource: {fileID: 11400000, guid: 0a2d335928aabf84eb723ab6ff15501c, type: 2}
   minAmount: 5
   maxAmount: 15
   bonusAmount: 25
+  minMoveSpeed: 0.5
+  maxMoveSpeed: 1.5
+  minRotSpeed: -20
+  maxRotSpeed: 20
