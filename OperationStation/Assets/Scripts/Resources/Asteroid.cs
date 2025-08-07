@@ -97,8 +97,6 @@ public class Asteroid : MonoBehaviour, IDamage
         // Apply force away from the collision point
         float bounceForce = rb.linearVelocity.magnitude * 1.5f; // scale with speed
         rb.AddForce(bounceDir * bounceForce, ForceMode.Impulse);
-
-        StartCoroutine(Delay(collision));
     }
 
     public void TakeDamage(float damage)
@@ -127,12 +125,5 @@ public class Asteroid : MonoBehaviour, IDamage
 
         if (meshRenderer != null)
             meshRenderer.material.color = origColor;
-    }
-
-    private IEnumerator Delay(Collision collider)
-    {
-        collider.collider.enabled = false;
-        yield return new WaitForSeconds(0.5f);
-        collider.collider.enabled = true;
     }
 }
