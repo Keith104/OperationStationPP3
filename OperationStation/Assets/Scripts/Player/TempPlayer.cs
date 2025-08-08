@@ -2,9 +2,12 @@ using UnityEngine;
 
 public class TempPlayer : MonoBehaviour, IDamage
 {
-    public int health = 3;
+    //A useless temp script to help test if enemies did damage
+    //once a proper station script is created feel free to delete
 
-    public void TakeDamage(int amount)
+    public float health = 3;
+
+    public void TakeDamage(float amount)
     {
         health -= amount;
 
@@ -12,17 +15,5 @@ public class TempPlayer : MonoBehaviour, IDamage
         {
             Destroy(gameObject);
         }
-    }
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

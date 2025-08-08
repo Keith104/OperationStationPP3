@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5482843508451475552}
   - component: {fileID: 4572130041956192203}
   m_Layer: 0
-  m_Name: Wing2
+  m_Name: Wing3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -100,7 +100,7 @@ BoxCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -121,7 +121,7 @@ GameObject:
   - component: {fileID: 5154783582064673591}
   - component: {fileID: 6845149978214125407}
   m_Layer: 0
-  m_Name: Wing2 (2)
+  m_Name: Wing1Tail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -208,7 +208,7 @@ BoxCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -229,7 +229,7 @@ GameObject:
   - component: {fileID: 4910566262557905114}
   - component: {fileID: 596062722662911655}
   m_Layer: 0
-  m_Name: Wing1 (2)
+  m_Name: Wing2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -316,7 +316,7 @@ BoxCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -337,7 +337,7 @@ GameObject:
   - component: {fileID: 5024478798628427515}
   - component: {fileID: 5027228344338872152}
   m_Layer: 0
-  m_Name: Wing1 (1)
+  m_Name: Wing1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -424,7 +424,7 @@ BoxCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -600,7 +600,7 @@ GameObject:
   - component: {fileID: 2580421752698727068}
   - component: {fileID: 4199942418309695374}
   m_Layer: 0
-  m_Name: Wing2 (3)
+  m_Name: Wing2Tail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -687,7 +687,7 @@ BoxCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
