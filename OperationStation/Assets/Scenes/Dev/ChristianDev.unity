@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 229a4b5a45c409042a3cfdc6f3516aff, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -745,17 +745,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 756341468651024698, guid: 6f87ba0ec2cc2f349936ccb58afbb543, type: 3}
-      propertyPath: m_ExcludeLayers.m_Bits
-      value: 64
+    - target: {fileID: 1918794950724895527, guid: 6f87ba0ec2cc2f349936ccb58afbb543, type: 3}
+      propertyPath: debug
+      value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1918904361296116118, guid: 6f87ba0ec2cc2f349936ccb58afbb543, type: 3}
-      propertyPath: m_Speed
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 2817531135206728000, guid: 6f87ba0ec2cc2f349936ccb58afbb543, type: 3}
-      propertyPath: m_ExcludeLayers.m_Bits
-      value: 64
+    - target: {fileID: 1918794950724895527, guid: 6f87ba0ec2cc2f349936ccb58afbb543, type: 3}
+      propertyPath: attackCooldown
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8367380679242345794, guid: 6f87ba0ec2cc2f349936ccb58afbb543, type: 3}
       propertyPath: m_LocalPosition.x
@@ -948,49 +944,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 386412088018167307, guid: 80b561b2162a8e44c808843d5b980d98, type: 3}
-      propertyPath: m_Name
-      value: Wing3
-      objectReference: {fileID: 0}
-    - target: {fileID: 596062722662911655, guid: 80b561b2162a8e44c808843d5b980d98, type: 3}
-      propertyPath: m_ExcludeLayers.m_Bits
-      value: 64
-      objectReference: {fileID: 0}
-    - target: {fileID: 778108370952383027, guid: 80b561b2162a8e44c808843d5b980d98, type: 3}
-      propertyPath: m_Name
-      value: Wing1Tail
-      objectReference: {fileID: 0}
-    - target: {fileID: 2628489657399513680, guid: 80b561b2162a8e44c808843d5b980d98, type: 3}
-      propertyPath: m_Name
-      value: Wing2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3537342003373517133, guid: 80b561b2162a8e44c808843d5b980d98, type: 3}
-      propertyPath: m_Name
-      value: Wing1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4199942418309695374, guid: 80b561b2162a8e44c808843d5b980d98, type: 3}
-      propertyPath: m_ExcludeLayers.m_Bits
-      value: 64
-      objectReference: {fileID: 0}
-    - target: {fileID: 4572130041956192203, guid: 80b561b2162a8e44c808843d5b980d98, type: 3}
-      propertyPath: m_ExcludeLayers.m_Bits
-      value: 64
-      objectReference: {fileID: 0}
     - target: {fileID: 4668117436861592179, guid: 80b561b2162a8e44c808843d5b980d98, type: 3}
       propertyPath: m_Name
       value: Vertical Wing
       objectReference: {fileID: 0}
-    - target: {fileID: 5027228344338872152, guid: 80b561b2162a8e44c808843d5b980d98, type: 3}
-      propertyPath: m_ExcludeLayers.m_Bits
-      value: 64
-      objectReference: {fileID: 0}
-    - target: {fileID: 6484671176081308832, guid: 80b561b2162a8e44c808843d5b980d98, type: 3}
-      propertyPath: m_Name
-      value: Wing2Tail
-      objectReference: {fileID: 0}
-    - target: {fileID: 6845149978214125407, guid: 80b561b2162a8e44c808843d5b980d98, type: 3}
-      propertyPath: m_ExcludeLayers.m_Bits
-      value: 64
+    - target: {fileID: 4668117436861592179, guid: 80b561b2162a8e44c808843d5b980d98, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9100946103387988946, guid: 80b561b2162a8e44c808843d5b980d98, type: 3}
       propertyPath: m_LocalPosition.x

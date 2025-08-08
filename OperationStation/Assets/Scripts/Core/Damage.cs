@@ -21,6 +21,7 @@ public class Damage : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         DealDamage(other);
+        Destroy(gameObject);
     }
 
     void DealDamage(Collider other)
@@ -29,8 +30,8 @@ public class Damage : MonoBehaviour
        IDamage dmg = other.GetComponent<IDamage>();
        
         if (dmg != null)
-       {
+        {
             dmg.TakeDamage(damageAmount);
-       }
+        }
     }
 }

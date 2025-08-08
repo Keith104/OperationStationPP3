@@ -16,6 +16,7 @@ public class Explosion : MonoBehaviour
         Destroy(gameObject, destroyTime);
     }
 
+    //Missile touches something and explodes
     private void OnTriggerEnter(Collider other)
     {
         Explode();
