@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Damage : MonoBehaviour
 {
-    public enum damageType { bullet, explosion }
+    public enum damageType { bullet, explosion, collision }
     [SerializeField] damageType type;
     [SerializeField] Rigidbody rb;
     [SerializeField] int regSpeed;
@@ -13,15 +13,19 @@ public class Damage : MonoBehaviour
 
     void Start()
     {
-        Destroy(gameObject, destroyTime);
+        if (type != damageType.collision)
+        {
+            Destroy(gameObject, destroyTime);
 
-        rb.linearVelocity = transform.forward * regSpeed;
+            rb.linearVelocity = transform.forward * regSpeed;
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
         DealDamage(other);
-        Destroy(gameObject);
+        if (type != damageType.collision)
+            Destroy(gameObject);
     }
 
     void DealDamage(Collider other)

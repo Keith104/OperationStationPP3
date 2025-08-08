@@ -1,15 +1,22 @@
+using System.Collections;
+using System.Drawing;
 using UnityEngine;
+using Color = UnityEngine.Color;
 
-public class Module : MonoBehaviour, ISelectable
+public class Module : MonoBehaviour, ISelectable, IDamage
 {
     [SerializeField] UnitSO stats;
+    [SerializeField] Renderer model;
     [SerializeField] ResourceCost[] resourceCosts;
     public int[] costsLeft;
 
-
+    private float localHealth;
+    private Color origColor;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        origColor = model.material.color;
+        localHealth = stats.unitHealth;
         resourceCosts = stats.cost;
         for (int i = 0; i < resourceCosts.Length; i++)
             costsLeft[i] = resourceCosts[i].cost;
@@ -59,5 +66,40 @@ public class Module : MonoBehaviour, ISelectable
 
         SetCost();
         UnitUIManager.instance.buttonNum = -1;
+    }
+    public void TakeDamage(float damage)
+    {
+        Debug.Log(gameObject.name + " has taken damage");
+        StartCoroutine(FlashRed());
+        if (stats.isBase == false)
+        {
+            localHealth -= damage;
+
+            if (localHealth <= 0)
+            {
+                Destroy(gameObject);
+            }
+        }
+        else
+        {
+            int costIndex = 0;
+            foreach (ResourceCost resourceCost in resourceCosts)
+            {
+                ResourceSO resourceSO = resourceCost.resource;
+                if (costsLeft[costIndex] + (int)damage > resourceCost.cost)
+                    costsLeft[costIndex] = resourceCost.cost;
+                else
+                    costsLeft[costIndex] += (int)damage;
+                costIndex++;
+            }
+
+            SetCost();
+        }
+    }
+    private IEnumerator FlashRed()
+    {
+        model.material.color = Color.red;
+        yield return new WaitForSeconds(0.3f);
+        model.material.color = origColor;
     }
 }
