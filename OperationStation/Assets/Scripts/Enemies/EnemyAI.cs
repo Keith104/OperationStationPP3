@@ -44,6 +44,7 @@ public class EnemyAI : MonoBehaviour, IDamage
 
         if (health <= 0)
         {
+            WaveManager.instance.DeadEnemy();
             Destroy(gameObject);
         }
     }
@@ -51,13 +52,20 @@ public class EnemyAI : MonoBehaviour, IDamage
     //Once the enemy is spawned they'll b-line to the player to attack
     void Attack()
     {
-        agent.SetDestination(station.transform.position);
-        shootTimer += Time.deltaTime;
-
-        if (agent.remainingDistance < 10 && shootTimer >= attackCooldown)
+        if (station != null)
         {
-            shootTimer = 0;
-            Instantiate(bullet, shootPos.position, transform.rotation);
+            agent.SetDestination(station.transform.position);
+            shootTimer += Time.deltaTime;
+
+            if (agent.remainingDistance < 10 && shootTimer >= attackCooldown)
+            {
+                shootTimer = 0;
+                Instantiate(bullet, shootPos.position, transform.rotation);
+            }
+        }
+        else
+        {
+            return;
         }
     }
 

@@ -18,7 +18,7 @@ MonoBehaviour:
   unitDescription: "Cat the Death Cat, Destroyer of world, Herald of the end, and
     taker of life. Cat the death cat\u2019s arrival is the end of the game and the
     end of Urath"
-  unitHealth: 0
+  unitHealth: 1
   cost:
   - resource: {fileID: 11400000, guid: 970e168191dfd5148b0e650e88b982d4, type: 2}
     cost: 1

@@ -3,7 +3,7 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class DeathCat : MonoBehaviour
+public class DeathCat : MonoBehaviour, IModule
 {
     [SerializeField] Module module;
     [SerializeField] int totalCostsLeft;
@@ -34,6 +34,11 @@ public class DeathCat : MonoBehaviour
     void FireDeathCat()
     {
         Debug.Log("Cat The Death Cat has been fired");
-        // empty until we create an ending
+        LevelUIManager.instance.menuWin.SetActive(true);
+    }
+
+    public void ModuleDie()
+    {
+        LevelUIManager.instance.menuLose.SetActive(true);
     }
 }
