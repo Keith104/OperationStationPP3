@@ -71,16 +71,21 @@ public class Module : MonoBehaviour, ISelectable, IDamage
     {
         Debug.Log(gameObject.name + " has taken damage");
         StartCoroutine(FlashRed());
-        if (stats.isBase == false)
-        {
-            localHealth -= damage;
 
-            if (localHealth <= 0)
+        localHealth -= damage;
+
+        if (localHealth <= 0)
+        {
+            IModule dmg = gameObject.GetComponent<IModule>();
+
+            if (dmg != null)
             {
-                Destroy(gameObject);
+                dmg.ModuleDie();
             }
+            enabled = false;
         }
-        else
+
+        if (stats.isBase == true)
         {
             int costIndex = 0;
             foreach (ResourceCost resourceCost in resourceCosts)
