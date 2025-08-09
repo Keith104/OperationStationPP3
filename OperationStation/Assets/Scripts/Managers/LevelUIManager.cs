@@ -8,8 +8,8 @@ public class LevelUIManager : MonoBehaviour
     [Header("UI Elements")]
     [SerializeField] GameObject menuActive;
     [SerializeField] GameObject menuPause;
-    [SerializeField] GameObject menuWin;
-    [SerializeField] GameObject menuLose;
+    public GameObject menuWin;
+    public GameObject menuLose;
 
     private bool isPaused;
     private float timescaleOrig;
@@ -36,7 +36,7 @@ public class LevelUIManager : MonoBehaviour
     {
 
     }
-    public void statePause()
+    public void StatePause()
     {
         isPaused = !isPaused;
         Time.timeScale = 0;
@@ -44,7 +44,7 @@ public class LevelUIManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
     }
 
-    public void stateUnpause()
+    public void StateUnpause()
     {
         isPaused = !isPaused;
         Time.timeScale = timescaleOrig;

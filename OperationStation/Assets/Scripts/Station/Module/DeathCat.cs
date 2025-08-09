@@ -34,6 +34,6 @@ public class DeathCat : MonoBehaviour
     void FireDeathCat()
     {
         Debug.Log("Cat The Death Cat has been fired");
-        // empty until we create an ending
+        LevelUIManager.instance.menuWin.SetActive(true);
     }
 }
