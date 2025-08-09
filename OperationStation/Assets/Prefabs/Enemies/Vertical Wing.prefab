@@ -491,6 +491,8 @@ MonoBehaviour:
   agent: {fileID: 8909417233075275603}
   shootPos: {fileID: 151835495102035083}
   bullet: {fileID: 3014631877281216747, guid: 6da807d98d4147343952697c34185682, type: 3}
+  attackCooldown: 3
+  debug: 0
 --- !u!33 &8753470686695513080
 MeshFilter:
   m_ObjectHideFlags: 0
