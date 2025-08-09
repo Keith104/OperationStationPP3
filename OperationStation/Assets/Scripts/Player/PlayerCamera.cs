@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PlayerCamera : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class PlayerCamera : MonoBehaviour
     [SerializeField] RectTransform UI;
     [SerializeField] RectTransform selectionBox;
     [SerializeField] Vector2 startMousePos;
+    [SerializeField] LayerMask clickableLayers;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -57,15 +59,21 @@ public class PlayerCamera : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            if (Input.GetKey(KeyCode.LeftShift) == false)
+            if (Input.GetKey(KeyCode.LeftShift) == false && UnitUIManager.instance.unitMenu.activeSelf == false)
                 selected.Clear();
+            else if (EventSystem.current.IsPointerOverGameObject() == false)
+            {
+                selected.Clear();
+                UnitUIManager.instance.unitMenu.SetActive(false);
+            }
+
 
             startMousePos = Input.mousePosition;
 
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit))
+            if (Physics.Raycast(ray, out hit, float.MaxValue, clickableLayers))
             {
                 if (selected.Contains(hit.collider.gameObject) == false)
                 {
