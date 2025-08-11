@@ -1,13 +1,10 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class Minimap : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] Camera minimapCamera;
-    [SerializeField] RectTransform minimapRect;
-    [SerializeField] RawImage minimapImage;
-    [SerializeField] Vector3 worldPosition;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -17,38 +14,29 @@ public class Minimap : MonoBehaviour, IPointerClickHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         Debug.Log("Minimap Clicked");
-
-        Vector2 localPoint;
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            minimapRect, eventData.position, eventData.pressEventCamera, out localPoint);
-
-        GetClickWorldPosition(localPoint);
-
+        Vector3 worldPosition = GetClickWorldPosition(Input.mousePosition);
         Camera.main.transform.position = worldPosition;
     }
-    void GetClickWorldPosition(Vector2 screenPosition)
+    Vector3 GetClickWorldPosition(Vector3 screenPosition)
     {
-        // Normalized
-        Rect rect = minimapRect.rect;
-        float normalizedX = (screenPosition.x - rect.x) / rect.width;
-        float normalizedY = (screenPosition.y - rect.y) / rect.height;
+        float minimapX;
+        float minimapY;
+        float posX;
+        float posY;
 
-        // Convert to pixel
-        Texture texture = minimapImage.texture;
-        int posX = Mathf.RoundToInt(normalizedX * texture.width);
-        int posY = Mathf.RoundToInt(normalizedY * texture.height);
 
-        // Debug
-        Debug.Log(posX + ", " + posY);
         Debug.DrawRay(new Vector3(
-            posX,
+            screenPosition.x,
             minimapCamera.transform.position.y,
-            posY)
+            screenPosition.z)
             , Vector3.down * 60, Color.white);
 
-        // set new World Position
-        worldPosition.x = posX;
-        worldPosition.y = Camera.main.transform.position.y;
-        worldPosition.z = posY;
+        minimapCamera.ScreenPointToRay(new Vector3(
+            screenPosition.x,
+            screenPosition.y,
+            minimapCamera.nearClipPlane));
+
+        // Default
+        return Vector3.zero; 
     }
 }
