@@ -53,6 +53,7 @@ MonoBehaviour:
   maxAmount: 5
   bonusAmount: 10
   hitColor: {r: 1, g: 0, b: 0, a: 1}
+  borderLimits: {x: 255, y: 255}
   debug: 0
 --- !u!54 &5058036149151091971
 Rigidbody:
