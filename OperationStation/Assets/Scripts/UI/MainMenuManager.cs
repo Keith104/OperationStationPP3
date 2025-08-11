@@ -9,6 +9,9 @@ public class MainMenuManager : MonoBehaviour
     [Header("Buttons")]
     [SerializeField] Button exitButton;
 
+    [Header("Menu UI")]
+    [SerializeField] CanvasGroup menuGroup;
+
     [Header("References")]
     [SerializeField] GameObject creditsMenu;
     [SerializeField] CanvasGroup creditsCanvasGroup;
@@ -21,18 +24,23 @@ public class MainMenuManager : MonoBehaviour
         if (exitButton != null)
             exitButton.gameObject.SetActive(false);
 #endif
+        if (menuGroup != null)
+        {
+            menuGroup.alpha = 1f;
+            menuGroup.interactable = true;
+            menuGroup.blocksRaycasts = true;
+        }
     }
 
-    public void PlayButton(int sceneIndexToLoad)
+    public void PlayButton(string sceneName)
     {
-        SceneManager.LoadScene(sceneIndexToLoad);
+        SceneTransition.Run(sceneName);
     }
 
     public void CreditsButton()
     {
         if (creditsMenu == null || creditsCanvasGroup == null) return;
-
-        creditsCanvasGroup.alpha = 0f;      // start invisible
+        creditsCanvasGroup.alpha = 0f;
         creditsMenu.SetActive(true);
         StartCoroutine(CreditsFadeIn());
     }
@@ -44,7 +52,7 @@ public class MainMenuManager : MonoBehaviour
         {
             t += Time.unscaledDeltaTime;
             float a = (fadeSeconds <= 0f) ? 1f : Mathf.Clamp01(t / fadeSeconds);
-            creditsCanvasGroup.alpha = a;   // 0 -> 1
+            creditsCanvasGroup.alpha = a;
             yield return null;
         }
         creditsCanvasGroup.alpha = 1f;
