@@ -99,6 +99,24 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""HintNext"",
+                    ""type"": ""Button"",
+                    ""id"": ""4ab0861d-dd90-4c85-a45e-3235fbdd51ad"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""HintPrev"",
+                    ""type"": ""Button"",
+                    ""id"": ""f771bd88-33d5-4dd6-ba8a-b041becef2e2"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -123,6 +141,50 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""SpeedUpCredits"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7bde59c2-c653-47d0-9dc9-d388ad236bda"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HintNext"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e543ba7a-052d-45ca-b559-bf75ccbdedf9"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HintNext"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0fe2e829-bf31-4148-beb9-5be9a930dd33"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HintPrev"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2129735e-9d91-4488-b23b-864e80414fc1"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HintPrev"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -132,6 +194,8 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_SpeedUpCredits = m_Player.FindAction("SpeedUpCredits", throwIfNotFound: true);
+        m_Player_HintNext = m_Player.FindAction("HintNext", throwIfNotFound: true);
+        m_Player_HintPrev = m_Player.FindAction("HintPrev", throwIfNotFound: true);
     }
 
     ~@PlayerInput()
@@ -213,6 +277,8 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Player;
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_SpeedUpCredits;
+    private readonly InputAction m_Player_HintNext;
+    private readonly InputAction m_Player_HintPrev;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -228,6 +294,14 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/SpeedUpCredits".
         /// </summary>
         public InputAction @SpeedUpCredits => m_Wrapper.m_Player_SpeedUpCredits;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/HintNext".
+        /// </summary>
+        public InputAction @HintNext => m_Wrapper.m_Player_HintNext;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/HintPrev".
+        /// </summary>
+        public InputAction @HintPrev => m_Wrapper.m_Player_HintPrev;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -257,6 +331,12 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @SpeedUpCredits.started += instance.OnSpeedUpCredits;
             @SpeedUpCredits.performed += instance.OnSpeedUpCredits;
             @SpeedUpCredits.canceled += instance.OnSpeedUpCredits;
+            @HintNext.started += instance.OnHintNext;
+            @HintNext.performed += instance.OnHintNext;
+            @HintNext.canceled += instance.OnHintNext;
+            @HintPrev.started += instance.OnHintPrev;
+            @HintPrev.performed += instance.OnHintPrev;
+            @HintPrev.canceled += instance.OnHintPrev;
         }
 
         /// <summary>
@@ -271,6 +351,12 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @SpeedUpCredits.started -= instance.OnSpeedUpCredits;
             @SpeedUpCredits.performed -= instance.OnSpeedUpCredits;
             @SpeedUpCredits.canceled -= instance.OnSpeedUpCredits;
+            @HintNext.started -= instance.OnHintNext;
+            @HintNext.performed -= instance.OnHintNext;
+            @HintNext.canceled -= instance.OnHintNext;
+            @HintPrev.started -= instance.OnHintPrev;
+            @HintPrev.performed -= instance.OnHintPrev;
+            @HintPrev.canceled -= instance.OnHintPrev;
         }
 
         /// <summary>
@@ -318,5 +404,19 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnSpeedUpCredits(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "HintNext" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnHintNext(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "HintPrev" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnHintPrev(InputAction.CallbackContext context);
     }
 }
