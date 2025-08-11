@@ -8,6 +8,7 @@ public class LevelUIManager : MonoBehaviour
     [Header("UI Elements")]
     [SerializeField] GameObject menuActive;
     [SerializeField] GameObject menuPause;
+    public RectTransform minimap;
     public GameObject menuWin;
     public GameObject menuLose;
 
