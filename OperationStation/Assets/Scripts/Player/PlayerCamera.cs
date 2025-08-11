@@ -8,6 +8,7 @@ using static UnityEngine.GraphicsBuffer;
 public class PlayerCamera : MonoBehaviour
 {
     [SerializeField] int speed;
+    [SerializeField] int fapSpeed;
     [SerializeField] Vector2 limit;
 
     [SerializeField] int scrollSpeed;
@@ -34,6 +35,7 @@ public class PlayerCamera : MonoBehaviour
     {
         Move();
         Rotate();
+        FixedAtPoint();
 
         Zoom();
 
@@ -60,6 +62,24 @@ public class PlayerCamera : MonoBehaviour
         else if (Input.GetKey(KeyCode.E))
         {
             transform.Rotate(0, 1, 0, Space.World);
+        }
+    }
+    void FixedAtPoint()
+    {
+        if (Input.GetMouseButton(1))
+        {
+            // Get mouse movement
+            float mouseX = Input.GetAxis("Mouse X");
+            float mouseY = Input.GetAxis("Mouse Y");
+
+            // Rotate around the Y-axis 
+            transform.Rotate(Vector3.up, mouseX * fapSpeed * Time.deltaTime);
+
+            // Rotate around the X-axis 
+            transform.Rotate(Vector3.right, -mouseY * fapSpeed * Time.deltaTime);
+
+            // Keep Z-axis zero 
+            transform.eulerAngles = new(transform.eulerAngles.x, transform.eulerAngles.y, 0);
         }
     }
     void Zoom()

@@ -856,15 +856,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2039677410797646742, guid: 5d227a6f3d3a2ef4eb8387eb9ac2119b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 128
       objectReference: {fileID: 0}
     - target: {fileID: 2039677410797646742, guid: 5d227a6f3d3a2ef4eb8387eb9ac2119b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2039677410797646742, guid: 5d227a6f3d3a2ef4eb8387eb9ac2119b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 118.81
       objectReference: {fileID: 0}
     - target: {fileID: 2039677410797646742, guid: 5d227a6f3d3a2ef4eb8387eb9ac2119b, type: 3}
       propertyPath: m_LocalRotation.w
@@ -906,6 +906,10 @@ PrefabInstance:
       propertyPath: UI
       value: 
       objectReference: {fileID: 70863346}
+    - target: {fileID: 8220521304280812944, guid: 5d227a6f3d3a2ef4eb8387eb9ac2119b, type: 3}
+      propertyPath: fapSpeed
+      value: 9001
+      objectReference: {fileID: 0}
     - target: {fileID: 8220521304280812944, guid: 5d227a6f3d3a2ef4eb8387eb9ac2119b, type: 3}
       propertyPath: selectionBox
       value: 
