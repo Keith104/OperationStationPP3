@@ -153,10 +153,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c78c305c53b2a0a47a1f76ce7c8451f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spiralMaterial: {fileID: 2100000, guid: 7fdc13cb3e4158f479709f873ad040b6, type: 2}
-  wipeToBlackDuration: 0.8
-  wipeFromBlackDuration: 0.8
-  easeOut:
+  wipeMaterial: {fileID: 2100000, guid: 7fdc13cb3e4158f479709f873ad040b6, type: 2}
+  coverDuration: 0.8
+  revealDuration: 0.8
+  coverEase:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
@@ -180,7 +180,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  easeIn:
+  revealEase:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
@@ -205,9 +205,11 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   edgeSoftness: 0.02
-  turns: 2
-  angleOffset: 0
-  invert: 0
+  clockwise: 1
+  centerX: 0.5
+  centerY: 0.5
+  startAngleDeg: 90
+  sortingOrder: 32760
 --- !u!4 &129856209
 Transform:
   m_ObjectHideFlags: 0
@@ -1239,50 +1241,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 2707.2734}
   m_Pivot: {x: 0, y: 1}
---- !u!1 &1263787613
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1263787615}
-  - component: {fileID: 1263787614}
-  m_Layer: 0
-  m_Name: TransitionManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1263787614
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1263787613}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b6e5de1637557d4f88a7c014495037f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &1263787615
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1263787613}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 721.8759, y: 580.99927, z: 3.7367978}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1266624909
 GameObject:
   m_ObjectHideFlags: 0
@@ -2210,5 +2168,4 @@ SceneRoots:
   - {fileID: 1451587649}
   - {fileID: 406995318}
   - {fileID: 5989746698740521283}
-  - {fileID: 1263787615}
   - {fileID: 129856209}
