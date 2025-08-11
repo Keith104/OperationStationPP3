@@ -1388,20 +1388,22 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "<align=\"center\"><size=160%><b><link=\"wave\">Operation Station</link></b></size>\r\n<size=110%>C
-    R E D I T S</size></align>\r\n<line-height=110%>\r\n\r\n<align=\"center\"><color=#A7FFD6><u>TEAM</u></color></align>\r\n<b>Keith
-    Janish</b>\\n<size=85%><alpha=#DD>Game Design \u2022 Programming \u2022 UI/UX</size>\r\n<b>Alexander
-    Swanson</b>\\n<size=85%><alpha=#DD>Programming \u2022 Gameplay Systems</size>\r\n<b>Erick
-    Marin</b>\\n<size=85%><alpha=#DD> Programming \u2022 Animation</size>\r\n<b>Christian
-    Nelson</b>\\n<size=85%><alpha=#DD>Game Design \u2022 Enviroment \u2022 Programming</size>\r\n\r\n<br><align=\"center\"><color=#A7FFD6><u>PLAYTESTING
-    & QA</u></color></align>\r\n<link=\"jitter\">TBD</link>\r\n\r\n<br><align=\"center\"><color=#A7FFD6><u>TOOLS
-    & TECH</u></color></align>\r\nUnity 6 \u2022 TextMesh Pro \u2022 URP\r\n\r\n<br><align=\"center\"><color=#A7FFD6><u>THIRD-PARTY
-    ASSETS & LICENSES</u></color></align>\r\n<size=90%>\r\n<b>Models</b>\\n[Asset]
+  m_text: "<align=\"center\"><font=\"PressStart2P-Regular SDF\"><size=160%><b><link=\"wave\">Operation
+    Station</link></b></size>\r\n<size=110%>C R E D I T S</size></font></align>\r\n<line-height=110%>\r\n\r\n<align=\"center\"><font=\"PressStart2P-Regular
+    SDF\"><color=#A7FFD6><u>TEAM</u></color></font></align>\r\n<b>Keith Janish</b>\\n<size=85%><alpha=#DD>Game
+    Design \u2022 Programming \u2022 UI/UX</size>\r\n<b>Alexander Swanson</b>\\n<size=85%><alpha=#DD>Programming
+    \u2022 Gameplay Systems</size>\r\n<b>Erick Marin</b>\\n<size=85%><alpha=#DD>Programming
+    \u2022 Animation</size>\r\n<b>Christian Nelson</b>\\n<size=85%><alpha=#DD>Game
+    Design \u2022 Environment \u2022 Programming</size>\r\n\r\n<br><align=\"center\"><font=\"PressStart2P-Regular
+    SDF\"><color=#A7FFD6><u>PLAYTESTING & QA</u></color></font></align>\r\n<link=\"jitter\">TBD</link>\r\n\r\n<br><align=\"center\"><font=\"PressStart2P-Regular
+    SDF\"><color=#A7FFD6><u>TOOLS & TECH</u></color></font></align>\r\nUnity 6 \u2022
+    TextMesh Pro \u2022 URP\r\n\r\n<br><align=\"center\"><font=\"PressStart2P-Regular
+    SDF\"><color=#A7FFD6><u>THIRD-PARTY ASSETS & LICENSES</u></color></font></align>\r\n<size=90%>\r\n<b>Models</b>\\n[Asset]
     \u2014 [Publisher] \u2014 License: [EULA/CC-BY-4.0/CC0] \u2014 [URL]\r\n<b>Textures</b>\\n[Asset]
     \u2014 [Publisher] \u2014 License: [License] \u2014 [URL]\r\n<b>Shaders</b>\\n[Asset]
     \u2014 [Publisher] \u2014 License: [License] \u2014 [URL]\r\n<b>Music</b>\\n[Track/Pack]
     \u2014 [Composer] \u2014 License: [License] \u2014 [URL]\r\n<b>Fonts</b>\\n[Font]
-    \u2014 [Foundry/Author] \u2014 License: [License] \u2014 [URL]\r\n</size>\r\n\r\r\r\n"
+    \u2014 [Foundry/Author] \u2014 License: [License] \u2014 [URL]\r\n</size>\r\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1653,7 +1655,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 384.9574, y: -112.55051}
+  m_AnchoredPosition: {x: 400, y: -150}
   m_SizeDelta: {x: 707.2189, y: 175.101}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1654134246
