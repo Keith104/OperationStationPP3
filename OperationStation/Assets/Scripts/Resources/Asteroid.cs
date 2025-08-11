@@ -20,6 +20,9 @@ public class Asteroid : MonoBehaviour, IDamage
     [SerializeField] Color hitColor = Color.red;
     private Color origColor;
 
+    [Header("Border")]
+    [SerializeField] Vector2 borderLimits;
+
     [Header("Debug")]
     [SerializeField] bool debug;
 
@@ -84,6 +87,12 @@ public class Asteroid : MonoBehaviour, IDamage
             TakeDamage(1);
 
         graphicTransform.Rotate(rotationAxis, angularSpeed * Time.deltaTime, Space.Self);
+
+        if (transform.position.x > borderLimits.x
+            || transform.position.x < 0
+            || transform.position.z > borderLimits.y
+            || transform.position.z < 0)
+            DestroyAsteroid();
     }
 
     private void OnCollisionEnter(Collision collision)
