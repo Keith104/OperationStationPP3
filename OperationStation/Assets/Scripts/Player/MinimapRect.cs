@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Minimap : MonoBehaviour, IPointerClickHandler
+public class MinimapRect : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] Camera minimapCamera;
     [SerializeField] RectTransform minimapRect;
