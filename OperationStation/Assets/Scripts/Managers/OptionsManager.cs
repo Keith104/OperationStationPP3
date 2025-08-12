@@ -5,15 +5,13 @@ using UnityEngine.Audio;
 using UnityEngine.UI;
 using TMPro;
 
-
 public class OptionsManager : MonoBehaviour
 {
-    // Audio Options
+    [Header("Audio Options")]
     [Header("Mixer")]
-    [SerializeField] AudioMixer mixer;
+    [SerializeField] private AudioMixer mixer;
 
-    // Channels to control
-    public enum Channel { Master, Music, SFX, AttackSFX, UISFX, PlayerSFX}
+    public enum Channel { Master, Music, SFX, AttackSFX, UISFX, PlayerSFX }
 
     [Serializable]
     public class VolumeUI
@@ -21,9 +19,9 @@ public class OptionsManager : MonoBehaviour
         public Channel channel;
 
         [Header("UI")]
-        public Slider slider;
+        public Slider slider;                 // min=0.0001, max=1, wholeNumbers=false
         public TMP_Text percentLabel;
-        public AudioSource previewSource;
+        public AudioSource previewSource;     // will be auto-routed to the right group
         public AudioClip previewClip;
         [Range(0.05f, 0.5f)] public float previewCooldown = 0.15f;
 
@@ -32,28 +30,34 @@ public class OptionsManager : MonoBehaviour
         public string overridePlayerPrefKey;
     }
 
-    [SerializeField] List<VolumeUI> controls = new();
+    [SerializeField] private List<VolumeUI> controls = new();
 
-    // Map enum -> exposed parem name
     readonly Dictionary<Channel, string> paramNames = new()
     {
-        {Channel.Master, "Master" },
-        {Channel.Music, "Music" },
-        {Channel.SFX, "SFX" },
-        {Channel.AttackSFX, "AttackSFX" },
-        {Channel.UISFX, "UISFX" },
-        {Channel.PlayerSFX, "PlayerSFX" },
+        { Channel.Master,    "Master" },
+        { Channel.Music,     "Music" },
+        { Channel.SFX,       "SFX" },
+        { Channel.AttackSFX, "AttackSFX" },
+        { Channel.UISFX,     "UISFX" },
+        { Channel.PlayerSFX, "PlayerSFX" },
     };
 
-    private void Start()
+    void Start()
     {
-        foreach(var c in controls)
+        foreach (var c in controls)
         {
-            // Load saved value (or default), apply to mixer, and initialize UI
+            // Auto-route preview source to this channel's mixer group (if not already set)
+            if (c.previewSource)
+            {
+                var g = ResolveGroup(c.channel);
+                if (g && c.previewSource.outputAudioMixerGroup != g)
+                    c.previewSource.outputAudioMixerGroup = g;
+            }
+
             float saved = PlayerPrefs.GetFloat(KeyFor(c), c.defaultLinear);
             ApplyLinear(c.channel, saved);
 
-            if(c.slider)
+            if (c.slider)
             {
                 c.slider.minValue = 0.0001f;
                 c.slider.maxValue = 1f;
@@ -66,16 +70,13 @@ public class OptionsManager : MonoBehaviour
         }
     }
 
-    private void OnDestroy()
+    void OnDestroy()
     {
-        foreach(var c in controls)
-        {
+        foreach (var c in controls)
             if (c.slider) c.slider.onValueChanged.RemoveAllListeners();
-        }
     }
 
-
-    // Public Methods
+    // Public
     public void SetLinear(Channel ch, float linear)
     {
         linear = Mathf.Clamp(linear, 0.0001f, 1f);
@@ -93,23 +94,30 @@ public class OptionsManager : MonoBehaviour
 
     public void ResetToDefaults()
     {
-        foreach(var c in controls)
+        foreach (var c in controls)
         {
             SetLinear(c.channel, c.defaultLinear);
             if (c.slider) c.slider.SetValueWithoutNotify(c.defaultLinear);
             UpdateLabel(c, c.defaultLinear);
         }
-
         PlayerPrefs.Save();
     }
-    
-    // Internal Methods
+
+    // Internal
     void OnSliderChanged(VolumeUI c, float v)
     {
         v = Mathf.Clamp(v, 0.0001f, 1f);
         ApplyLinear(c.channel, v);
         UpdateLabel(c, v);
         Save(c.channel, v);
+
+        // Ensure preview source is routed to the right group before playing
+        if (c.previewSource)
+        {
+            var g = ResolveGroup(c.channel);
+            if (g) c.previewSource.outputAudioMixerGroup = g;
+        }
+
         TryPreview(c);
     }
 
@@ -130,14 +138,11 @@ public class OptionsManager : MonoBehaviour
 
     static float LinearToDb(float linear)
     {
-        if (linear <= 0.0001f) return -80f;
-        return Mathf.Log10(linear) * 20f;
+        if (linear <= 0.0001f) return -80f;          // mute floor; avoids -Infinity
+        return Mathf.Log10(linear) * 20f;            // dB = 20 * log10(amplitude)
     }
 
-    static float DbToLinear(float dB)
-    {
-        return Mathf.Pow(10f, dB / 20f);
-    }
+    static float DbToLinear(float dB) => Mathf.Pow(10f, dB / 20f);
 
     void UpdateLabel(VolumeUI c, float linear)
     {
@@ -147,11 +152,17 @@ public class OptionsManager : MonoBehaviour
     void TryPreview(VolumeUI c)
     {
         if (!c.previewSource || !c.previewClip) return;
-
-        // throttle to avoid spam while dragging
         if (Time.unscaledTime - lastPreview < c.previewCooldown) return;
+
         c.previewSource.PlayOneShot(c.previewClip);
         lastPreview = Time.unscaledTime;
+    }
+
+    // Finds the first mixer group whose path ends with the channel name
+    AudioMixerGroup ResolveGroup(Channel ch)
+    {
+        var groups = mixer.FindMatchingGroups(ch.ToString());
+        return (groups != null && groups.Length > 0) ? groups[0] : null;
     }
 
     float lastPreview;
