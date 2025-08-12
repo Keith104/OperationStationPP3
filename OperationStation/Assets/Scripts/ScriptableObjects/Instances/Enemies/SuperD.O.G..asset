@@ -15,5 +15,5 @@ MonoBehaviour:
   enemyType: 3
   enemyObject: {fileID: 8848058749689383006, guid: 6ba0e52d0fa608845ae10280fcfef31e, type: 3}
   health: 0
-  bullet: {fileID: 6318967275286764619, guid: ff0f2a3adbcc36d49a522dcb779e9ae0, type: 3}
+  bullet: {fileID: 8686202834457548828, guid: 6f87ba0ec2cc2f349936ccb58afbb543, type: 3}
   attackCooldown: 10

@@ -6,11 +6,11 @@ public class WaveManager : MonoBehaviour
     public static WaveManager instance;
 
     [SerializeField] float spawnTime;
-    [SerializeField] int maxEnemies;
+    [SerializeField] public int maxEnemies;
     [SerializeField] Transform[] spawnPoints;
     [SerializeField] EnemiesSO[] enemies;
 
-    int curEnemies;
+    public int curEnemies;
     private float timer;
     private float spawnTimeOG;
     private int randSpawn;
@@ -31,6 +31,7 @@ public class WaveManager : MonoBehaviour
         }
     }
 
+    //I don't like how I have the spawning so I'm going to probably change it after I finish my tasks
     void Spawn()
     {
         timer = 0;
@@ -48,7 +49,7 @@ public class WaveManager : MonoBehaviour
         curEnemies++;
         spawnTime = spawnTime - 5;
 
-        //If spawn time is less then 15 it'll spawn a Verticle fighter and reset the spawn timer
+        //If spawn time is less then half of it's orignial, it'll spawn a Verticle wing
         if(spawnTime < spawnTimeOG % 2 && maxEnemies > curEnemies)
         {
             RandomizeSpawn();
@@ -57,6 +58,7 @@ public class WaveManager : MonoBehaviour
             curEnemies++;
         }
 
+        //If spawn time is less then a quater of it's orignial, it'll spawn a DOG
         if (spawnTime < spawnTimeOG % 4 && maxEnemies > curEnemies)
         {
             RandomizeSpawn();
@@ -65,7 +67,8 @@ public class WaveManager : MonoBehaviour
             curEnemies++;
         }
 
-        if (spawnTime < 10 && maxEnemies > curEnemies + 3)
+        //If spawn time is less then 10, it'll spawn a Super DOG
+        if (spawnTime < 10 && maxEnemies > curEnemies + 2)
         {
             RandomizeSpawn();
 

@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 2419999412934312961}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0.1}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.05}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -411,7 +411,7 @@ MonoBehaviour:
   model: {fileID: 3091656048898722390}
   enemy: {fileID: 11400000, guid: d206bd5aa5f1f724289f02d86ba9acfe, type: 2}
   agent: {fileID: 7153348466214443990}
-  spawnOnDeath: {fileID: 11400000, guid: e0a2e805aeb5d9a4c8d1526101ee5a39, type: 2}
+  enemyToSpawn: {fileID: 8686202834457548828, guid: 6f87ba0ec2cc2f349936ccb58afbb543, type: 3}
   shootPos: {fileID: 4824487046330961453}
   spinFire: 0
   debug: 0
@@ -503,7 +503,7 @@ SphereCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 0
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
