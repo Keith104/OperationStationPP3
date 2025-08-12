@@ -108,19 +108,7 @@ AudioMixerController:
   m_SuspendThreshold: -80
   m_EnableSuspend: 1
   m_UpdateMode: 0
-  m_ExposedParameters:
-  - guid: 79b01c0b1eb279849a27ddeaea91bdce
-    name: AttackSFX
-  - guid: 3defe5dee9d02db4b81f20b04fd887f1
-    name: Master
-  - guid: cf7a1452de6ec9f4ba293f022e98452e
-    name: Music
-  - guid: c25c07835198a754a8c5bc9fa0bdf640
-    name: PlayerSFX
-  - guid: d74a477223201f649b444572f948d573
-    name: SFX
-  - guid: 35b0aad71b3d3914d92e4016a9800af2
-    name: UISFX
+  m_ExposedParameters: []
   m_AudioMixerGroupViews:
   - guids:
     - ae508435a56377944bbcf962aee7df4b
@@ -176,8 +164,7 @@ AudioMixerSnapshotController:
   m_Name: Snapshot
   m_AudioMixer: {fileID: 24100000}
   m_SnapshotID: 28e2b5a9c3b062e4ab38a6e717aad42b
-  m_FloatValues:
-    c25c07835198a754a8c5bc9fa0bdf640: 0.44032478
+  m_FloatValues: {}
   m_TransitionOverrides: {}
 --- !u!244 &1080982906927514579
 AudioMixerEffectController:
