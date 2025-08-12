@@ -16,6 +16,7 @@ public class PlayerCamera : MonoBehaviour
     [SerializeField] int max;
 
     [SerializeField] List<GameObject> selected = new List<GameObject>();
+    [SerializeField] AudioSource selectedSource;
 
     [SerializeField] RectTransform UI;
     [SerializeField] RectTransform selectionBox;
@@ -147,6 +148,7 @@ public class PlayerCamera : MonoBehaviour
             {
                 if (selected.Contains(hit.collider.gameObject) == false)
                 {
+                    selectedSource.Play();
                     selected.Add(hit.collider.gameObject);
                     TrySelect(hit.collider.gameObject);
                 }

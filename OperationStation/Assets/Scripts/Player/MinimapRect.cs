@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class MinimapRect : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] Camera minimapCamera;
+    [SerializeField] AudioSource minimapSource;
     [SerializeField] RectTransform minimapRect;
     [SerializeField] RawImage minimapImage;
     [SerializeField] Vector3 worldPosition;
@@ -17,6 +18,7 @@ public class MinimapRect : MonoBehaviour, IPointerClickHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         Debug.Log("Minimap Clicked");
+        minimapSource.Play();
 
         Vector2 localPoint;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
