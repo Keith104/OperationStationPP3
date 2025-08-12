@@ -12,6 +12,12 @@ public class Module : MonoBehaviour, ISelectable, IDamage
 
     private float localHealth;
     private Color origColor;
+
+    private bool isUpAvailable;
+    private bool isDownAvailable;
+    private bool isRightAvailable;
+    private bool isLeftAvailable;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
