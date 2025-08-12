@@ -8,6 +8,7 @@ TagManager:
   - Enemy
   - MinimapCamera
   - MinimapBackground
+  - UI
   layers:
   - Default
   - TransparentFX
