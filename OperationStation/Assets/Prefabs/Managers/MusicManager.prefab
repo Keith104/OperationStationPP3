@@ -42,8 +42,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -3765955222506489842, guid: 78950690dd40a7141a7d499ea454f64e, type: 2}
-  m_audioClip: {fileID: 8300000, guid: 3fe8206434f6eb9499ce3883f6290604, type: 3}
-  m_Resource: {fileID: 8300000, guid: 3fe8206434f6eb9499ce3883f6290604, type: 3}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 0
   m_Pitch: 1
@@ -177,8 +177,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   outgoingSource: {fileID: 8785926218965458090}
   incomingSource: {fileID: 6549542137500644904}
-  musicClips: []
+  neutralMusicClips:
+  - {fileID: 8300000, guid: 4f425ba0520127145a41cf8748285b65, type: 3}
+  - {fileID: 8300000, guid: 0d42e100cc1a62a4fa244a3288138b93, type: 3}
+  - {fileID: 8300000, guid: ef2d1519ff9acff40a217dee9f84f9c5, type: 3}
+  - {fileID: 8300000, guid: 471a52f333beaa043b35329de63554c5, type: 3}
+  - {fileID: 8300000, guid: c7558d42357bb2e429af17c34d8e3205, type: 3}
+  aggressiveMusicClips:
+  - {fileID: 8300000, guid: d1f259e613bb723458593328927ed4c6, type: 3}
+  - {fileID: 8300000, guid: 9b1b957a688ff7345b45c5df0c3371e8, type: 3}
+  - {fileID: 8300000, guid: 3fe8206434f6eb9499ce3883f6290604, type: 3}
+  - {fileID: 8300000, guid: 2022a82ce5fac804e8859b0f150bd451, type: 3}
+  enemiesSeen: 0
+  seenLimit: 0
   fadeNewClipIn: 0
+  isWatchingFight: 0
 --- !u!1 &5241777788052257963
 GameObject:
   m_ObjectHideFlags: 0
@@ -221,9 +234,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -3765955222506489842, guid: 78950690dd40a7141a7d499ea454f64e, type: 2}
-  m_audioClip: {fileID: 8300000, guid: ef2d1519ff9acff40a217dee9f84f9c5, type: 3}
-  m_Resource: {fileID: 8300000, guid: ef2d1519ff9acff40a217dee9f84f9c5, type: 3}
-  m_PlayOnAwake: 1
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0

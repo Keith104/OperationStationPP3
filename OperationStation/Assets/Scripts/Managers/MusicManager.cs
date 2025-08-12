@@ -2,32 +2,67 @@ using UnityEngine;
 
 public class MusicManager : MonoBehaviour
 {
+    public static MusicManager instance { get; private set; }
+    [Header("CrossFade Sources")]
     [SerializeField] AudioSource outgoingSource;
     [SerializeField] AudioSource incomingSource;
-    [SerializeField] AudioClip[] musicClips;
 
+    [Header("AudioClips")]
+    [SerializeField] AudioClip[] neutralMusicClips;
+    [SerializeField] AudioClip[] aggressiveMusicClips;
+
+    [Header("Tracker")]
+    public int enemiesSeen;
+
+    [Header("Dynamic Sight")]
+    [SerializeField] int seenLimit;
+    private bool aggressiveSightSet = false;
+    private bool neutralSightSet = true;
+
+    [Header("Misc.")]
     [SerializeField] bool fadeNewClipIn;
+    public bool isWatchingFight;
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(instance);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        PlayNewNeutral();
     }
 
     // Update is called once per frame
     void Update()
     {
-        NearEnd();
+        if(outgoingSource.clip != null)
+            NearEnd();
         if (fadeNewClipIn == true)
         {
             CrossFade();
         }
+
+        CombatWatcher();
     }
 
     void NearEnd()
     {
         float length = outgoingSource.clip.length;
         if (outgoingSource.time > length - 1)
-            fadeNewClipIn = true;
+        {
+            if (isWatchingFight == false)
+                PlayNewNeutral();
+            else
+                PlayNewAggressive();
+        }
     }
 
     void CrossFade()
@@ -51,5 +86,42 @@ public class MusicManager : MonoBehaviour
             outgoingSource.time = incomingSource.time;
             fadeNewClipIn = false;
         }
+    }
+
+    void CombatWatcher()
+    {
+        if (enemiesSeen > seenLimit)
+        {
+            if (aggressiveSightSet == false)
+            {
+                MusicManager.instance.isWatchingFight = true;
+                MusicManager.instance.PlayNewAggressive();
+                aggressiveSightSet = true;
+            }
+            neutralSightSet = false;
+        }
+        else
+        {
+            if (neutralSightSet == false)
+            {
+                MusicManager.instance.isWatchingFight = false;
+                MusicManager.instance.PlayNewNeutral();
+                neutralSightSet = true;
+            }
+            aggressiveSightSet = false;
+        }
+    }
+
+    public void PlayNewNeutral()
+    {
+        incomingSource.clip = neutralMusicClips[Random.Range(0, neutralMusicClips.Length)];
+        incomingSource.Play();
+        fadeNewClipIn = true;
+    }
+    public void PlayNewAggressive()
+    {
+        incomingSource.clip = aggressiveMusicClips[Random.Range(0, aggressiveMusicClips.Length)];
+        incomingSource.Play();
+        fadeNewClipIn = true;
     }
 }
