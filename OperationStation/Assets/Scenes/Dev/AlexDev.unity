@@ -591,7 +591,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: MinimapBackground
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2757910295602859950, guid: c6cdb4723017453458a83b33399a1186, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
