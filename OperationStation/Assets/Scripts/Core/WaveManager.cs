@@ -10,7 +10,7 @@ public class WaveManager : MonoBehaviour
     [SerializeField] Transform[] spawnPoints;
     [SerializeField] GameObject enemyBow;
     [SerializeField] GameObject enemyVert;
-    //[SerializeField] GameObject enemyDOG;
+    [SerializeField] GameObject enemyDOG;
     //[SerializeField] GameObject enemySUPDOG;
 
     int curEnemies;
@@ -70,6 +70,7 @@ public class WaveManager : MonoBehaviour
         curEnemies--;
     }
 
+    //Randomizes the spawnpoints of enemies
     void RandomizeSpawn()
     {
         randSpawn = Random.Range(0, spawnPoints.Length);
