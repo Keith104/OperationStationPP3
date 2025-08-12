@@ -131,7 +131,7 @@ public class SceneTransition : MonoBehaviour
         BuildLoadingText();
         SetLoadingVisible(false);
 
-        ShuffleHints();          // shuffle once per run
+        ShuffleHints();
         BuildHintsText();
         SetHintsVisible(false);
     }
@@ -376,10 +376,17 @@ public class SceneTransition : MonoBehaviour
 
     public static void Run(string sceneName)
     {
-        if (Instance != null) Instance.StartCoroutine(Instance.CoverLoadReveal(sceneName));
+        if (Instance != null)
+            Instance.StartCoroutine(Instance.CoverLoadRevealOptions(sceneName, true, true));
     }
 
-    IEnumerator CoverLoadReveal(string sceneName)
+    public static void RunNoHints(string sceneName)
+    {
+        if (Instance != null)
+            Instance.StartCoroutine(Instance.CoverLoadRevealOptions(sceneName, false, false));
+    }
+
+    IEnumerator CoverLoadRevealOptions(string sceneName, bool showHintsDuringLoad, bool showContinueButton)
     {
         if (isRunning) yield break;
         isRunning = true;
@@ -393,7 +400,7 @@ public class SceneTransition : MonoBehaviour
         yield return Animate(0f, 1f, coverDuration, coverEase);
 
         SetLoadingVisible(true);
-        SetHintsVisible(true);
+        if (showHintsDuringLoad) SetHintsVisible(true); else SetHintsVisible(false);
 
         if (waitAfterCoverSeconds > 0f)
             yield return new WaitForSecondsRealtime(waitAfterCoverSeconds);
@@ -408,25 +415,33 @@ public class SceneTransition : MonoBehaviour
         float hold = Mathf.Max(0f, minLoadingDisplaySeconds - elapsed) + Mathf.Max(0f, loadDelaySeconds);
         if (hold > 0f) yield return new WaitForSecondsRealtime(hold);
 
-        if (continueButton == null) continueButton = BuildContinueButton();
-        if (continueButton != null)
+        if (showContinueButton)
         {
-            SetLoadingVisible(false);
-            continueButton.gameObject.SetActive(true);
+            if (continueButton == null) continueButton = BuildContinueButton();
+            if (continueButton != null)
+            {
+                SetLoadingVisible(false);
+                continueButton.gameObject.SetActive(true);
 
-            bool clicked = false;
-            continueButton.onClick.RemoveAllListeners();
-            continueButton.onClick.AddListener(() => clicked = true);
+                bool clicked = false;
+                continueButton.onClick.RemoveAllListeners();
+                continueButton.onClick.AddListener(() => clicked = true);
+                while (!clicked) yield return null;
 
-            while (!clicked) yield return null;
-
-            continueButton.gameObject.SetActive(false);
+                continueButton.gameObject.SetActive(false);
+            }
+        }
+        else
+        {
+            SetLoadingVisible(true);
         }
 
         op.allowSceneActivation = true;
         while (!op.isDone) yield return null;
 
         SetHintsVisible(false);
+        SetLoadingVisible(false);
+
         runtimeMat.SetFloat("_Progress", 1f);
         yield return Animate(1f, 0f, revealDuration, revealEase);
 
