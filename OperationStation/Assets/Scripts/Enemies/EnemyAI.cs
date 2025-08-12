@@ -9,6 +9,7 @@ public class EnemyAI : MonoBehaviour, IDamage
     [Header("Enemy Data")]
     [SerializeField] EnemiesSO enemy;
     [SerializeField] NavMeshAgent agent;
+    [SerializeField] GameObject enemyToSpawn;
 
     [Header("Damage Data")]
     [SerializeField] Transform shootPos;
@@ -52,7 +53,15 @@ public class EnemyAI : MonoBehaviour, IDamage
         enemy.health -= amount;
         StartCoroutine(FlashRed());
 
-        if (enemy.health <= 0)
+        if (enemy.health <= 0 && enemyToSpawn != null)
+        {
+            Instantiate(enemyToSpawn, shootPos.position, transform.rotation);
+            Instantiate(enemyToSpawn, transform.position, transform.rotation);
+
+            WaveManager.instance.DeadEnemy();
+            Destroy(gameObject);
+        }
+        else
         {
             WaveManager.instance.DeadEnemy();
             Destroy(gameObject);

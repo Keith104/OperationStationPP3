@@ -489,7 +489,9 @@ MonoBehaviour:
   model: {fileID: 2627803603245093132}
   enemy: {fileID: 11400000, guid: fc52f24a5ec8df34b9ebcdd704ad542f, type: 2}
   agent: {fileID: 8909417233075275603}
+  enemyToSpawn: {fileID: 0}
   shootPos: {fileID: 151835495102035083}
+  spinFire: 0
   debug: 0
 --- !u!33 &8753470686695513080
 MeshFilter:

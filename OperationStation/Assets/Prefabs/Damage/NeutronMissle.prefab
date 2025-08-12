@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5968145230355826079}
   - component: {fileID: 6676244325269352401}
   - component: {fileID: 4296211044255252031}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: NeutronMissle
   m_TagString: Untagged
   m_Icon: {fileID: 0}

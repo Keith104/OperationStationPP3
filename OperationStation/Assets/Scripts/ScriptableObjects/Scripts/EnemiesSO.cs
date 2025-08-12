@@ -9,7 +9,7 @@ public class EnemiesSO : ScriptableObject
         BowFighter,
         VerticalWing,
         DOGDestroyer,
-        //SuperDOGDestroyer
+        SuperDOGDestroyer
     }
 
     public EnemyType enemyType;
