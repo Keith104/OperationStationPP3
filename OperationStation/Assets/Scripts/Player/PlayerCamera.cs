@@ -28,7 +28,8 @@ public class PlayerCamera : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
+        UI = GameObject.FindWithTag("UI").GetComponent<RectTransform>();
+        selectionBox = UI.Find("SelectionBox").GetComponent<RectTransform>();
     }
 
     // Update is called once per frame
