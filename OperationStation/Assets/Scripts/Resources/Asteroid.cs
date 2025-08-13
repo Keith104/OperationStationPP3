@@ -9,7 +9,7 @@ public class Asteroid : MonoBehaviour, IDamage
     public bool canMove;
 
     [Header("Asteroid Settings")]
-    [SerializeField] float health;
+    [SerializeField] public float health;
     [SerializeField] AsteroidSO asteroid;
 
     [Header("Resource")]
