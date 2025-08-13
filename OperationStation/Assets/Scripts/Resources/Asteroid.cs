@@ -6,6 +6,7 @@ public class Asteroid : MonoBehaviour, IDamage
 {
     [Header("Movement")]
     [SerializeField] float moveSpeed;
+    public bool canMove;
 
     [Header("Asteroid Settings")]
     [SerializeField] float health;
@@ -55,6 +56,8 @@ public class Asteroid : MonoBehaviour, IDamage
 
     private void Start()
     {
+        canMove = true;
+
         float scaleFactor = 1f;
         switch (asteroid.asteroidSize)
         {
@@ -93,6 +96,11 @@ public class Asteroid : MonoBehaviour, IDamage
             || transform.position.z > borderLimits.y
             || transform.position.z < 0)
             DestroyAsteroid();
+
+        if(!canMove)
+        {
+            rb.linearVelocity = Vector3.zero;
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
