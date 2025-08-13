@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: LargeSIlver
   m_EditorClassIdentifier: 
   asteroidSize: 2
-  asteroidObject: {fileID: 34360845235334891, guid: d2a6014774cc73748851c7d63a39947c, type: 3}
+  asteroidObject: {fileID: 34360845235334891, guid: e7e7da6118e486b49a0f7cfd3b2d70e3, type: 3}
   health: 100
   resource: {fileID: 11400000, guid: 8ce94c1c8f11e6640bed8fa2e20a8521, type: 2}
   minAmount: 15
