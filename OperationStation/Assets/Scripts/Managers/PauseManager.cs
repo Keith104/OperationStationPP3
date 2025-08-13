@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
@@ -7,6 +8,8 @@ public class PauseManager : MonoBehaviour
     [Header("UI References")]
     [SerializeField] GameObject pauseMenu;
     [SerializeField] GameObject quitConfirmPopup;
+
+    [SerializeField] List<GameObject> activeMenus;
 
 
     bool paused;
@@ -34,11 +37,19 @@ public class PauseManager : MonoBehaviour
         {
             Time.timeScale = 0f;
             pauseMenu.SetActive(true);
+            AddToActiveMenus(pauseMenu);
         }
         else
         {
             Time.timeScale = 1f;
-            pauseMenu.SetActive(false);
+            foreach(GameObject menu in activeMenus)
+            {
+                menu.SetActive(false);
+                
+            }
+
+            activeMenus.Clear();
+
         }
     }
 
@@ -56,7 +67,12 @@ public class PauseManager : MonoBehaviour
         if (quitConfirmPopup != null)
         {
             quitConfirmPopup.SetActive(true);
-            pauseMenu.SetActive(false);
+            foreach(GameObject menu in activeMenus)
+            {
+                menu.SetActive(false);
+            }
+            activeMenus.Clear();
+            AddToActiveMenus(quitConfirmPopup);
 
         }
         else
@@ -80,5 +96,15 @@ public class PauseManager : MonoBehaviour
     public void ToMainMenuButton(string sceneName)
     {
         SceneTransition.RunNoHints(sceneName);
+    }
+
+    public void AddToActiveMenus(GameObject menuToAdd)
+    {
+        activeMenus.Add(menuToAdd);
+    }
+
+    public void RemoveFromActiveMenus(GameObject menuToRemove)
+    {
+        activeMenus.Remove(menuToRemove);
     }
 }
