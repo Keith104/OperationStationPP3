@@ -168,7 +168,7 @@ public class SceneTransition : MonoBehaviour
         loadingText.fontSize = loadingFontSize;
         loadingText.color = loadingColor;
         loadingText.alignment = TextAlignmentOptions.BottomLeft;
-        loadingText.enableWordWrapping = false;
+        loadingText.textWrappingMode = TextWrappingModes.NoWrap;
         loadingText.raycastTarget = false;
         loadingText.text = loadingBaseText;
 
@@ -188,7 +188,7 @@ public class SceneTransition : MonoBehaviour
         if (bodyFont) hintsText.font = bodyFont;
         hintsText.color = hintsColor;
         hintsText.alignment = TextAlignmentOptions.BottomRight;
-        hintsText.enableWordWrapping = true;
+        hintsText.textWrappingMode = TextWrappingModes.Normal;
         hintsText.enableAutoSizing = hintsAutoSize;
         hintsText.fontSizeMin = hintsFontSizeMin;
         hintsText.fontSizeMax = hintsFontSizeMax;
