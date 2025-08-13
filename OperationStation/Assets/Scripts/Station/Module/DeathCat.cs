@@ -34,11 +34,26 @@ public class DeathCat : MonoBehaviour, IModule
     void FireDeathCat()
     {
         Debug.Log("Cat The Death Cat has been fired");
+        UnlockNextDiff();
         LevelUIManager.instance.menuWin.SetActive(true);
+    }
+
+    void UnlockNextDiff()
+    {
+        foreach (DifficultySO diff in DifficultyManager.instance.allDifficulties)
+        {
+            if (diff.isLocked == true)
+            {
+                diff.isLocked = false;
+                break;
+            }
+        }
     }
 
     public void ModuleDie()
     {
         LevelUIManager.instance.menuLose.SetActive(true);
     }
+
+
 }
