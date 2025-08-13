@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI; // ScrollRect, Layout
 
 public class DebugTool : MonoBehaviour
 {
@@ -15,13 +16,17 @@ public class DebugTool : MonoBehaviour
     public TMP_InputField inputField;
     public TMP_Text outputText;
 
+    // Scroll View bits
+    public ScrollRect outputScroll;           // assign your Scroll View's ScrollRect
+    public RectTransform contentRoot;         // assign ScrollRect.content (the parent of outputText)
+
     [Header("Controls")]
     public KeyCode togglekey = KeyCode.BackQuote;
 
     [Header("Output FX")]
     [Tooltip("Animate text output character-by-character.")]
     public bool useTypewriter = true;
-    [Range(5, 400)] public float typewriterCharsPerSecond = 40f; // slower so it’s visible
+    [Range(5, 400)] public float typewriterCharsPerSecond = 40f;
     [Tooltip("Extra space above the first line of output (pixels).")]
     public float outputTopMargin = 8f;
     [Tooltip("Hold or tap to instantly finish the current typewriter chunk.")]
@@ -47,17 +52,22 @@ public class DebugTool : MonoBehaviour
         if (consoleRoot) consoleRoot.SetActive(false);
         if (inputField) inputField.onSubmit.AddListener(OnSubmit);
 
+        // TMP label cosmetic margin
         if (outputText)
         {
             var m = outputText.margin; // left, top, right, bottom
             outputText.margin = new Vector4(m.x, outputTopMargin, m.z, m.w);
         }
 
+        // Auto-configure the scroll content so it expands DOWN as the text grows
+        ConfigureScrollContent(); // << key part
+
         // Commands
-        Register(new HelpCommand(() => commands.Values));
+        Register(new HelpCommand(() => commands)); // pass key/value pairs so Help sees aliases
         Register(new AddResourceCommand());
         Register(new RemoveResourceCommand());
         Register(new ListResourceTypesCommand());
+        Register(new InvincibilityCommand(), "god", "godmode");
     }
 
     void Update()
@@ -83,6 +93,48 @@ public class DebugTool : MonoBehaviour
                 inputField.text = lastCommand;
                 MoveCaretToEnd();
             }
+        }
+    }
+
+    // ===== Auto-layout config so parent expands DOWN =====
+    void ConfigureScrollContent()
+    {
+        if (!contentRoot) return;
+
+        // Ensure content grows downward: top-stretch anchors, top pivot
+        contentRoot.anchorMin = new Vector2(0f, 1f);
+        contentRoot.anchorMax = new Vector2(1f, 1f);
+        contentRoot.pivot = new Vector2(0.5f, 1f);
+        contentRoot.anchoredPosition = new Vector2(0f, 0f); // sit at top of viewport
+
+        // Add/Configure VerticalLayoutGroup on the CONTENT parent.
+        // This lets the parent size itself from its children (like your TMP text).
+        var vlg = contentRoot.GetComponent<VerticalLayoutGroup>();
+        if (!vlg) vlg = contentRoot.gameObject.AddComponent<VerticalLayoutGroup>();
+        vlg.childAlignment = TextAnchor.UpperLeft;
+        vlg.spacing = 4f;
+        vlg.padding = new RectOffset(6, 6, 6, 6);
+        vlg.childControlWidth = true;   // parent controls child width
+        vlg.childControlHeight = true;   // parent sets child height to child's preferred height
+        vlg.childForceExpandWidth = true;
+        vlg.childForceExpandHeight = false; // don't stretch children taller than preferred
+
+        // Make the CONTENT parent fit the total preferred height of its children.
+        var fitter = contentRoot.GetComponent<ContentSizeFitter>();
+        if (!fitter) fitter = contentRoot.gameObject.AddComponent<ContentSizeFitter>();
+        fitter.horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
+        fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+
+        // Child (outputText) should not also have a ContentSizeFitter if it's under a Layout Group.
+        // TMP already provides preferred sizes to the layout system.
+        if (outputText)
+        {
+            var childFitter = outputText.GetComponent<ContentSizeFitter>();
+            if (childFitter) Destroy(childFitter); // avoid layout feedback loops
+            var rt = outputText.rectTransform;
+            rt.anchorMin = new Vector2(0f, 1f);
+            rt.anchorMax = new Vector2(1f, 1f);
+            rt.pivot = new Vector2(0.5f, 1f);
         }
     }
 
@@ -140,11 +192,9 @@ public class DebugTool : MonoBehaviour
     // ===== Output control (CLEAR + typewriter) =====
     void SetOutput(string textToShow)
     {
-        // Always log full line
         if (!string.IsNullOrEmpty(textToShow))
             Debug.Log($"[Console] {textToShow}");
 
-        // Stop any running animation and reset buffers
         if (typeCo != null) { StopCoroutine(typeCo); typeCo = null; }
         typeQueue.Clear();
         outputBuffer.Clear();
@@ -157,18 +207,17 @@ public class DebugTool : MonoBehaviour
 
         if (useTypewriter && textToShow.Length > 0)
         {
-            outputText.text = "";        // CLEAR the label immediately
+            outputText.text = "";
             typeQueue.Enqueue(textToShow);
 
-            // Debounce skip so the submit-frame Enter/Escape can't instantly complete
-            _skipSuppressUntil = Time.unscaledTime + 0.1f;
-
+            _skipSuppressUntil = Time.unscaledTime + 0.1f; // debounce skip
             typeCo = StartCoroutine(TypewriterCo());
         }
         else
         {
             outputBuffer.Append(textToShow);
             outputText.text = outputBuffer.ToString();
+            AutoScrollIfAtBottom();
         }
     }
 
@@ -176,7 +225,7 @@ public class DebugTool : MonoBehaviour
     {
         float cps = Mathf.Max(1f, typewriterCharsPerSecond);
         float interval = 1f / cps;
-        float nextTick = Time.unscaledTime; // start immediately
+        float nextTick = Time.unscaledTime;
 
         while (typeQueue.Count > 0)
         {
@@ -185,16 +234,15 @@ public class DebugTool : MonoBehaviour
 
             while (i < next.Length)
             {
-                // Instant-complete if requested (after debounce window)
                 if (IsSkipRequested())
                 {
                     outputBuffer.Append(next, i, next.Length - i);
                     i = next.Length;
                     if (outputText) outputText.text = outputBuffer.ToString();
+                    AutoScrollIfAtBottom();
                     break;
                 }
 
-                // Emit exactly ONE character per tick
                 if (Time.unscaledTime >= nextTick)
                 {
                     outputBuffer.Append(next[i]);
@@ -202,9 +250,10 @@ public class DebugTool : MonoBehaviour
                     nextTick += interval;
 
                     if (outputText) outputText.text = outputBuffer.ToString();
+                    AutoScrollIfAtBottom();
                 }
 
-                yield return null; // important: first yield happens after checks
+                yield return null;
             }
         }
 
@@ -213,7 +262,7 @@ public class DebugTool : MonoBehaviour
 
     bool IsSkipRequested()
     {
-        if (Time.unscaledTime < _skipSuppressUntil) return false; // ignore early frame(s)
+        if (Time.unscaledTime < _skipSuppressUntil) return false;
         return Input.GetKey(skipTypewriterKey)
             || Input.GetKeyDown(KeyCode.Return)
             || Input.GetKeyDown(KeyCode.Escape);
@@ -226,34 +275,107 @@ public class DebugTool : MonoBehaviour
         inputField.ForceLabelUpdate();
     }
 
+    // ===== Scroll helpers =====
+    void AutoScrollIfAtBottom()
+    {
+        if (!outputScroll) return;
+        bool userAtBottom = outputScroll.verticalNormalizedPosition <= 0.02f;
+        StartCoroutine(CoForceScroll(userAtBottom));
+    }
+
+    IEnumerator CoForceScroll(bool forceToBottom)
+    {
+        // Let layout rebuild first so sizes are up-to-date
+        yield return null;
+        if (forceToBottom && outputScroll)
+            outputScroll.verticalNormalizedPosition = 0f; // 0 == bottom
+    }
+
     void Register(ICommand command, params string[] aliases)
     {
-        commands[command.Name] = command;
-        foreach (var a in aliases) commands[a] = command;
+        commands[command.Name] = command;                // primary
+        foreach (var a in aliases) commands[a] = command; // aliases
     }
 
     // ===== Command API =====
     public interface ICommand
     {
         string Name { get; }
+        string Usage { get; }
         string Help { get; }
         string Run(string[] args);
     }
 
+    // Help shows aliases and prints:
+    // <b>name</b> <usage>
+    //   description
+    //   (aliases: a/b)
     class HelpCommand : ICommand
     {
         public string Name => "help";
-        public string Help => "help -- List available commands.";
-        readonly Func<IEnumerable<ICommand>> _getAll;
-        public HelpCommand(Func<IEnumerable<ICommand>> getAll) => _getAll = getAll;
+        public string Usage => "";
+        public string Help => "List available commands.";
+
+        readonly Func<IEnumerable<KeyValuePair<string, ICommand>>> _getAllPairs;
+        public HelpCommand(Func<IEnumerable<KeyValuePair<string, ICommand>>> getAllPairs)
+            => _getAllPairs = getAllPairs;
+
+        // Styling
+        const string CmdColor = "#FFFFFF";
+        const string UsageColor = "#B9D4FF";
+        const string DescColor = "#D1D5DB";
+        const string AliasColor = "#9AA4B2";
+        const int DescPct = 92;
 
         public string Run(string[] args)
         {
+            var byCmd = new Dictionary<ICommand, HashSet<string>>(ReferenceEqualityComparer.Instance);
+            foreach (var kv in _getAllPairs())
+            {
+                if (!byCmd.TryGetValue(kv.Value, out var set))
+                {
+                    set = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                    byCmd[kv.Value] = set;
+                }
+                set.Add(kv.Key);
+            }
+
             var sb = new StringBuilder();
             sb.AppendLine("Commands:");
-            foreach (var c in _getAll())
-                sb.AppendLine(c.Help);
+
+            foreach (var kv in byCmd)
+            {
+                var cmd = kv.Key;
+
+                var names = new List<string>(kv.Value);
+                names.Sort(StringComparer.OrdinalIgnoreCase);
+                int primaryIndex = names.FindIndex(n => string.Equals(n, cmd.Name, StringComparison.OrdinalIgnoreCase));
+                if (primaryIndex > 0) (names[0], names[primaryIndex]) = (names[primaryIndex], names[0]);
+
+                string primary = names[0];
+                string aliasTail = names.Count > 1 ? string.Join("/", names.GetRange(1, names.Count - 1)) : null;
+
+                string usage = string.IsNullOrEmpty(cmd.Usage) ? "" :
+                    $" <color={UsageColor}><mspace=0.6em><noparse>{cmd.Usage}</noparse></mspace></color>";
+                sb.AppendLine($"<b><color={CmdColor}>{primary}</color></b>{usage}");
+
+                if (!string.IsNullOrEmpty(cmd.Help))
+                    sb.AppendLine($"<indent=6%><size={DescPct}%><color={DescColor}>{cmd.Help}</color></size></indent>");
+
+                if (!string.IsNullOrEmpty(aliasTail))
+                    sb.AppendLine($"<indent=6%><color={AliasColor}>(aliases: {aliasTail})</color></indent>");
+
+                sb.AppendLine();
+            }
+
             return sb.ToString().TrimEnd();
+        }
+
+        sealed class ReferenceEqualityComparer : IEqualityComparer<object>
+        {
+            public static readonly ReferenceEqualityComparer Instance = new();
+            public new bool Equals(object x, object y) => ReferenceEquals(x, y);
+            public int GetHashCode(object obj) => System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(obj);
         }
     }
 
@@ -301,7 +423,8 @@ public class DebugTool : MonoBehaviour
     class AddResourceCommand : ICommand
     {
         public string Name => "add";
-        public string Help => "add <type> <amount> -- Add resources. Types: tritium, silver, polonium, ingots, coins, crystals";
+        public string Usage => "<type> <amount>";
+        public string Help => "Add resources. Types: tritium, silver, polonium, ingots, coins, crystals";
 
         public string Run(string[] args)
         {
@@ -325,7 +448,8 @@ public class DebugTool : MonoBehaviour
     class RemoveResourceCommand : ICommand
     {
         public string Name => "remove";
-        public string Help => "remove <type> <amount> -- Remove resources. Types: tritium, silver, polonium, ingots, coins, crystals";
+        public string Usage => "<type> <amount>";
+        public string Help => "Remove resources. Types: tritium, silver, polonium, ingots, coins, crystals";
 
         public string Run(string[] args)
         {
@@ -349,7 +473,8 @@ public class DebugTool : MonoBehaviour
     class ListResourceTypesCommand : ICommand
     {
         public string Name => "listresources";
-        public string Help => "listresources -- Show valid resource types.";
+        public string Usage => "";
+        public string Help => "Show valid resource types.";
 
         public string Run(string[] args)
         {
@@ -362,6 +487,47 @@ public class DebugTool : MonoBehaviour
                    "  add crystals 2\n" +
                    "  remove tritium 5\n" +
                    "  remove coins 10";
+        }
+    }
+
+    // Other Commands
+    class InvincibilityCommand : ICommand
+    {
+        public string Name => "invincibility";
+        public string Usage => "[true|false|on|off|1|0]";
+        public string Help => "Enable/disable damage for the death cat";
+
+        public string Run(string[] args)
+        {
+            if (args.Length < 1)
+                return "Usage: invincibility <true|false>";
+
+            if (!TryParseBool(args[0], out var value))
+                return "Invalid value. Use true/false (also accepts on/off/1/0).";
+
+            // No real functionality yet—just acknowledge.
+            return $"Not implemented yet, but set invincibility to [{value}].";
+        }
+
+        static bool TryParseBool(string raw, out bool value)
+        {
+            if (bool.TryParse(raw, out value)) return true;
+
+            switch (raw.Trim().ToLowerInvariant())
+            {
+                case "1":
+                case "on":
+                case "enable":
+                case "enabled":
+                    value = true; return true;
+                case "0":
+                case "off":
+                case "disable":
+                case "disabled":
+                    value = false; return true;
+                default:
+                    value = default; return false;
+            }
         }
     }
 }
