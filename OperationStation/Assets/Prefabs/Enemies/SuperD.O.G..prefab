@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 2419999412934312961}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0.1}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.05}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -365,6 +365,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2189913468765084993}
   - component: {fileID: 6090795689450188702}
+  - component: {fileID: 4545497610160981760}
   - component: {fileID: 172961130255221283}
   - component: {fileID: 3091656048898722390}
   - component: {fileID: 7153348466214443990}
@@ -408,13 +409,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1c21ff13303f4b40bf6739e028a69d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  waveManager: {fileID: 0}
   model: {fileID: 3091656048898722390}
   enemy: {fileID: 11400000, guid: d206bd5aa5f1f724289f02d86ba9acfe, type: 2}
   agent: {fileID: 7153348466214443990}
-  spawnOnDeath: {fileID: 11400000, guid: e0a2e805aeb5d9a4c8d1526101ee5a39, type: 2}
+  enemyToSpawn: {fileID: 8686202834457548828, guid: 6f87ba0ec2cc2f349936ccb58afbb543, type: 3}
   shootPos: {fileID: 4824487046330961453}
   spinFire: 0
   debug: 0
+--- !u!114 &4545497610160981760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8848058749689383006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df7e68227488d754faaba4cd0dbd9620, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!33 &172961130255221283
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -503,7 +517,7 @@ SphereCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 0
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0

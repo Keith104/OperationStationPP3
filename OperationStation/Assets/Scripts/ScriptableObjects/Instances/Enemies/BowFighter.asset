@@ -16,4 +16,5 @@ MonoBehaviour:
   enemyObject: {fileID: 8686202834457548828, guid: 6f87ba0ec2cc2f349936ccb58afbb543, type: 3}
   health: 3
   bullet: {fileID: 2181284486069709208, guid: e43fc242e25252d40bb048865086b253, type: 3}
+  damageAmount: 1
   attackCooldown: 2

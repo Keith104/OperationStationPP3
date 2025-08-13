@@ -118,6 +118,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1629084307311373675}
   - component: {fileID: 2773096033665836871}
+  - component: {fileID: -320039253981516571}
   - component: {fileID: 2683686784295973200}
   - component: {fileID: 2072873028256110473}
   - component: {fileID: 2051134293528215224}
@@ -161,6 +162,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1c21ff13303f4b40bf6739e028a69d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  waveManager: {fileID: 0}
   model: {fileID: 2072873028256110473}
   enemy: {fileID: 11400000, guid: 6fbc64d32dfe65a428a2294ff7b2315b, type: 2}
   agent: {fileID: 2051134293528215224}
@@ -168,6 +170,18 @@ MonoBehaviour:
   shootPos: {fileID: 3072562535339213170}
   spinFire: 1
   debug: 0
+--- !u!114 &-320039253981516571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3236824007983274319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df7e68227488d754faaba4cd0dbd9620, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!33 &2683686784295973200
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -256,7 +270,7 @@ SphereCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 256
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
