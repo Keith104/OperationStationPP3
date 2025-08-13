@@ -1,9 +1,11 @@
 using UnityEngine;
 using UnityEngine.AI;
 using System.Collections;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 
 public class EnemyAI : MonoBehaviour, IDamage
 {
+    [SerializeField] WaveManager waveManager;
     [SerializeField] Renderer model;
 
     [Header("Enemy Data")]
@@ -24,6 +26,8 @@ public class EnemyAI : MonoBehaviour, IDamage
     private Color colorOG;
     private float shootY;
 
+    private float health;
+
 
     public void Initialized(EnemiesSO enemyData)
     {
@@ -35,6 +39,10 @@ public class EnemyAI : MonoBehaviour, IDamage
         //This isn't final I'll fix/change this when I know how we're implementing the station
         station = GameObject.FindWithTag("Player");
         colorOG = model.material.color;
+
+        health = enemy.health;
+
+        enemy.bullet.GetComponent<Damage>().damageAmount = enemy.damageAmount;
     }
 
     void Update()
@@ -50,19 +58,17 @@ public class EnemyAI : MonoBehaviour, IDamage
 
     public void TakeDamage(float amount)
     {
-        enemy.health -= amount;
+        health -= amount;
         StartCoroutine(FlashRed());
 
-        if (enemy.health <= 0 && enemyToSpawn != null)
+        if (health <= 0)
         {
-            Instantiate(enemyToSpawn, shootPos.position, transform.rotation);
-            Instantiate(enemyToSpawn, transform.position, transform.rotation);
+            if(enemyToSpawn != null && waveManager.maxEnemies > waveManager.curEnemies + 1)
+            {
+                Instantiate(enemyToSpawn, shootPos.position, transform.rotation);
+                Instantiate(enemyToSpawn, transform.position, transform.rotation);
+            }
 
-            WaveManager.instance.DeadEnemy();
-            Destroy(gameObject);
-        }
-        else
-        {
             WaveManager.instance.DeadEnemy();
             Destroy(gameObject);
         }
