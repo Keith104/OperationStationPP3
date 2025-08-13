@@ -1,13 +1,16 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.AI;
+using UnityEngine.Scripting.APIUpdating;
 
 public class MiningShip : MonoBehaviour, ISelectable, IDamage
 {
     [SerializeField] UnitSO stats;
     [SerializeField] Renderer model;
     [SerializeField] NavMeshAgent agent;
+    [SerializeField] Camera playerCam;
 
+    private bool playerControlled;
     private float health;
     private Color colorOG;
     private Vector3 idlePos;
@@ -17,16 +20,20 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
         health = stats.unitHealth;
         colorOG = model.material.color;
         idlePos = transform.position;
+        playerControlled = false;
     }
 
     void Update()
     {
-        
+        if (playerControlled)
+        {
+            ShipMove();
+        }
     }
 
     public void TakeControl()
     {
-        throw new System.NotImplementedException();
+        playerControlled = !playerControlled;
     }
 
     public void TakeDamage(float damage)
@@ -45,7 +52,20 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
     {
         if (other.tag == "Asteroid")
         {
+            playerControlled = false;
             //Mine
+        }
+    }
+
+    public void ShipMove()
+    {
+        Ray ray = playerCam.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit))
+        {
+            
+            agent.SetDestination(hit.point);
         }
     }
 

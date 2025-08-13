@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 using System.Collections;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 
 public class EnemyAI : MonoBehaviour, IDamage
 {
@@ -40,6 +41,8 @@ public class EnemyAI : MonoBehaviour, IDamage
         colorOG = model.material.color;
 
         health = enemy.health;
+
+        enemy.bullet.GetComponent<Damage>().damageAmount = enemy.damageAmount;
     }
 
     void Update()
