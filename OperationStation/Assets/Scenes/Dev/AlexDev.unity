@@ -307,7 +307,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 34360845235334891, guid: d2a6014774cc73748851c7d63a39947c, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1918393006012115324, guid: d2a6014774cc73748851c7d63a39947c, type: 3}
       propertyPath: m_Layer
@@ -563,6 +563,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5230486820992445310, guid: 7badf4c813dff404690ad2239242cefa, type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5460663326098639600, guid: 7badf4c813dff404690ad2239242cefa, type: 3}
+      propertyPath: m_TagString
+      value: LowHealthIndicator
+      objectReference: {fileID: 0}
     - target: {fileID: 7813998781396424135, guid: 7badf4c813dff404690ad2239242cefa, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -816,6 +824,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6765949016062805750, guid: 79625718a0588914fab3fbb9e64337af, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7573420944328670618, guid: 79625718a0588914fab3fbb9e64337af, type: 3}
+      propertyPath: invincible
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

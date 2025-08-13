@@ -10,6 +10,7 @@ TagManager:
   - MinimapBackground
   - UI
   - DifficultyButtons
+  - LowHealthIndicator
   layers:
   - Default
   - TransparentFX
