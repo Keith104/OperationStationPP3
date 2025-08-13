@@ -7,22 +7,25 @@ using static UnityEngine.GraphicsBuffer;
 
 public class PlayerCamera : MonoBehaviour
 {
+    [Header("Camera Speed")]
     [SerializeField] int speed;
     [SerializeField] int fapSpeed;
+    [SerializeField] int scrollSpeed;
     [SerializeField] Vector2 limit;
 
-    [SerializeField] int scrollSpeed;
+    [Header("Camera Limits")]
     [SerializeField] int min;
     [SerializeField] int max;
 
-    [SerializeField] List<GameObject> selected = new List<GameObject>();
-    [SerializeField] AudioSource selectedSource;
-
+    [Header("Selection")]
     [SerializeField] RectTransform UI;
     [SerializeField] RectTransform selectionBox;
     [SerializeField] Vector2 startMousePos;
     [SerializeField] LayerMask clickableLayers;
 
+    [Header("Misc.")]
+    [SerializeField] List<GameObject> selected = new List<GameObject>();
+    [SerializeField] AudioSource selectedSource;
     private Vector3 focusPosition;
     private bool isFocused;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
