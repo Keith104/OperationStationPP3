@@ -19,5 +19,6 @@ public class EnemiesSO : ScriptableObject
 
     [Header("Damage Data")]
     public GameObject bullet;
-    public int attackCooldown;
+    public float damageAmount;
+    public float attackCooldown;
 }
