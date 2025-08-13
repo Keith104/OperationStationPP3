@@ -31,7 +31,7 @@ public class WaveManager : MonoBehaviour
         }
     }
 
-    //I don't like how I have the spawning so I'm going to probably change it after I finish my tasks
+    //I don't like how I have the spawning so I'm going to probably change it if I finish my tasks
     void Spawn()
     {
         timer = 0;
