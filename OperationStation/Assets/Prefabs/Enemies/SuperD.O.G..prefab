@@ -365,6 +365,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2189913468765084993}
   - component: {fileID: 6090795689450188702}
+  - component: {fileID: 4545497610160981760}
   - component: {fileID: 172961130255221283}
   - component: {fileID: 3091656048898722390}
   - component: {fileID: 7153348466214443990}
@@ -408,6 +409,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1c21ff13303f4b40bf6739e028a69d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  waveManager: {fileID: 0}
   model: {fileID: 3091656048898722390}
   enemy: {fileID: 11400000, guid: d206bd5aa5f1f724289f02d86ba9acfe, type: 2}
   agent: {fileID: 7153348466214443990}
@@ -415,6 +417,18 @@ MonoBehaviour:
   shootPos: {fileID: 4824487046330961453}
   spinFire: 0
   debug: 0
+--- !u!114 &4545497610160981760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8848058749689383006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df7e68227488d754faaba4cd0dbd9620, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!33 &172961130255221283
 MeshFilter:
   m_ObjectHideFlags: 0
