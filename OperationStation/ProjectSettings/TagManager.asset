@@ -9,6 +9,8 @@ TagManager:
   - MinimapCamera
   - MinimapBackground
   - UI
+  - DifficultyButtons
+  - LowHealthIndicator
   layers:
   - Default
   - TransparentFX

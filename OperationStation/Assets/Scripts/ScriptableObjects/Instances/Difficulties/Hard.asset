@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Hard
   m_EditorClassIdentifier: 
   difficultyName: Hard
+  isLocked: 1
   health: 3
   damage: 3
   attackCooldown: 3

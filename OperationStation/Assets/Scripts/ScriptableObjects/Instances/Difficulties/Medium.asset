@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Medium
   m_EditorClassIdentifier: 
   difficultyName: Medium
+  isLocked: 1
   health: 2
   damage: 2
   attackCooldown: 2

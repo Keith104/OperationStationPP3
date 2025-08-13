@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edf19a5c5513c9f4dba0ef5c3d2c0725, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  type: 1
   rb: {fileID: 598694153120785107}
   regSpeed: 0
   damageAmount: 3
