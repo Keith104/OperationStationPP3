@@ -25,6 +25,7 @@ public class PlayerCamera : MonoBehaviour
 
     [Header("Misc.")]
     [SerializeField] List<GameObject> selected = new List<GameObject>();
+    [SerializeField] SoundObject soundHovered;
     [SerializeField] AudioSource selectedSource;
     private Vector3 focusPosition;
     private bool isFocused;
@@ -45,6 +46,8 @@ public class PlayerCamera : MonoBehaviour
         Zoom();
 
         Focus();
+
+        HoveringOverObject();
         Select();
     }
     void Move()
@@ -132,7 +135,27 @@ public class PlayerCamera : MonoBehaviour
             transform.LookAt(selected[0].transform);
         }
     }
-
+    void HoveringOverObject()
+    {
+        startMousePos = Input.mousePosition;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Debug.DrawRay(ray.origin, ray.direction * 100, Color.green);
+        if (Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, clickableLayers))
+        {
+            if (soundHovered == null)
+            {
+                Debug.Log("Hovering in: " + hit.collider.gameObject.name);
+                soundHovered = hit.transform.Find("SoundObject").GetComponent<SoundObject>();
+                soundHovered.PlayObjectIn();
+            }
+        }
+        else if (soundHovered != null)
+        {
+            Debug.Log("Hovering out: " + soundHovered.transform.parent.gameObject.name);
+            soundHovered.PlayObjectOut();
+            soundHovered = null;
+        }
+    }
     void Select()
     {
         if (Input.GetMouseButtonDown(0))
