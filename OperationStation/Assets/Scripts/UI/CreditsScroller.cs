@@ -15,14 +15,14 @@ public class CreditsScroller : MonoBehaviour
     public CanvasGroup creditsCanvasGroup;  // If null, one is added to creditsMenuRoot
 
     [Header("Layout")]
-    public float horizontalPadding = 16f;   // Extra width padding for preferred-size calc
-    public float topPadding = 0f;           // Space above first line
-    public float bottomPadding = 0f;        // Space below last line
+    public float horizontalPadding = 16f;
+    public float topPadding = 0f;
+    public float bottomPadding = 0f;
 
     [Header("Scroll")]
     public float pixelsPerSecondMin = 60f;
     public float pixelsPerSecondMax = 1300f;
-    public float preRollDelay = 0.5f;       // Hold before rolling
+    public float preRollDelay = 0.5f;
     public bool disableUserScrollWhileRolling = true;
 
     [Header("Fade Out")]
@@ -39,6 +39,11 @@ public class CreditsScroller : MonoBehaviour
     PlayerInput input;                 // <-- generated C# class
     InputAction speedUpAction;
 
+    // guards
+    Coroutine runRoutine;
+    bool isRolling;                    // true during the scrolling phase
+    bool initialized;
+
     void Awake()
     {
         pixelsPerSecond = pixelsPerSecondMin;
@@ -47,6 +52,11 @@ public class CreditsScroller : MonoBehaviour
         if (viewport == null) viewport = scrollRect.viewport;
         if (content == null) content = scrollRect.content;
 
+        if (!creditsText)
+        {
+            Debug.LogError("CreditsScroller: creditsText is not assigned.");
+            enabled = false; return;
+        }
         textRT = creditsText.GetComponent<RectTransform>();
 
         // top-stretch anchors for clean "roll up" math
@@ -62,7 +72,7 @@ public class CreditsScroller : MonoBehaviour
         }
         if (creditsCanvasGroup != null)
         {
-            // don't force alpha here; main menu fades us in
+            // Do not force alpha here; the opening menu may tween us in.
             creditsCanvasGroup.blocksRaycasts = true;
             creditsCanvasGroup.interactable = false;
         }
@@ -70,26 +80,48 @@ public class CreditsScroller : MonoBehaviour
         // Input wrapper + action
         input = new PlayerInput();                  // OK to 'new' the GENERATED wrapper
         speedUpAction = input.Player.SpeedUpCredits;
+
+        initialized = true;
     }
 
     void OnEnable()
     {
+        if (!initialized) return;
+
         input.Player.Enable();                      // enable map each time we open
         pixelsPerSecond = pixelsPerSecondMin;
-        StartCoroutine(SetupAndRun());
+
+        // Prevent duplicate coroutines if something toggles us
+        if (runRoutine != null) StopCoroutine(runRoutine);
+        runRoutine = StartCoroutine(SetupAndRun());
     }
 
     void OnDisable()
     {
-        input.Player.Disable();                     // disable when hidden
-        StopAllCoroutines();
+        if (!initialized) return;
+
+        input.Player.Disable();
+        if (runRoutine != null)
+        {
+            StopCoroutine(runRoutine);
+            runRoutine = null;
+        }
+        isRolling = false;
     }
 
     void Update()
     {
-        // Your original "if" style: just poll the action every frame.
+        // Poll "speed up" while visible
         bool speedUpHeld = speedUpAction != null && speedUpAction.IsPressed();
         pixelsPerSecond = speedUpHeld ? pixelsPerSecondMax : pixelsPerSecondMin;
+
+        // HARDENING: while we are in the roll phase, keep alpha pinned to 1
+        // so external tweens / reactivations cannot "flash" us from 0->1.
+        if (isRolling && creditsCanvasGroup)
+        {
+            if (creditsCanvasGroup.alpha != 1f)
+                creditsCanvasGroup.alpha = 1f;
+        }
     }
 
     IEnumerator SetupAndRun()
@@ -144,9 +176,14 @@ public class CreditsScroller : MonoBehaviour
         // Always start at the bottom so we roll up, even if content is short
         content.anchoredPosition = new Vector2(content.anchoredPosition.x, startY);
 
+        // If an opening animation is running elsewhere, pin alpha to 1 before we roll
+        if (creditsCanvasGroup) creditsCanvasGroup.alpha = 1f;
+
         yield return new WaitForSecondsRealtime(preRollDelay);
 
-        // Constant-speed roll (no easing/slowdown), always run
+        // ----- Roll phase -----
+        isRolling = true;
+
         float y = startY;
         while (y < endY)
         {
@@ -155,6 +192,8 @@ public class CreditsScroller : MonoBehaviour
             content.anchoredPosition = new Vector2(content.anchoredPosition.x, y);
             yield return null;
         }
+
+        isRolling = false;
 
         // Fade OUT the overlay, then disable its root (back to menu underneath)
         if (creditsCanvasGroup != null)
@@ -175,6 +214,8 @@ public class CreditsScroller : MonoBehaviour
 
         // Restore original movement type
         scrollRect.movementType = originalMovement;
+
+        runRoutine = null;
     }
 
     void SetTopAnchored(RectTransform rt)
