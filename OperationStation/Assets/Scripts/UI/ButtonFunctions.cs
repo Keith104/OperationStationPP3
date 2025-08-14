@@ -5,7 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class ButtonFunctions : MonoBehaviour
 {
-    [SerializeField] AudioSource uiSource;
+    [SerializeField] AudioSource clickSource;
+    [SerializeField] AudioSource hoverInSource;
+    [SerializeField] AudioSource hoverOutSource;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -18,33 +20,45 @@ public class ButtonFunctions : MonoBehaviour
 
     }
 
-    public void PlaySource()
+    public void PlayClick()
     {
-        uiSource.Play();
+        clickSource.Play();
+    }
+
+    public void PlayHoverIn()
+    {
+        if(hoverInSource.isPlaying == false)
+            hoverInSource.Play();
+    }
+
+    public void PlayHoverOut()
+    {
+        if (hoverOutSource.isPlaying == false)
+            hoverOutSource.Play();
     }
 
     public void Resume()
     {
-        PlaySource();
+        PlayClick();
         LevelUIManager.instance.StateUnpause();
     }
 
     public void Quit()
     {
-        PlaySource();
-        StartCoroutine(QuitGameWaitForSourceToFinish(uiSource));
+        PlayClick();
+        StartCoroutine(QuitGameWaitForSourceToFinish(clickSource));
     }
 
     public void Restart()
     {
-        PlaySource();
-        StartCoroutine(RestartWaitForSourceToFinish(uiSource));
+        PlayClick();
+        StartCoroutine(RestartWaitForSourceToFinish(clickSource));
     }
 
     public void LoadScene(int scene)
     {
-        PlaySource();
-        StartCoroutine(LoadSceneWaitForSourceToFinish(uiSource, scene));
+        PlayClick();
+        StartCoroutine(LoadSceneWaitForSourceToFinish(clickSource, scene));
     }
 
     IEnumerator RestartWaitForSourceToFinish(AudioSource playingSource)
