@@ -5,6 +5,12 @@ TagManager:
   serializedVersion: 3
   tags:
   - Asteroid
+  - Enemy
+  - MinimapCamera
+  - MinimapBackground
+  - UI
+  - DifficultyButtons
+  - LowHealthIndicator
   layers:
   - Default
   - TransparentFX
@@ -13,9 +19,9 @@ TagManager:
   - Water
   - UI
   - Object
-  - 
-  - 
-  - 
+  - Minimap
+  - Asteroid
+  - Icons
   - 
   - 
   - 

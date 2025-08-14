@@ -257,6 +257,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8367380679242345794}
   - component: {fileID: 1918794950724895527}
+  - component: {fileID: -6413710002852437253}
   - component: {fileID: 7573880133495090502}
   - component: {fileID: 7894661503013605922}
   - component: {fileID: 1918904361296116118}
@@ -298,13 +299,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1c21ff13303f4b40bf6739e028a69d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  waveManager: {fileID: 0}
   model: {fileID: 7894661503013605922}
-  health: 3
+  enemy: {fileID: 11400000, guid: e0a2e805aeb5d9a4c8d1526101ee5a39, type: 2}
   agent: {fileID: 1918904361296116118}
+  enemyToSpawn: {fileID: 0}
   shootPos: {fileID: 6115412843777583086}
-  bullet: {fileID: 2181284486069709208, guid: e43fc242e25252d40bb048865086b253, type: 3}
-  attackCooldown: 2
+  spinFire: 0
   debug: 0
+--- !u!114 &-6413710002852437253
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8686202834457548828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df7e68227488d754faaba4cd0dbd9620, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!33 &7573880133495090502
 MeshFilter:
   m_ObjectHideFlags: 0

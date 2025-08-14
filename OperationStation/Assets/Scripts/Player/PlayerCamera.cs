@@ -1,34 +1,50 @@
 using System;
 using System.Collections.Generic;
+using System.Xml.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using static UnityEngine.GraphicsBuffer;
 
 public class PlayerCamera : MonoBehaviour
 {
+    [Header("Camera Speed")]
     [SerializeField] int speed;
+    [SerializeField] int fapSpeed;
+    [SerializeField] int scrollSpeed;
     [SerializeField] Vector2 limit;
 
-    [SerializeField] int scrollSpeed;
+    [Header("Camera Limits")]
     [SerializeField] int min;
     [SerializeField] int max;
 
-    [SerializeField] List<GameObject> selected = new List<GameObject>();
-
+    [Header("Selection")]
     [SerializeField] RectTransform UI;
     [SerializeField] RectTransform selectionBox;
     [SerializeField] Vector2 startMousePos;
     [SerializeField] LayerMask clickableLayers;
+
+    [Header("Misc.")]
+    [SerializeField] List<GameObject> selected = new List<GameObject>();
+    [SerializeField] AudioSource selectedSource;
+    private Vector3 focusPosition;
+    private bool isFocused;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
+        UI = GameObject.FindWithTag("UI").GetComponent<RectTransform>();
+        selectionBox = UI.Find("SelectionBox").GetComponent<RectTransform>();
     }
 
     // Update is called once per frame
     void Update()
     {
         Move();
+        Rotate();
+        FixedAtPoint();
+
         Zoom();
+
+        Focus();
         Select();
     }
     void Move()
@@ -36,23 +52,85 @@ public class PlayerCamera : MonoBehaviour
         float xInput = Input.GetAxis("Horizontal");
         float zInput = Input.GetAxis("Vertical");
 
-        Vector3 dir = new Vector3(xInput, 0, zInput);
-        transform.position += dir * speed * Time.deltaTime;
+        Vector3 dir = new(xInput, 0, zInput);
+
+        float yOrg = transform.position.y;
+        transform.Translate(speed * Time.deltaTime * dir, Space.Self);
+        transform.position = new(transform.position.x, yOrg, transform.position.z);
+    }
+    void Rotate()
+    {
+        if (Input.GetKey(KeyCode.Q))
+        {
+            transform.Rotate(0, -1, 0, Space.World);
+        }
+        else if (Input.GetKey(KeyCode.E))
+        {
+            transform.Rotate(0, 1, 0, Space.World);
+        }
+    }
+    void FixedAtPoint()
+    {
+        if (Input.GetMouseButton(1))
+        {
+            // Get mouse movement
+            float mouseX = Input.GetAxis("Mouse X");
+            float mouseY = Input.GetAxis("Mouse Y");
+
+            // Rotate around the Y-axis 
+            transform.Rotate(Vector3.up, mouseX * fapSpeed * Time.deltaTime);
+
+            // Rotate around the X-axis 
+            transform.Rotate(Vector3.right, -mouseY * fapSpeed * Time.deltaTime);
+
+            // Keep Z-axis zero 
+            transform.eulerAngles = new(transform.eulerAngles.x, transform.eulerAngles.y, 0);
+        }
     }
     void Zoom()
     {
         float scrollInput = Input.GetAxis("Mouse ScrollWheel");
 
+        // zooms in or out if it's within the bounds
         if (scrollInput != 0 && transform.position.y > min && transform.position.y < max)
-            transform.position += transform.forward * scrollInput * scrollSpeed;
+        {
+            // zooms in or out
+            transform.position += scrollInput * scrollSpeed * transform.forward;
+
+            // moves mouse into objects
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (scrollInput > 0)
+                if (Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, clickableLayers))
+                    transform.position = Vector3.Lerp(transform.position, hit.transform.position, 0.5f);
+        }
+
+        // moves mouse back within the bounds
         if (transform.position.y < min)
             transform.position -= transform.forward * 1;
         if (transform.position.y > max)
             transform.position += transform.forward * 1;
+
     }
     void Focus()
     {
-        // I forgot so it's a Trello thing for later
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            isFocused = !isFocused;
+            if (isFocused == true)
+            {
+                focusPosition = Vector3.Lerp(transform.position, selected[0].transform.position, 0.5f);
+                transform.position = focusPosition;
+            }
+            else
+            {
+                transform.eulerAngles = new(45, transform.eulerAngles.y, transform.eulerAngles.z);
+            }
+        }
+
+        if(isFocused == true)
+        {
+            transform.LookAt(selected[0].transform);
+        }
     }
 
     void Select()
@@ -69,14 +147,12 @@ public class PlayerCamera : MonoBehaviour
 
 
             startMousePos = Input.mousePosition;
-
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-
-            if (Physics.Raycast(ray, out hit, float.MaxValue, clickableLayers))
+            if (Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, clickableLayers))
             {
                 if (selected.Contains(hit.collider.gameObject) == false)
                 {
+                    selectedSource.Play();
                     selected.Add(hit.collider.gameObject);
                     TrySelect(hit.collider.gameObject);
                 }

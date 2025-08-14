@@ -1,8 +1,10 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class ButtonFunctions : MonoBehaviour
 {
+    [SerializeField] AudioSource uiSource;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -14,27 +16,39 @@ public class ButtonFunctions : MonoBehaviour
     {
 
     }
+
+    public void PlaySource()
+    {
+        uiSource.Play();
+    }
+
     public void Resume()
     {
+        PlaySource();
         LevelUIManager.instance.StateUnpause();
     }
 
     public void Restart()
     {
+        PlaySource();
+        StartCoroutine(RestartWaitForSourceToFinish(uiSource));
+    }
+
+    public void LoadScene(int scene)
+    {
+        PlaySource();
+        StartCoroutine(LoadSceneWaitForSourceToFinish(uiSource, scene));
+    }
+
+    IEnumerator RestartWaitForSourceToFinish(AudioSource playingSource)
+    {
+        yield return new WaitForSeconds(playingSource.clip.length);
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         LevelUIManager.instance.StateUnpause();
     }
-
-    public void Quit()
+    IEnumerator LoadSceneWaitForSourceToFinish(AudioSource playingSource, int scene)
     {
-#if !UNITY_EDITOR
-        Application.Quit();
-#else
-        UnityEditor.EditorApplication.isPlaying = false;
-#endif
-    }
-    public void LoadScene(int scene)
-    {
+        yield return new WaitForSeconds(playingSource.clip.length);
         SceneManager.LoadScene(scene);
         LevelUIManager.instance.StateUnpause();
     }

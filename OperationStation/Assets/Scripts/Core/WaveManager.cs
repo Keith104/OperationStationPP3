@@ -6,14 +6,11 @@ public class WaveManager : MonoBehaviour
     public static WaveManager instance;
 
     [SerializeField] float spawnTime;
-    [SerializeField] int maxEnemies;
+    [SerializeField] public int maxEnemies;
     [SerializeField] Transform[] spawnPoints;
-    [SerializeField] GameObject enemyBow;
-    [SerializeField] GameObject enemyVert;
-    //[SerializeField] GameObject enemyDOG;
-    //[SerializeField] GameObject enemySUPDOG;
+    [SerializeField] EnemiesSO[] enemies;
 
-    int curEnemies;
+    public int curEnemies;
     private float timer;
     private float spawnTimeOG;
     private int randSpawn;
@@ -34,6 +31,7 @@ public class WaveManager : MonoBehaviour
         }
     }
 
+    //I don't like how I have the spawning so I'm going to probably change it if I finish my tasks
     void Spawn()
     {
         timer = 0;
@@ -47,21 +45,37 @@ public class WaveManager : MonoBehaviour
         }
 
         //It makes a BowFighter ups the current enemies and lowers spawn time by 10
-        Instantiate(enemyBow, spawnPoints[randSpawn]);
+        Instantiate(enemies[0], spawnPoints[randSpawn]);
         curEnemies++;
-        spawnTime = spawnTime - 10;
+        spawnTime = spawnTime - 5;
 
-        //If spawn time is less then 15 it'll spawn a Verticle fighter and reset the spawn timer
-        //When DOG and Super DOG destroyers get added they'd reset spawn time and Vert will do something else instead
-        // +3 to the spawn timer? that way 3 Verticle bombers can spawn before a DOG?
-        if(spawnTime < 15 && maxEnemies > curEnemies)
+        //If spawn time is less then half of it's orignial, it'll spawn a Verticle wing
+        if(spawnTime < spawnTimeOG % 2 && maxEnemies > curEnemies)
         {
             RandomizeSpawn();
 
-            Instantiate(enemyVert, spawnPoints[randSpawn]);
+            Instantiate(enemies[1], spawnPoints[randSpawn]);
             curEnemies++;
         }
-            spawnTime = spawnTimeOG;
+
+        //If spawn time is less then a quater of it's orignial, it'll spawn a DOG
+        if (spawnTime < spawnTimeOG % 4 && maxEnemies > curEnemies)
+        {
+            RandomizeSpawn();
+
+            Instantiate(enemies[2], spawnPoints[randSpawn]);
+            curEnemies++;
+        }
+
+        //If spawn time is less then 10, it'll spawn a Super DOG
+        if (spawnTime < 10 && maxEnemies > curEnemies + 2)
+        {
+            RandomizeSpawn();
+
+            Instantiate(enemies[3], spawnPoints[randSpawn]);
+            curEnemies += 3;
+        }
+        spawnTime = spawnTimeOG;
     }
 
     //Keeps track of dead enemies with EnemyAI script
@@ -70,6 +84,7 @@ public class WaveManager : MonoBehaviour
         curEnemies--;
     }
 
+    //Randomizes the spawnpoints of enemies
     void RandomizeSpawn()
     {
         randSpawn = Random.Range(0, spawnPoints.Length);

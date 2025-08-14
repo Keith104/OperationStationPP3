@@ -50,6 +50,7 @@ MonoBehaviour:
   tritiumIngot: 0
   silverCoins: 0
   poloniumCrystal: 0
-  energy: 0
+  energy: 10
   debug: 0
   amountToDebug: 0
+  resourceType: 0

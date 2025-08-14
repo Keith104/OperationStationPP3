@@ -1,29 +1,48 @@
 using UnityEngine;
 using UnityEngine.AI;
 using System.Collections;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 
 public class EnemyAI : MonoBehaviour, IDamage
 {
+    [SerializeField] WaveManager waveManager;
     [SerializeField] Renderer model;
-    [SerializeField] float health;
-    [SerializeField] NavMeshAgent agent;
-    [SerializeField] Transform shootPos;
-    [SerializeField] GameObject bullet;
-    [SerializeField] float attackCooldown;
 
+    [Header("Enemy Data")]
+    [SerializeField] EnemiesSO enemy;
+    [SerializeField] NavMeshAgent agent;
+    [SerializeField] GameObject enemyToSpawn;
+
+    [Header("Damage Data")]
+    [SerializeField] Transform shootPos;
+    [SerializeField] bool spinFire;
+
+    [Header("Debug")]
+    [SerializeField] bool debug;
+    
     float shootTimer;
 
     private GameObject station;
     private Color colorOG;
+    private float shootY;
 
-    [Header("Debug")]
-    [SerializeField] bool debug;
+    private float health;
+
+
+    public void Initialized(EnemiesSO enemyData)
+    {
+        enemy = enemyData;
+    }
 
     void Start()
     {
         //This isn't final I'll fix/change this when I know how we're implementing the station
         station = GameObject.FindWithTag("Player");
         colorOG = model.material.color;
+
+        health = enemy.health;
+
+        enemy.bullet.GetComponent<Damage>().damageAmount = enemy.damageAmount;
     }
 
     void Update()
@@ -44,23 +63,36 @@ public class EnemyAI : MonoBehaviour, IDamage
 
         if (health <= 0)
         {
+            if(enemyToSpawn != null && waveManager.maxEnemies > waveManager.curEnemies + 1)
+            {
+                Instantiate(enemyToSpawn, shootPos.position, transform.rotation);
+                Instantiate(enemyToSpawn, transform.position, transform.rotation);
+            }
+
             WaveManager.instance.DeadEnemy();
             Destroy(gameObject);
         }
     }
 
     //Once the enemy is spawned they'll b-line to the player to attack
-    void Attack()
+    public void Attack()
     {
         if (station != null)
         {
             agent.SetDestination(station.transform.position);
             shootTimer += Time.deltaTime;
 
-            if (agent.remainingDistance < 10 && shootTimer >= attackCooldown)
+            if (agent.remainingDistance < 20 && shootTimer >= enemy.attackCooldown)
             {
                 shootTimer = 0;
-                Instantiate(bullet, shootPos.position, transform.rotation);
+
+                if (spinFire)
+                {
+                    shootY = Random.rotation.y;
+                    shootPos.rotation = new Quaternion(shootPos.rotation.x, shootY, shootPos.rotation.z, shootPos.rotation.w);
+                }
+
+                Instantiate(enemy.bullet, shootPos.position, shootPos.rotation);
             }
         }
         else

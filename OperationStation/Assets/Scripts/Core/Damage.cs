@@ -8,7 +8,7 @@ public class Damage : MonoBehaviour
     [SerializeField] Rigidbody rb;
     [SerializeField] int regSpeed;
 
-    public int damageAmount;
+    public float damageAmount;
     public float destroyTime;
 
     void Start()

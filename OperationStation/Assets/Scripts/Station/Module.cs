@@ -5,12 +5,12 @@ using Color = UnityEngine.Color;
 
 public class Module : MonoBehaviour, ISelectable, IDamage
 {
-    [SerializeField] UnitSO stats;
+    public UnitSO stats;
     [SerializeField] Renderer model;
     [SerializeField] ResourceCost[] resourceCosts;
     public int[] costsLeft;
 
-    private float localHealth;
+    public float localHealth;
     private Color origColor;
 
     private bool isUpAvailable;

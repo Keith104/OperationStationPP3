@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5731226105846553095}
   - component: {fileID: 8699726260715864595}
   - component: {fileID: 7001045904364791272}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: PressurizedGas
   m_TagString: Untagged
   m_Icon: {fileID: 0}

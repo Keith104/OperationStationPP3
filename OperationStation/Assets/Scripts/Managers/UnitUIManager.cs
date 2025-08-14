@@ -13,6 +13,7 @@ public class UnitUIManager : MonoBehaviour
     public TextMeshProUGUI tmpUnitCost;
     public int buttonNum;
 
+    [SerializeField] ButtonFunctions buttonFunctions;
     private void Awake()
     {
         if (instance == null)
@@ -39,6 +40,7 @@ public class UnitUIManager : MonoBehaviour
 
     public void OnSpendClick(int num)
     {
+        buttonFunctions.PlaySource();
         Debug.Log("Spend Button Clicked");
         buttonNum = num;
     }

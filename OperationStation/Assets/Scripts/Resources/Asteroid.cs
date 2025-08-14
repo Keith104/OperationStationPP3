@@ -6,9 +6,10 @@ public class Asteroid : MonoBehaviour, IDamage
 {
     [Header("Movement")]
     [SerializeField] float moveSpeed;
+    public bool canMove;
 
     [Header("Asteroid Settings")]
-    [SerializeField] float health;
+    [SerializeField] public float health;
     [SerializeField] AsteroidSO asteroid;
 
     [Header("Resource")]
@@ -19,6 +20,9 @@ public class Asteroid : MonoBehaviour, IDamage
     [Header("Color")]
     [SerializeField] Color hitColor = Color.red;
     private Color origColor;
+
+    [Header("Border")]
+    [SerializeField] Vector2 borderLimits;
 
     [Header("Debug")]
     [SerializeField] bool debug;
@@ -52,6 +56,8 @@ public class Asteroid : MonoBehaviour, IDamage
 
     private void Start()
     {
+        canMove = true;
+
         float scaleFactor = 1f;
         switch (asteroid.asteroidSize)
         {
@@ -84,6 +90,17 @@ public class Asteroid : MonoBehaviour, IDamage
             TakeDamage(1);
 
         graphicTransform.Rotate(rotationAxis, angularSpeed * Time.deltaTime, Space.Self);
+
+        if (transform.position.x > borderLimits.x
+            || transform.position.x < 0
+            || transform.position.z > borderLimits.y
+            || transform.position.z < 0)
+            DestroyAsteroid();
+
+        if(!canMove)
+        {
+            rb.linearVelocity = Vector3.zero;
+        }
     }
 
     private void OnCollisionEnter(Collision collision)

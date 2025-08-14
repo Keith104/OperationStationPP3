@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6991982071161865136}
   - component: {fileID: 128810029929617299}
   - component: {fileID: 598694153120785107}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Explosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edf19a5c5513c9f4dba0ef5c3d2c0725, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  type: 1
   rb: {fileID: 598694153120785107}
   regSpeed: 0
   damageAmount: 3
@@ -84,7 +84,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b50fbb8bceb54274b9d4498915002937, type: 2}
+  - {fileID: 2100000, guid: e0e9dc5d8190bdb47a6667be5910bd9b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
