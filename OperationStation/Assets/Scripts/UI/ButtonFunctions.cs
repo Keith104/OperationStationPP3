@@ -1,4 +1,5 @@
 using System.Collections;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -28,6 +29,12 @@ public class ButtonFunctions : MonoBehaviour
         LevelUIManager.instance.StateUnpause();
     }
 
+    public void Quit()
+    {
+        PlaySource();
+        StartCoroutine(QuitGameWaitForSourceToFinish(uiSource));
+    }
+
     public void Restart()
     {
         PlaySource();
@@ -51,5 +58,16 @@ public class ButtonFunctions : MonoBehaviour
         yield return new WaitForSeconds(playingSource.clip.length);
         SceneManager.LoadScene(scene);
         LevelUIManager.instance.StateUnpause();
+    }
+    IEnumerator QuitGameWaitForSourceToFinish(AudioSource playingSource)
+    {
+        yield return new WaitForSeconds(playingSource.clip.length);
+
+#if UNITY_EDITOR
+        if (EditorApplication.isPlaying)
+            EditorApplication.ExitPlaymode();
+#else
+        Application.Quit();
+#endif
     }
 }
