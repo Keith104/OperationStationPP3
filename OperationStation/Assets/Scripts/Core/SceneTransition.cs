@@ -374,6 +374,17 @@ public class SceneTransition : MonoBehaviour
     void OnHintNext(InputAction.CallbackContext ctx) { if (hintsText != null && hintsText.enabled) NextHint(); }
     void OnHintPrev(InputAction.CallbackContext ctx) { if (hintsText != null && hintsText.enabled) PrevHint(); }
 
+    // -------- NEW: global cleanup so nothing is selected / no arrows linger ----------
+    void ClearUISelectionAndArrows()
+    {
+        // If you use the hover arrow script, this hides all chevrons instantly
+        UIHoverArrow.HideAll();
+
+        var es = EventSystem.current;
+        if (es != null) es.SetSelectedGameObject(null);
+    }
+    // -------------------------------------------------------------------------------
+
     public static void Run(string sceneName)
     {
         if (Instance != null)
@@ -426,7 +437,19 @@ public class SceneTransition : MonoBehaviour
                 bool clicked = false;
                 continueButton.onClick.RemoveAllListeners();
                 continueButton.onClick.AddListener(() => clicked = true);
+
+                // NEW: make keyboard submit work during loading by selecting the button
+                var es = EventSystem.current;
+                if (es != null)
+                {
+                    UIHoverArrow.KeyboardMode = true; // optional: ensures chevron follows selection
+                    es.SetSelectedGameObject(continueButton.gameObject);
+                }
+
                 while (!clicked) yield return null;
+
+                // NEW: immediately clear selection & arrows so it won't linger into next scene
+                ClearUISelectionAndArrows();
 
                 continueButton.gameObject.SetActive(false);
             }
@@ -435,6 +458,9 @@ public class SceneTransition : MonoBehaviour
         {
             SetLoadingVisible(true);
         }
+
+        // Ensure nothing is selected when we flip scenes
+        ClearUISelectionAndArrows();
 
         op.allowSceneActivation = true;
         while (!op.isDone) yield return null;
@@ -446,6 +472,10 @@ public class SceneTransition : MonoBehaviour
         yield return Animate(1f, 0f, revealDuration, revealEase);
 
         overlay.enabled = false;
+
+        // Final safety: clear again after reveal
+        ClearUISelectionAndArrows();
+
         isRunning = false;
     }
 
