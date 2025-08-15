@@ -20,6 +20,7 @@ public class UnitSO : ScriptableObject
 
     [Header("Module Data")]
     public float buildPercent;
+    public int energyProductionAmount;
     public bool isBase;
 
     [Header("Defense Data")]
