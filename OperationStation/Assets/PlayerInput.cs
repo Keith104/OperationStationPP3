@@ -117,6 +117,24 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""LeftNav"",
+                    ""type"": ""Button"",
+                    ""id"": ""c3189a06-ab79-4939-92e8-997cef1e43dc"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RightNav"",
+                    ""type"": ""Button"",
+                    ""id"": ""95638a45-c8cf-476f-a236-b2d4cbca52ab"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -185,6 +203,50 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""HintPrev"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1e9eb8ad-112c-4c22-8d47-13ed56dcb892"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LeftNav"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8e843317-bc8b-4ddf-a86d-1f7d13b00146"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LeftNav"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ebc9e5b9-8102-41e4-937a-fb72dbae018c"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RightNav"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0f864d0c-d6ca-4af3-b5b2-20a0d97d435b"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RightNav"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -196,6 +258,8 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_Player_SpeedUpCredits = m_Player.FindAction("SpeedUpCredits", throwIfNotFound: true);
         m_Player_HintNext = m_Player.FindAction("HintNext", throwIfNotFound: true);
         m_Player_HintPrev = m_Player.FindAction("HintPrev", throwIfNotFound: true);
+        m_Player_LeftNav = m_Player.FindAction("LeftNav", throwIfNotFound: true);
+        m_Player_RightNav = m_Player.FindAction("RightNav", throwIfNotFound: true);
     }
 
     ~@PlayerInput()
@@ -279,6 +343,8 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_SpeedUpCredits;
     private readonly InputAction m_Player_HintNext;
     private readonly InputAction m_Player_HintPrev;
+    private readonly InputAction m_Player_LeftNav;
+    private readonly InputAction m_Player_RightNav;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -302,6 +368,14 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/HintPrev".
         /// </summary>
         public InputAction @HintPrev => m_Wrapper.m_Player_HintPrev;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/LeftNav".
+        /// </summary>
+        public InputAction @LeftNav => m_Wrapper.m_Player_LeftNav;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/RightNav".
+        /// </summary>
+        public InputAction @RightNav => m_Wrapper.m_Player_RightNav;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -337,6 +411,12 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @HintPrev.started += instance.OnHintPrev;
             @HintPrev.performed += instance.OnHintPrev;
             @HintPrev.canceled += instance.OnHintPrev;
+            @LeftNav.started += instance.OnLeftNav;
+            @LeftNav.performed += instance.OnLeftNav;
+            @LeftNav.canceled += instance.OnLeftNav;
+            @RightNav.started += instance.OnRightNav;
+            @RightNav.performed += instance.OnRightNav;
+            @RightNav.canceled += instance.OnRightNav;
         }
 
         /// <summary>
@@ -357,6 +437,12 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @HintPrev.started -= instance.OnHintPrev;
             @HintPrev.performed -= instance.OnHintPrev;
             @HintPrev.canceled -= instance.OnHintPrev;
+            @LeftNav.started -= instance.OnLeftNav;
+            @LeftNav.performed -= instance.OnLeftNav;
+            @LeftNav.canceled -= instance.OnLeftNav;
+            @RightNav.started -= instance.OnRightNav;
+            @RightNav.performed -= instance.OnRightNav;
+            @RightNav.canceled -= instance.OnRightNav;
         }
 
         /// <summary>
@@ -418,5 +504,19 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnHintPrev(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "LeftNav" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnLeftNav(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "RightNav" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnRightNav(InputAction.CallbackContext context);
     }
 }

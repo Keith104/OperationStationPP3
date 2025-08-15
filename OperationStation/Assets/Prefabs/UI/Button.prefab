@@ -240,7 +240,7 @@ MonoBehaviour:
   m_Colors:
     m_NormalColor: {r: 0.78431374, g: 0.60784316, b: 0.32941177, a: 1}
     m_HighlightedColor: {r: 0.54088044, g: 0.42145213, b: 0.23302078, a: 1}
-    m_PressedColor: {r: 0.6603774, g: 0.28903273, b: 0, a: 1}
+    m_PressedColor: {r: 0.42767292, g: 0.18690892, b: 0, a: 1}
     m_SelectedColor: {r: 0.65882355, g: 0.2901961, b: 0, a: 1}
     m_DisabledColor: {r: 0.34509805, g: 0.38039216, b: 0.42745098, a: 0.19607843}
     m_ColorMultiplier: 1
@@ -351,7 +351,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &5769614134336612202
 RectTransform:
   m_ObjectHideFlags: 0
@@ -368,7 +368,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -190.02005, y: 0}
+  m_AnchoredPosition: {x: -190.01999, y: 0}
   m_SizeDelta: {x: 30.04, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2914695660834909561
