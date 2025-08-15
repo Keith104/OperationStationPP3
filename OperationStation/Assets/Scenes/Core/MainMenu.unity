@@ -3120,6 +3120,18 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2130243536092094453, guid: f19331d501b3dc744bf3621f6162a5b0, type: 3}
+      propertyPath: controls.Array.data[2].previewClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 6413edd9a0a4937469613b5b24439d8d, type: 3}
+    - target: {fileID: 2130243536092094453, guid: f19331d501b3dc744bf3621f6162a5b0, type: 3}
+      propertyPath: controls.Array.data[4].previewClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 6ca9d8d14dc50f44581de43b609e9bd5, type: 3}
+    - target: {fileID: 2130243536092094453, guid: f19331d501b3dc744bf3621f6162a5b0, type: 3}
+      propertyPath: controls.Array.data[5].previewClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 3dd798acd53dfd24b94d8b41c779ef6f, type: 3}
+    - target: {fileID: 2130243536092094453, guid: f19331d501b3dc744bf3621f6162a5b0, type: 3}
       propertyPath: controls.Array.data[0].percentLabel
       value: 
       objectReference: {fileID: 137732563}
