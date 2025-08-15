@@ -1,9 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Xml.Linq;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using static UnityEngine.GraphicsBuffer;
+using UnityEngine.InputSystem;
 
 public class PlayerCamera : MonoBehaviour
 {
@@ -27,234 +25,222 @@ public class PlayerCamera : MonoBehaviour
     [SerializeField] List<GameObject> selected = new List<GameObject>();
     [SerializeField] SoundObject soundHovered;
     [SerializeField] AudioSource selectedSource;
-    private Vector3 focusPosition;
-    private bool isFocused;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+
+    Vector3 focusPosition;
+    bool isFocused;
+
+    PlayerInput controls;
+
+    void Awake()
     {
         UI = GameObject.FindWithTag("UI").GetComponent<RectTransform>();
         selectionBox = UI.Find("SelectionBox").GetComponent<RectTransform>();
+        controls = new PlayerInput();
     }
 
-    // Update is called once per frame
+    void OnEnable()
+    {
+        controls.Player.Focus.performed += OnFocus;
+        controls.Player.Select.started += OnSelectStarted;
+        controls.Player.Select.canceled += OnSelectCanceled;
+        controls.Enable();
+    }
+
+    void OnDisable()
+    {
+        controls.Player.Focus.performed -= OnFocus;
+        controls.Player.Select.started -= OnSelectStarted;
+        controls.Player.Select.canceled -= OnSelectCanceled;
+        controls.Disable();
+    }
+
     void Update()
     {
         Move();
-        Rotate();
-        FixedAtPoint();
-
+        RotateKeys();
+        OrbitWhileHeld();
         Zoom();
-
-        Focus();
-
-        HoveringOverObject();
-        Select();
+        HandleFocus();
+        HoverObject();
+        HandleDragSelection();
     }
+
     void Move()
     {
-        float xInput = Input.GetAxis("Horizontal");
-        float zInput = Input.GetAxis("Vertical");
-
-        Vector3 dir = new(xInput, 0, zInput);
-
+        Vector2 move = controls.Player.Move.ReadValue<Vector2>();
+        Vector3 dir = new Vector3(move.x, 0f, move.y);
         float yOrg = transform.position.y;
         transform.Translate(speed * Time.deltaTime * dir, Space.Self);
-        transform.position = new(transform.position.x, yOrg, transform.position.z);
+        transform.position = new Vector3(transform.position.x, yOrg, transform.position.z);
     }
-    void Rotate()
+
+    void RotateKeys()
     {
-        if (Input.GetKey(KeyCode.Q))
-        {
-            transform.Rotate(0, -1, 0, Space.World);
-        }
-        else if (Input.GetKey(KeyCode.E))
-        {
-            transform.Rotate(0, 1, 0, Space.World);
-        }
+        float axis = controls.Player.Rotate.ReadValue<float>();
+        if (Mathf.Abs(axis) > 0.0001f)
+            transform.Rotate(0f, axis, 0f, Space.World);
     }
-    void FixedAtPoint()
+
+    void OrbitWhileHeld()
     {
-        if (Input.GetMouseButton(1))
+        if (controls.Player.OrbitHold.IsPressed())
         {
-            // Get mouse movement
-            float mouseX = Input.GetAxis("Mouse X");
-            float mouseY = Input.GetAxis("Mouse Y");
-
-            // Rotate around the Y-axis 
-            transform.Rotate(Vector3.up, mouseX * fapSpeed * Time.deltaTime);
-
-            // Rotate around the X-axis 
-            transform.Rotate(Vector3.right, -mouseY * fapSpeed * Time.deltaTime);
-
-            // Keep Z-axis zero 
-            transform.eulerAngles = new(transform.eulerAngles.x, transform.eulerAngles.y, 0);
+            Vector2 look = controls.Player.Look.ReadValue<Vector2>();
+            transform.Rotate(Vector3.up, look.x * fapSpeed * Time.deltaTime, Space.World);
+            transform.Rotate(Vector3.right, -look.y * fapSpeed * Time.deltaTime, Space.Self);
+            Vector3 e = transform.eulerAngles;
+            transform.eulerAngles = new Vector3(e.x, e.y, 0f);
         }
     }
+
     void Zoom()
     {
-        float scrollInput = Input.GetAxis("Mouse ScrollWheel");
-
-        // zooms in or out if it's within the bounds
-        if (scrollInput != 0 && transform.position.y > min && transform.position.y < max)
+        float scroll = controls.Player.Zoom.ReadValue<float>();
+        if (Mathf.Abs(scroll) > 0.0001f && transform.position.y > min && transform.position.y < max)
         {
-            // zooms in or out
-            transform.position += scrollInput * scrollSpeed * transform.forward;
+            transform.position += scroll * scrollSpeed * transform.forward;
 
-            // moves mouse into objects
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (scrollInput > 0)
+            if (scroll > 0f)
+            {
+                Vector2 pos = GetPointerPosOrCenter();
+                Ray ray = Camera.main.ScreenPointToRay(pos);
                 if (Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, clickableLayers))
                     transform.position = Vector3.Lerp(transform.position, hit.transform.position, 0.5f);
+            }
         }
 
-        // moves mouse back within the bounds
-        if (transform.position.y < min)
-            transform.position -= transform.forward * 1;
-        if (transform.position.y > max)
-            transform.position += transform.forward * 1;
-
+        if (transform.position.y < min) transform.position -= transform.forward;
+        if (transform.position.y > max) transform.position += transform.forward;
     }
-    void Focus()
-    {
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            isFocused = !isFocused;
-            if (isFocused == true)
-            {
-                focusPosition = Vector3.Lerp(transform.position, selected[0].transform.position, 0.5f);
-                transform.position = focusPosition;
-            }
-            else
-            {
-                transform.eulerAngles = new(45, transform.eulerAngles.y, transform.eulerAngles.z);
-            }
-        }
 
-        if(isFocused == true)
+    void OnFocus(InputAction.CallbackContext _)
+    {
+        isFocused = !isFocused;
+        if (isFocused && selected.Count > 0 && selected[0])
         {
+            focusPosition = Vector3.Lerp(transform.position, selected[0].transform.position, 0.5f);
+            transform.position = focusPosition;
+        }
+        else
+        {
+            Vector3 e = transform.eulerAngles;
+            transform.eulerAngles = new Vector3(45f, e.y, e.z);
+        }
+    }
+
+    void HandleFocus()
+    {
+        if (isFocused && selected.Count > 0 && selected[0])
             transform.LookAt(selected[0].transform);
-        }
     }
-    void HoveringOverObject()
+
+    void HoverObject()
     {
-        startMousePos = Input.mousePosition;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Vector2 pos = GetPointerPosOrCenter();
+        Ray ray = Camera.main.ScreenPointToRay(pos);
         Debug.DrawRay(ray.origin, ray.direction * 100, Color.green);
+
         if (Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, clickableLayers))
         {
             if (soundHovered == null)
             {
-                Debug.Log("Hovering in: " + hit.collider.gameObject.name);
-                soundHovered = hit.transform.Find("SoundObject").GetComponent<SoundObject>();
-                soundHovered.PlayObjectIn();
+                soundHovered = hit.transform.Find("SoundObject")?.GetComponent<SoundObject>();
+                if (soundHovered) soundHovered.PlayObjectIn();
             }
         }
         else if (soundHovered != null)
         {
-            Debug.Log("Hovering out: " + soundHovered.transform.parent.gameObject.name);
             soundHovered.PlayObjectOut();
             soundHovered = null;
         }
     }
-    void Select()
+
+    void OnSelectStarted(InputAction.CallbackContext _)
     {
-        if (Input.GetMouseButtonDown(0))
+        bool shift = controls.Player.MultiSelectModifer.IsPressed();
+        if (!shift && UnitUIManager.instance.unitMenu.activeSelf == false)
+            selected.Clear();
+        else if (!EventSystem.current.IsPointerOverGameObject())
         {
-            if (Input.GetKey(KeyCode.LeftShift) == false && UnitUIManager.instance.unitMenu.activeSelf == false)
-                selected.Clear();
-            else if (EventSystem.current.IsPointerOverGameObject() == false)
-            {
-                selected.Clear();
-                UnitUIManager.instance.unitMenu.SetActive(false);
-            }
-
-
-            startMousePos = Input.mousePosition;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, clickableLayers))
-            {
-                if (selected.Contains(hit.collider.gameObject) == false)
-                {
-                    selectedSource.Play();
-                    selected.Add(hit.collider.gameObject);
-                    TrySelect(hit.collider.gameObject);
-                }
-                else
-                    selected.Remove(hit.collider.gameObject);
-            }
+            selected.Clear();
+            UnitUIManager.instance.unitMenu.SetActive(false);
         }
-        else if (Input.GetMouseButton(0))
+
+        startMousePos = GetPointerPosOrCenter();
+        Ray ray = Camera.main.ScreenPointToRay(startMousePos);
+
+        if (Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, clickableLayers))
         {
-            if (selectionBox.gameObject.activeSelf == false)
-                selectionBox.gameObject.SetActive(true);
-            Drag();
-        }
-        else if (Input.GetMouseButtonUp(0))
-        {
-            selectionBox.gameObject.SetActive(false);
+            GameObject go = hit.collider.gameObject;
+            if (!selected.Contains(go))
+            {
+                selectedSource?.Play();
+                selected.Add(go);
+                TrySelect(go);
+            }
+            else selected.Remove(go);
         }
     }
 
-    void Drag()
+    void HandleDragSelection()
     {
-        float width = Input.mousePosition.x - startMousePos.x;
-        float height = Input.mousePosition.y - startMousePos.y;
-        selectionBox.sizeDelta = new Vector2(Mathf.Abs(width), Mathf.Abs(height));
-        selectionBox.anchoredPosition = startMousePos + new Vector2(width / 2, height / 2);
-        DragDetect();
+        if (!controls.Player.Select.IsPressed()) return;
+
+        if (!selectionBox.gameObject.activeSelf)
+            selectionBox.gameObject.SetActive(true);
+
+        Vector2 cur = GetPointerPosOrCenter();
+        float w = cur.x - startMousePos.x;
+        float h = cur.y - startMousePos.y;
+
+        selectionBox.sizeDelta = new Vector2(Mathf.Abs(w), Mathf.Abs(h));
+        selectionBox.anchoredPosition = startMousePos + new Vector2(w / 2f, h / 2f);
+
+        DragDetect(cur);
     }
 
-    void DragDetect()
+    void OnSelectCanceled(InputAction.CallbackContext _)
     {
-        Vector3 worldPointStart = Camera.main.ScreenToWorldPoint
-            (new Vector3(startMousePos.x, startMousePos.y, Camera.main.nearClipPlane));
-        Vector3 worldPointEnd = Camera.main.ScreenToWorldPoint
-            (new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.nearClipPlane));
+        if (selectionBox) selectionBox.gameObject.SetActive(false);
+    }
 
-        Debug.DrawRay(worldPointStart, transform.forward * 100, Color.green);
-        Debug.DrawRay(worldPointEnd, transform.forward * 100, Color.green);
+    void DragDetect(Vector2 cur)
+    {
+        Vector3 ws = Camera.main.ScreenToWorldPoint(new Vector3(startMousePos.x, startMousePos.y, Camera.main.nearClipPlane));
+        Vector3 we = Camera.main.ScreenToWorldPoint(new Vector3(cur.x, cur.y, Camera.main.nearClipPlane));
 
-        Vector3 center = Vector3.Lerp(
-            Camera.main.ScreenPointToRay(startMousePos).origin,
-            Camera.main.ScreenPointToRay(Input.mousePosition).origin, 
-            0.5f);
+        Debug.DrawRay(ws, transform.forward * 100, Color.green);
+        Debug.DrawRay(we, transform.forward * 100, Color.green);
 
-        Vector3 size = new Vector3
-            (Mathf.Abs(worldPointStart.x - worldPointEnd.x), 
-            Mathf.Abs(worldPointStart.y - worldPointEnd.y),
-            Mathf.Abs(worldPointStart.z - worldPointEnd.z));
+        Vector3 center = Vector3.Lerp(Camera.main.ScreenPointToRay(startMousePos).origin,
+                                      Camera.main.ScreenPointToRay(cur).origin, 0.5f);
+        Vector3 size = new Vector3(Mathf.Abs(ws.x - we.x), Mathf.Abs(ws.y - we.y), Mathf.Abs(ws.z - we.z));
+        Vector2 dc = Vector2.Lerp(startMousePos, cur, 0.5f);
+        Ray ray = Camera.main.ScreenPointToRay(dc);
+        if (Physics.Raycast(ray, out _)) Debug.DrawRay(ray.origin, ray.direction * 100, Color.yellow);
 
-        Vector2 dragCenter = Vector2.Lerp(startMousePos ,Input.mousePosition, 0.5f);
-        Ray ray = Camera.main.ScreenPointToRay(dragCenter);
-        RaycastHit centerhit;
-
-        if (Physics.Raycast(ray, out centerhit))
+        Vector3 dir = ray.direction;
+        foreach (var hit in Physics.BoxCastAll(center, size * 10f, dir))
         {
-            Debug.DrawRay(ray.origin, ray.direction * 100, Color.yellow);
-        }
-
-        Vector3 direction = ray.direction;
-
-        RaycastHit[] raycastHits = Physics.BoxCastAll(center, size * 10, direction);
-
-        foreach (RaycastHit hit in raycastHits)
-        {
-            if (selected.Contains(hit.collider.gameObject) == false)
+            GameObject go = hit.collider.gameObject;
+            if (!selected.Contains(go))
             {
-                selected.Add(hit.collider.gameObject);
-                TrySelect(hit.collider.gameObject);
+                selected.Add(go);
+                TrySelect(go);
             }
         }
     }
 
-    void TrySelect(GameObject selected)
+    void TrySelect(GameObject go)
     {
-        Debug.Log("Check");
-        ISelectable selectable = selected.GetComponent<ISelectable>();
+        if (go.TryGetComponent(out ISelectable sel)) sel.TakeControl();
+    }
 
-        if (selectable != null)
-        {
-            selectable.TakeControl();
-        }
+    Vector2 GetPointerPosOrCenter()
+    {
+        Vector2 pos = controls.Player.Point.ReadValue<Vector2>();
+        if (pos == Vector2.zero && Gamepad.current != null)
+            return new Vector2(Screen.width / 2f, Screen.height / 2f);
+        return pos;
     }
 }

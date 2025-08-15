@@ -1521,6 +1521,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8300000, guid: 6413edd9a0a4937469613b5b24439d8d, type: 3}
     - target: {fileID: 2130243536092094453, guid: f19331d501b3dc744bf3621f6162a5b0, type: 3}
+      propertyPath: controls.Array.data[3].previewClip
+      value: 
+      objectReference: {fileID: 8300000, guid: c5c2f89466cf57745873d1ba345270f4, type: 3}
+    - target: {fileID: 2130243536092094453, guid: f19331d501b3dc744bf3621f6162a5b0, type: 3}
       propertyPath: controls.Array.data[4].previewClip
       value: 
       objectReference: {fileID: 8300000, guid: 6ca9d8d14dc50f44581de43b609e9bd5, type: 3}
