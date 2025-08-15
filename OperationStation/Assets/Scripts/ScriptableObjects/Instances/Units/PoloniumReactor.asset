@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 49fbcd33baf3e55479072f952dfbc560, type: 3}
-  m_Name: PoloniumReactor 1
+  m_Name: PoloniumReactor
   m_EditorClassIdentifier: 
   unitType: 0
   unitOutline: {fileID: 0}
