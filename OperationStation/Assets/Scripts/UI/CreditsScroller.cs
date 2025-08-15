@@ -41,8 +41,11 @@ public class CreditsScroller : MonoBehaviour
 
     // guards
     Coroutine runRoutine;
-    bool isRolling;                    // true during the scrolling phase
+    bool isRolling;
     bool initialized;
+
+    // Reference to main menu manager to re-enable buttons after credits
+    MainMenuManager menuManager;
 
     void Awake()
     {
@@ -81,6 +84,9 @@ public class CreditsScroller : MonoBehaviour
         input = new PlayerInput();                  // OK to 'new' the GENERATED wrapper
         speedUpAction = input.Player.SpeedUpCredits;
 
+        // Find the menu manager so we can toggle button interactability at the end
+        menuManager = FindFirstObjectByType<MainMenuManager>();
+
         initialized = true;
     }
 
@@ -91,7 +97,6 @@ public class CreditsScroller : MonoBehaviour
         input.Player.Enable();                      // enable map each time we open
         pixelsPerSecond = pixelsPerSecondMin;
 
-        // Prevent duplicate coroutines if something toggles us
         if (runRoutine != null) StopCoroutine(runRoutine);
         runRoutine = StartCoroutine(SetupAndRun());
     }
@@ -115,8 +120,7 @@ public class CreditsScroller : MonoBehaviour
         bool speedUpHeld = speedUpAction != null && speedUpAction.IsPressed();
         pixelsPerSecond = speedUpHeld ? pixelsPerSecondMax : pixelsPerSecondMin;
 
-        // HARDENING: while we are in the roll phase, keep alpha pinned to 1
-        // so external tweens / reactivations cannot "flash" us from 0->1.
+        // While we are in the roll phase, keep alpha pinned to 1
         if (isRolling && creditsCanvasGroup)
         {
             if (creditsCanvasGroup.alpha != 1f)
@@ -133,11 +137,10 @@ public class CreditsScroller : MonoBehaviour
             scrollRect.inertia = false;
         }
 
-        // Allow content to go outside viewport while we animate
         var originalMovement = scrollRect.movementType;
         scrollRect.movementType = ScrollRect.MovementType.Unrestricted;
 
-        // --- Wait for viewport to have a real size, then measure preferred height ---
+        // --- Wait for viewport to size, then measure preferred height ---
         float availableWidth = 0f;
         int safety = 0;
         while (safety++ < 8)
@@ -150,7 +153,7 @@ public class CreditsScroller : MonoBehaviour
             viewportHeight = viewport != null ? viewport.rect.height : 0f;
 
             if (availableWidth > 0f && viewportHeight > 0f) break;
-            yield return null; // wait a frame and try again
+            yield return null; // wait a frame
         }
 
         availableWidth = Mathf.Max(1f, availableWidth);
@@ -211,6 +214,10 @@ public class CreditsScroller : MonoBehaviour
 
         if (creditsMenuRoot != null)
             creditsMenuRoot.SetActive(false);
+
+        // Re-enable main menu buttons now that credits are done
+        if (menuManager != null)
+            menuManager.SetMenuButtonsInteractable(true);
 
         // Restore original movement type
         scrollRect.movementType = originalMovement;
