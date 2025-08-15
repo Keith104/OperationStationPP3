@@ -25,7 +25,7 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - _DitherStrength: 0.6
+    - _DitherStrength: 1
     - _EnableDither: 1
     - _EnablePixelate: 1
     - _Steps: 26

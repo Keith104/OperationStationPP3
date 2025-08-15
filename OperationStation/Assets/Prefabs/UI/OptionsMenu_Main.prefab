@@ -213,6 +213,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5237608574301928555}
+  - component: {fileID: 1275439046791071701}
   m_Layer: 5
   m_Name: OptionsMenu_Main
   m_TagString: Untagged
@@ -243,6 +244,24 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1275439046791071701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3671544162038446108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96a7e7dea96b99344be2650c2e0b1fb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  menuRoot: {fileID: 5237608574301928555}
+  buildMode: 1
+  wrap: 1
+  autoHealSelection: 1
+  rescanOnEnable: 1
+  healDebounceMs: 50
 --- !u!1001 &1498778907492769842
 PrefabInstance:
   m_ObjectHideFlags: 0

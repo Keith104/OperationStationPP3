@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DeathCat : MonoBehaviour, IModule, IDamage
+public class DeathCat : MonoBehaviour, ISelectable, IModule, IDamage
 {
     [SerializeField] Module module;
     [SerializeField] int totalCostsLeft;
@@ -72,5 +72,11 @@ public class DeathCat : MonoBehaviour, IModule, IDamage
                     0.01f);
             }
         }
+    }
+
+    public void TakeControl()
+    {
+        UnitUIManager.instance.costMenu.SetActive(true);
+        ((ISelectable)module).TakeControl();
     }
 }

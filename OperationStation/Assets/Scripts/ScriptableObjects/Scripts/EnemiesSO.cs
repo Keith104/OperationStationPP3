@@ -11,6 +11,7 @@ public class EnemiesSO : ScriptableObject
         DOGDestroyer,
         SuperDOGDestroyer
     }
+    public bool found;
 
     public EnemyType enemyType;
     public GameObject enemyObject;

@@ -8,6 +8,8 @@ public class UnitUIManager : MonoBehaviour
     [Header("UI Elements")]
     public GameObject currUnit;
     public GameObject unitMenu;
+    public GameObject costMenu;
+    public GameObject reactorMenu;
     public TextMeshProUGUI tmpUnitName;
     public TextMeshProUGUI tmpUnitDesc;
     public TextMeshProUGUI tmpUnitCost;
