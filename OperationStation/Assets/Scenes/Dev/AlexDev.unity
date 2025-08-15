@@ -521,6 +521,34 @@ PrefabInstance:
       propertyPath: m_Name
       value: PoloniumAsteroid
       objectReference: {fileID: 0}
+    - target: {fileID: 34360845235334891, guid: 33e0e3369b1b1114895e2cdfb2021df0, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2340721674143578976, guid: 33e0e3369b1b1114895e2cdfb2021df0, type: 3}
+      propertyPath: m_Pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2340721674143578976, guid: 33e0e3369b1b1114895e2cdfb2021df0, type: 3}
+      propertyPath: m_Resource
+      value: 
+      objectReference: {fileID: 8300000, guid: 570db7cb643b8f943835320d75aa740b, type: 3}
+    - target: {fileID: 2340721674143578976, guid: 33e0e3369b1b1114895e2cdfb2021df0, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 570db7cb643b8f943835320d75aa740b, type: 3}
+    - target: {fileID: 4927638046603992114, guid: 33e0e3369b1b1114895e2cdfb2021df0, type: 3}
+      propertyPath: m_Pitch
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4927638046603992114, guid: 33e0e3369b1b1114895e2cdfb2021df0, type: 3}
+      propertyPath: m_Resource
+      value: 
+      objectReference: {fileID: 8300000, guid: 570db7cb643b8f943835320d75aa740b, type: 3}
+    - target: {fileID: 4927638046603992114, guid: 33e0e3369b1b1114895e2cdfb2021df0, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 570db7cb643b8f943835320d75aa740b, type: 3}
     - target: {fileID: 4985566587808348359, guid: 33e0e3369b1b1114895e2cdfb2021df0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 128.2
@@ -1111,6 +1139,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: DeathCat
       objectReference: {fileID: 0}
+    - target: {fileID: 3452112675739133004, guid: 79625718a0588914fab3fbb9e64337af, type: 3}
+      propertyPath: m_Pitch
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3452112675739133004, guid: 79625718a0588914fab3fbb9e64337af, type: 3}
+      propertyPath: m_Resource
+      value: 
+      objectReference: {fileID: 8300000, guid: b80c732df65c1f7499540c34792f3665, type: 3}
+    - target: {fileID: 3452112675739133004, guid: 79625718a0588914fab3fbb9e64337af, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: b80c732df65c1f7499540c34792f3665, type: 3}
+    - target: {fileID: 5472378722766586654, guid: 79625718a0588914fab3fbb9e64337af, type: 3}
+      propertyPath: m_Pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5472378722766586654, guid: 79625718a0588914fab3fbb9e64337af, type: 3}
+      propertyPath: m_Resource
+      value: 
+      objectReference: {fileID: 8300000, guid: b80c732df65c1f7499540c34792f3665, type: 3}
+    - target: {fileID: 5472378722766586654, guid: 79625718a0588914fab3fbb9e64337af, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: b80c732df65c1f7499540c34792f3665, type: 3}
     - target: {fileID: 6765949016062805750, guid: 79625718a0588914fab3fbb9e64337af, type: 3}
       propertyPath: m_LocalPosition.x
       value: 128
