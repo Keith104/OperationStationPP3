@@ -849,6 +849,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3538035250705073502, guid: 8bbab4fe034508a479f493ce51e62e30, type: 3}
+      propertyPath: verticalMenu
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4689788786705004875, guid: 8bbab4fe034508a479f493ce51e62e30, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
