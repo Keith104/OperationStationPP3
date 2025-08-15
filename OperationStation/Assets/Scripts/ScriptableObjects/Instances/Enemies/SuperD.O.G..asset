@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d601c2a8da573848932c38a2361d989, type: 3}
   m_Name: SuperD.O.G.
   m_EditorClassIdentifier: 
+  found: 0
   enemyType: 3
   enemyObject: {fileID: 8848058749689383006, guid: 6ba0e52d0fa608845ae10280fcfef31e, type: 3}
   health: 25
   bullet: {fileID: 8686202834457548828, guid: 6f87ba0ec2cc2f349936ccb58afbb543, type: 3}
+  damageAmount: 0
   attackCooldown: 10

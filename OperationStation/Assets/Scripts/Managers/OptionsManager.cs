@@ -5,6 +5,7 @@ using UnityEngine.Audio;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class OptionsManager : MonoBehaviour
 {
@@ -37,7 +38,7 @@ public class OptionsManager : MonoBehaviour
         [Range(0.0001f, 1f)] public float defaultLinear = 0.8f;
         public string overridePlayerPrefKey;
 
-        // runtime wiring state (so we can safely rebind in Update)
+        // runtime wiring state (so we can safely rebind later)
         [NonSerialized] public Slider boundSlider;
         [NonSerialized] public UnityAction<float> handler;
     }
@@ -60,6 +61,7 @@ public class OptionsManager : MonoBehaviour
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
+            SceneManager.sceneLoaded += OnSceneLoaded; // update when scenes change
         }
         else
         {
@@ -70,15 +72,18 @@ public class OptionsManager : MonoBehaviour
 
     void Start()
     {
-        // Apply saved values once so any UI that appears later reads correct state
+        // Apply saved values so the mixer is correct regardless of UI state
         foreach (var c in controls)
         {
             float saved = PlayerPrefs.GetFloat(KeyFor(c), c.defaultLinear);
             ApplyLinear(c.channel, saved);
         }
 
-        // Initial bind if sliders are already in the scene
+        // Initial bind (works even if the menu/panel is inactive)
         RebindMissing(now: true);
+
+        // Sync hidden sliders immediately; visible ones won't snap
+        RefreshBoundSlidersAvoidingVisibleSnap();
     }
 
     void Update()
@@ -99,6 +104,18 @@ public class OptionsManager : MonoBehaviour
             if (c.boundSlider != null && c.handler != null)
                 c.boundSlider.onValueChanged.RemoveListener(c.handler);
         }
+
+        SceneManager.sceneLoaded -= OnSceneLoaded; // Clean up scene event
+    }
+
+    // ---------- Scene Events ----------
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // Rebind on scene load (finds inactive menus too)
+        RebindMissing(now: true);
+
+        // Sync only hidden sliders to avoid visible snap when menus are shown
+        RefreshBoundSlidersAvoidingVisibleSnap();
     }
 
     // ---------- Public ----------
@@ -123,42 +140,78 @@ public class OptionsManager : MonoBehaviour
         {
             SetLinear(c.channel, c.defaultLinear);
 
-            // Update any currently bound slider + label
-            if (c.boundSlider)
+            // Only push into hidden sliders to avoid a visible snap
+            if (c.boundSlider && !c.boundSlider.gameObject.activeInHierarchy)
                 c.boundSlider.SetValueWithoutNotify(c.defaultLinear);
-            UpdateLabel(c, c.defaultLinear);
+
+            // Keep label in sync with whatever the slider is currently showing
+            UpdateLabelFromSlider(c);
         }
         PlayerPrefs.Save();
     }
 
     // ---------- Internals ----------
+    // Rebinds controls; finds sliders even if their parent menu/panel is inactive
     void RebindMissing(bool now)
     {
         foreach (var c in controls)
         {
-            // If our serialized "slider" is missing or the bound one got destroyed, try to find a marker
             bool needRebind = c.boundSlider == null || c.boundSlider.gameObject == null;
             if (!needRebind && c.slider != null && c.boundSlider != c.slider) needRebind = true;
             if (!needRebind && c.percentLabel == null) needRebind = true;
 
             if (!needRebind) continue;
 
-            var marker = OptionsSliderMarker.FindActive(c.channel);
+            var marker = FindMarkerEvenIfInactive(c.channel);
             if (!marker) continue;
 
-            // Resolve UI from marker
             var newSlider = marker.GetSlider();
             var newLabel = marker.GetPercentLabel();
 
             if (newSlider != null)
             {
                 AttachSlider(c, newSlider);
-                c.percentLabel = newLabel; // may be null if not present; that’s ok
-                // Set display to current mixer value
+                c.percentLabel = newLabel; // may be null; that's ok
+
                 float current = GetLinear(c.channel);
-                newSlider.SetValueWithoutNotify(current);
-                UpdateLabel(c, current);
+
+                // Sync value only if the slider is hidden to prevent a visible jump
+                if (!newSlider.gameObject.activeInHierarchy)
+                    newSlider.SetValueWithoutNotify(current);
+
+                // Keep label in step with whatever the slider *currently* shows
+                UpdateLabelFromSlider(c);
             }
+        }
+    }
+
+    // Finds an OptionsSliderMarker regardless of active state
+    OptionsSliderMarker FindMarkerEvenIfInactive(Channel ch)
+    {
+        var allMarkers = Resources.FindObjectsOfTypeAll<OptionsSliderMarker>();
+        foreach (var m in allMarkers)
+        {
+            if (m && m.channel == ch) // assumes marker exposes 'channel' field
+                return m;
+        }
+        return null;
+    }
+
+    // Sync hidden sliders to mixer values; don't move visible sliders
+    void RefreshBoundSlidersAvoidingVisibleSnap()
+    {
+        foreach (var c in controls)
+        {
+            if (!c.boundSlider) continue;
+
+            if (!c.boundSlider.gameObject.activeInHierarchy)
+            {
+                float current = GetLinear(c.channel);
+                c.boundSlider.SetValueWithoutNotify(current);
+            }
+
+            // Always keep the label in sync with what the slider is visually showing
+            UpdateLabelFromSlider(c);
         }
     }
 
@@ -201,6 +254,7 @@ public class OptionsManager : MonoBehaviour
         TryPreview(src, clip, cd);
     }
 
+    // Push a value into the mixer
     void ApplyLinear(Channel ch, float linear)
     {
         string param = paramNames[ch];
@@ -227,6 +281,13 @@ public class OptionsManager : MonoBehaviour
     void UpdateLabel(VolumeUI c, float linear)
     {
         if (c.percentLabel) c.percentLabel.text = Mathf.RoundToInt(linear * 100f) + "%";
+    }
+
+    // Update label based on the slider's *current* visual value
+    void UpdateLabelFromSlider(VolumeUI c)
+    {
+        if (!c.boundSlider) return;
+        UpdateLabel(c, c.boundSlider.value);
     }
 
     void TryPreview(AudioSource src, AudioClip clip, float cooldown)
