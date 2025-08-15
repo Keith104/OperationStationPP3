@@ -42,7 +42,10 @@ public class EnemyAI : MonoBehaviour, IDamage
 
         health = enemy.health;
 
-        enemy.bullet.GetComponent<Damage>().damageAmount = enemy.damageAmount;
+        if (enemy.bullet.GetComponent<Damage>() != null)
+        {
+            enemy.bullet.GetComponent<Damage>().damageAmount = enemy.damageAmount;
+        }
     }
 
     void Update()
