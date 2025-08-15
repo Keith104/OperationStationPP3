@@ -15,7 +15,8 @@ MonoBehaviour:
   unitType: 0
   unitOutline: {fileID: 0}
   unitName: Polonium Reactor
-  unitDescription: Passively generates 5 units of the energy resource per second
+  unitDescription: 'Place polonium into the reactor to generate units of the energy
+    resource '
   unitHealth: 1
   cost:
   - resource: {fileID: 11400000, guid: 60a71c38a16d39f4c9a2adde86ef8299, type: 2}
