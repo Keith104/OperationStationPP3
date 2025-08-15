@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Grid : MonoBehaviour
 {
-    [SerializeField] GameObject module;
+    [SerializeField] Module module;
     [SerializeField] Tile _tilePrefab;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -14,16 +14,52 @@ public class Grid : MonoBehaviour
     // Update is called once per frame
     void spawnAvailableSpaces()
     {
-        var spawnTileRight = Instantiate(_tilePrefab, new Vector3(module.transform.localScale.x + 5, 
-            module.transform.localScale.y, module.transform.localScale.z), Quaternion.identity);
+        RaycastHit hit;
 
-        var spawnTileLeft = Instantiate(_tilePrefab, new Vector3(module.transform.localScale.x - 5,
-            module.transform.localScale.y, module.transform.localScale.z), Quaternion.identity);
+        if (module.isRightAvailable == true && !Physics.Raycast(transform.position, transform.right, out hit, 10f))
+        {
+            var spawnTileRight = Instantiate(_tilePrefab, new Vector3(module.transform.position.x + 1, 
+                module.transform.position.y, module.transform.position.z), 
+                Quaternion.identity, transform);
+            spawnTileRight.name = $"Right";
 
-        var spawnTileUp = Instantiate(_tilePrefab, new Vector3(module.transform.localScale.x,
-            module.transform.localScale.y, module.transform.localScale.z + 5), Quaternion.identity);
-
-        var spawnTileDown = Instantiate(_tilePrefab, new Vector3(module.transform.localScale.x - 5,
-            module.transform.localScale.y, module.transform.localScale.z - 5), Quaternion.identity);
+        }
+        else
+        {
+            module.isRightAvailable = false;
+        }
+        if (module.isLeftAvailable == true && !Physics.Raycast(transform.position, -transform.right, out hit, 10f))
+        {
+            var spawnTileLeft = Instantiate(_tilePrefab, new Vector3(module.transform.position.x - 1,
+                module.transform.position.y, module.transform.position.z), 
+                Quaternion.identity, transform);
+            spawnTileLeft.name = $"Left";
+        }
+        else
+        {
+            module.isLeftAvailable = false;
+        }
+        if (module.isUpAvailable == true && !Physics.Raycast(transform.position, transform.forward, out hit, 10f))
+        {
+            var spawnTileUp = Instantiate(_tilePrefab, new Vector3(module.transform.position.x,
+                module.transform.position.y, module.transform.position.z + 1), 
+                Quaternion.identity, transform);
+            spawnTileUp.name = $"Up";
+        }
+        else
+        {
+            module.isUpAvailable = false;
+        }
+        if (module.isDownAvailable == true && !Physics.Raycast(transform.position, -transform.forward, out hit, 10f))
+        {
+            var spawnTileDown = Instantiate(_tilePrefab, new Vector3(module.transform.position.x,
+                module.transform.position.y, module.transform.position.z - 1), 
+                Quaternion.identity, transform);
+            spawnTileDown.name = $"Down";
+        }
+        else
+        {
+            module.isDownAvailable = false;
+        }
     }
 }

@@ -2,15 +2,23 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] Material available;
+    [SerializeField] Material unAvailable;
+
+
+    void OnMouseEnter()
     {
-        
+        Renderer objectRenderer = GetComponent<Renderer>();
+        if(objectRenderer != null && available != null)
+        {
+            objectRenderer.material = available;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    void OnMouseExit()
     {
-        
+        Renderer objectRenderer = GetComponent<Renderer>();
+
+        objectRenderer.material = unAvailable;
     }
 }

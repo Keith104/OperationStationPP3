@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LevelUIManager : MonoBehaviour
 {
@@ -11,6 +12,9 @@ public class LevelUIManager : MonoBehaviour
     public RectTransform minimap;
     public GameObject menuWin;
     public GameObject menuLose;
+    [SerializeField] GameObject buildButton;
+    [SerializeField] GameObject buildModule;
+    [SerializeField] GameObject buildDefence;
 
     private bool isPaused;
     private float timescaleOrig;
@@ -53,5 +57,12 @@ public class LevelUIManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         menuActive.SetActive(false);
         menuActive = null;
+    }
+
+    public void SetActiveMenu(GameObject activeMenu)
+    {
+        menuActive.SetActive(false);
+        menuActive = activeMenu;
+        menuActive.SetActive(true);
     }
 }

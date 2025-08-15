@@ -13,10 +13,10 @@ public class Module : MonoBehaviour, ISelectable, IDamage
     public float localHealth;
     private Color origColor;
 
-    private bool isUpAvailable;
-    private bool isDownAvailable;
-    private bool isRightAvailable;
-    private bool isLeftAvailable;
+    public bool isUpAvailable;
+    public bool isDownAvailable;
+    public bool isRightAvailable;
+    public bool isLeftAvailable;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -26,6 +26,7 @@ public class Module : MonoBehaviour, ISelectable, IDamage
         resourceCosts = stats.cost;
         for (int i = 0; i < resourceCosts.Length; i++)
             costsLeft[i] = resourceCosts[i].cost;
+        
     }
 
     // Update is called once per frame

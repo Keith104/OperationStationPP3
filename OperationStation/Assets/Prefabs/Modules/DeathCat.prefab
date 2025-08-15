@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6765949016062805750}
   - component: {fileID: 35759397869135904}
+  - component: {fileID: 8910119755701088834}
   - component: {fileID: 7573420944328670618}
   - component: {fileID: 6441910625288224433}
   - component: {fileID: 553107750580895635}
@@ -44,7 +45,21 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1826742274521941465}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &8910119755701088834
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1826742274521941465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff84e3770eaf6924dac2f650f1083d16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  module: {fileID: 6441910625288224433}
+  _tilePrefab: {fileID: 2818478639610119390, guid: c0c9f63d750695548aa9826a36d776a2, type: 3}
 --- !u!114 &7573420944328670618
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -75,6 +90,10 @@ MonoBehaviour:
   model: {fileID: 553107750580895635}
   resourceCosts: []
   costsLeft: 0000000000000000
+  isUpAvailable: 1
+  isDownAvailable: 1
+  isRightAvailable: 1
+  isLeftAvailable: 1
 --- !u!23 &553107750580895635
 MeshRenderer:
   m_ObjectHideFlags: 0
