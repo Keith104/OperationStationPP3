@@ -17,6 +17,7 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
     private float health;
     private Color colorOG;
     private Vector3 idlePos;
+    private bool noControl;
 
     void Start()
     {
@@ -24,6 +25,7 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
         colorOG = model.material.color;
         idlePos = transform.position;
         playerControlled = false;
+        noControl = false;
         goHere.gameObject.SetActive(false);
     }
 
@@ -37,8 +39,13 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
 
     public void TakeControl()
     {
-        playerControlled = !playerControlled;
-        Debug.Log(playerControlled);
+        if (!noControl)
+        {
+            playerControlled = !playerControlled;
+            Debug.Log(playerControlled);
+        }
+        else
+            return;
     }
 
     public void TakeDamage(float damage)
@@ -55,17 +62,16 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
 
     public void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Asteroid")
+        if (other.tag == "Asteroid" && playerControlled)
         {
             playerControlled = false;
+            noControl = true;
             agent.SetDestination(transform.position);
 
             other.transform.parent.transform.SetParent(transform, true);
             other.GetComponentInParent<Asteroid>().canMove = false;
 
             StartCoroutine(Mine(other));
-
-            //agent.SetDestination(idlePos);
         }
     }
 
