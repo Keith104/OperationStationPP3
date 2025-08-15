@@ -673,7 +673,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8447908461779721560
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3555,6 +3555,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currUnit: {fileID: 0}
   unitMenu: {fileID: 1860025412572323582}
+  costMenu: {fileID: 1394502349423958327}
+  reactorMenu: {fileID: 5120676791276019081}
   tmpUnitName: {fileID: 1954423352264304780}
   tmpUnitDesc: {fileID: 974846799153968820}
   tmpUnitCost: {fileID: 7915151121921661986}
