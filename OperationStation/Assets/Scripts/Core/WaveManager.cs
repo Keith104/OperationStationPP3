@@ -34,6 +34,8 @@ public class WaveManager : MonoBehaviour
     //I don't like how I have the spawning so I'm going to probably change it if I finish my tasks
     void Spawn()
     {
+        Debug.Log("Tried enemy spawn");
+
         timer = 0;
 
         RandomizeSpawn();
@@ -44,8 +46,10 @@ public class WaveManager : MonoBehaviour
             return;
         }
 
+        Debug.Log("Spawn Enemy 'BowFighter'");
         //It makes a BowFighter ups the current enemies and lowers spawn time by 10
         Instantiate(enemies[0], spawnPoints[randSpawn]);
+        enemies[0].found = true;
         curEnemies++;
         spawnTime = spawnTime - 5;
 
@@ -55,6 +59,7 @@ public class WaveManager : MonoBehaviour
             RandomizeSpawn();
 
             Instantiate(enemies[1], spawnPoints[randSpawn]);
+            enemies[1].found = true;
             curEnemies++;
         }
 
@@ -64,6 +69,7 @@ public class WaveManager : MonoBehaviour
             RandomizeSpawn();
 
             Instantiate(enemies[2], spawnPoints[randSpawn]);
+            enemies[2].found = true;
             curEnemies++;
         }
 
@@ -73,6 +79,7 @@ public class WaveManager : MonoBehaviour
             RandomizeSpawn();
 
             Instantiate(enemies[3], spawnPoints[randSpawn]);
+            enemies[3].found = true;
             curEnemies += 3;
         }
         spawnTime = spawnTimeOG;
