@@ -121,9 +121,12 @@ public class StatsMenuManager : MonoBehaviour
             return;
         }
 
-        string rawName = so.enemyObject ? so.enemyObject.name : so.name;
+        // --- NAME SOURCE CHANGED: use enum name, not prefab name ---
+        string enumName = so.enemyType.ToString();           // e.g., BowFighter, DOGDestroyer
+        string pretty = AddSpacesToCamelCase(enumName);    // -> Bow Fighter, DOG Destroyer
+
         WriteLines(
-            AddSpacesToCamelCase(rawName),
+            pretty,
             so.health.ToString(),
             so.damageAmount.ToString(),
             so.attackCooldown.ToString(),

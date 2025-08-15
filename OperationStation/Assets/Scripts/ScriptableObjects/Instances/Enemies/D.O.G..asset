@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d601c2a8da573848932c38a2361d989, type: 3}
   m_Name: D.O.G.
   m_EditorClassIdentifier: 
+  found: 0
   enemyType: 2
   enemyObject: {fileID: 3236824007983274319, guid: cda219b034cb6e74d825e0883ce22b01, type: 3}
   health: 10
