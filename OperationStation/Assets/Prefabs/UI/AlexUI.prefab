@@ -3555,6 +3555,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currUnit: {fileID: 0}
   unitMenu: {fileID: 1860025412572323582}
+  costMenu: {fileID: 0}
+  reactorMenu: {fileID: 0}
   tmpUnitName: {fileID: 1954423352264304780}
   tmpUnitDesc: {fileID: 974846799153968820}
   tmpUnitCost: {fileID: 7915151121921661986}
@@ -4583,8 +4585,8 @@ RectTransform:
   - {fileID: 4768890214807780651}
   - {fileID: 1326666487639561722}
   - {fileID: 7234309956118693395}
-  - {fileID: 8193038912272997064}
   - {fileID: 195434321718325899}
+  - {fileID: 8193038912272997064}
   - {fileID: 8447908461779721560}
   - {fileID: 1632544203196709208}
   - {fileID: 9184177546850795860}
@@ -4631,12 +4633,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96

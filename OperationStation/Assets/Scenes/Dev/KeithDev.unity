@@ -327,6 +327,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3201009954681758341, guid: 7badf4c813dff404690ad2239242cefa, type: 3}
+      propertyPath: m_BlockingMask.m_Bits
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 7813998781396424135, guid: 7badf4c813dff404690ad2239242cefa, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -1359,11 +1363,11 @@ SceneRoots:
   - {fileID: 2400955868446671492}
   - {fileID: 1690661975}
   - {fileID: 1521491650}
+  - {fileID: 594782940}
   - {fileID: 6639116598818085313}
   - {fileID: 158855107}
   - {fileID: 828718338}
   - {fileID: 2072458781}
-  - {fileID: 594782940}
   - {fileID: 1364828779}
   - {fileID: 1279453590}
   - {fileID: 1835093992}
