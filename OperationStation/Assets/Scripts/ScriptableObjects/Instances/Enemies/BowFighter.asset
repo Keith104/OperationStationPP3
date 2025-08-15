@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d601c2a8da573848932c38a2361d989, type: 3}
   m_Name: BowFighter
   m_EditorClassIdentifier: 
+  found: 0
   enemyType: 0
   enemyObject: {fileID: 8686202834457548828, guid: 6f87ba0ec2cc2f349936ccb58afbb543, type: 3}
   health: 3

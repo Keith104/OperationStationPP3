@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6362118117393042206}
   - component: {fileID: 6660260509161069488}
   - component: {fileID: 5664002225611891765}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Kamakaze
   m_TagString: Untagged
   m_Icon: {fileID: 0}
