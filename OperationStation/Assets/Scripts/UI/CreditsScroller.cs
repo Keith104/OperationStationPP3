@@ -85,7 +85,7 @@ public class CreditsScroller : MonoBehaviour
         speedUpAction = input.Player.SpeedUpCredits;
 
         // Find the menu manager so we can toggle button interactability at the end
-        menuManager = FindObjectOfType<MainMenuManager>();
+        menuManager = FindFirstObjectByType<MainMenuManager>();
 
         initialized = true;
     }
