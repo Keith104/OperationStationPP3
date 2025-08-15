@@ -40,7 +40,7 @@ public class UnitUIManager : MonoBehaviour
 
     public void OnSpendClick(int num)
     {
-        buttonFunctions.PlaySource();
+        buttonFunctions.PlayClick();
         Debug.Log("Spend Button Clicked");
         buttonNum = num;
     }

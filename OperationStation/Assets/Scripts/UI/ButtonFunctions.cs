@@ -1,37 +1,87 @@
+using System.Collections;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class ButtonFunctions : MonoBehaviour
 {
+    [SerializeField] AudioSource clickSource;
+    [SerializeField] AudioSource hoverInSource;
+    [SerializeField] AudioSource hoverOutSource;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    
-    public void Resume()
+    void Start()
     {
-        LevelUIManager.instance.StateUnpause();
+        
     }
 
-    public void Restart()
+    // Update is called once per frame
+    void Update()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
+    }
+
+    public void PlayClick()
+    {
+        clickSource.Play();
+    }
+
+    public void PlayHoverIn()
+    {
+        if(hoverInSource.isPlaying == false)
+            hoverInSource.Play();
+    }
+
+    public void PlayHoverOut()
+    {
+        if (hoverOutSource.isPlaying == false)
+            hoverOutSource.Play();
+    }
+
+    public void Resume()
+    {
+        PlayClick();
         LevelUIManager.instance.StateUnpause();
     }
 
     public void Quit()
     {
-#if !UNITY_EDITOR
-        Application.Quit();
-#else
-        UnityEditor.EditorApplication.isPlaying = false;
-#endif
+        PlayClick();
+        StartCoroutine(QuitGameWaitForSourceToFinish(clickSource));
     }
+
+    public void Restart()
+    {
+        PlayClick();
+        StartCoroutine(RestartWaitForSourceToFinish(clickSource));
+    }
+
     public void LoadScene(int scene)
     {
+        PlayClick();
+        StartCoroutine(LoadSceneWaitForSourceToFinish(clickSource, scene));
+    }
+
+    IEnumerator RestartWaitForSourceToFinish(AudioSource playingSource)
+    {
+        yield return new WaitForSeconds(playingSource.clip.length);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        LevelUIManager.instance.StateUnpause();
+    }
+    IEnumerator LoadSceneWaitForSourceToFinish(AudioSource playingSource, int scene)
+    {
+        yield return new WaitForSeconds(playingSource.clip.length);
         SceneManager.LoadScene(scene);
         LevelUIManager.instance.StateUnpause();
     }
-
-    public void SetActiveMenu(GameObject menuActive)
+    IEnumerator QuitGameWaitForSourceToFinish(AudioSource playingSource)
     {
-        LevelUIManager.instance.SetActiveMenu(menuActive);
+        yield return new WaitForSeconds(playingSource.clip.length);
+
+#if UNITY_EDITOR
+        if (EditorApplication.isPlaying)
+            EditorApplication.ExitPlaymode();
+#else
+        Application.Quit();
+#endif
     }
 }

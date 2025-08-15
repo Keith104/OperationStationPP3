@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4985566587808348359}
   - component: {fileID: 6808034183522023741}
   - component: {fileID: 5058036149151091971}
+  - component: {fileID: 5473312989175075828}
   m_Layer: 0
   m_Name: PoloniumAsteroid
   m_TagString: Asteroid
@@ -32,6 +33,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5052727028015576370}
+  - {fileID: 4287537625811338886}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6808034183522023741
@@ -83,6 +85,51 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 4
   m_CollisionDetection: 0
+--- !u!114 &5473312989175075828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 34360845235334891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 0}
+          m_TargetAssemblyTypeName: ButtonFunctions, Assembly-CSharp
+          m_MethodName: PlayHoverIn
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 2
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 0}
+          m_TargetAssemblyTypeName: ButtonFunctions, Assembly-CSharp
+          m_MethodName: PlayHoverOut
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &1918393006012115324
 GameObject:
   m_ObjectHideFlags: 0
@@ -166,7 +213,7 @@ GameObject:
   - component: {fileID: 89349039358425950}
   - component: {fileID: 7383467437318908634}
   - component: {fileID: 119398048447577237}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: AsteroidObject
   m_TagString: Asteroid
   m_Icon: {fileID: 0}
@@ -264,3 +311,89 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 289301614986012343, guid: 738e81102b138c941b1121fe4981d983, type: 3}
+--- !u!1001 &1187988614850966430
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 4985566587808348359}
+    m_Modifications:
+    - target: {fileID: 3169673876170683672, guid: f115d1b92ccfed14196bef8150d94bc7, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.19999695
+      objectReference: {fileID: 0}
+    - target: {fileID: 3169673876170683672, guid: f115d1b92ccfed14196bef8150d94bc7, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 3169673876170683672, guid: f115d1b92ccfed14196bef8150d94bc7, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3169673876170683672, guid: f115d1b92ccfed14196bef8150d94bc7, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3169673876170683672, guid: f115d1b92ccfed14196bef8150d94bc7, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3169673876170683672, guid: f115d1b92ccfed14196bef8150d94bc7, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3169673876170683672, guid: f115d1b92ccfed14196bef8150d94bc7, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3169673876170683672, guid: f115d1b92ccfed14196bef8150d94bc7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3169673876170683672, guid: f115d1b92ccfed14196bef8150d94bc7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3169673876170683672, guid: f115d1b92ccfed14196bef8150d94bc7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3460871933342828798, guid: f115d1b92ccfed14196bef8150d94bc7, type: 3}
+      propertyPath: m_Pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3460871933342828798, guid: f115d1b92ccfed14196bef8150d94bc7, type: 3}
+      propertyPath: m_Resource
+      value: 
+      objectReference: {fileID: 8300000, guid: 570db7cb643b8f943835320d75aa740b, type: 3}
+    - target: {fileID: 3460871933342828798, guid: f115d1b92ccfed14196bef8150d94bc7, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 570db7cb643b8f943835320d75aa740b, type: 3}
+    - target: {fileID: 6061539347451195308, guid: f115d1b92ccfed14196bef8150d94bc7, type: 3}
+      propertyPath: m_Pitch
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6061539347451195308, guid: f115d1b92ccfed14196bef8150d94bc7, type: 3}
+      propertyPath: m_Resource
+      value: 
+      objectReference: {fileID: 8300000, guid: 570db7cb643b8f943835320d75aa740b, type: 3}
+    - target: {fileID: 6061539347451195308, guid: f115d1b92ccfed14196bef8150d94bc7, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 570db7cb643b8f943835320d75aa740b, type: 3}
+    - target: {fileID: 8737938473530881325, guid: f115d1b92ccfed14196bef8150d94bc7, type: 3}
+      propertyPath: m_Name
+      value: SoundObject
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f115d1b92ccfed14196bef8150d94bc7, type: 3}
+--- !u!4 &4287537625811338886 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3169673876170683672, guid: f115d1b92ccfed14196bef8150d94bc7, type: 3}
+  m_PrefabInstance: {fileID: 1187988614850966430}
+  m_PrefabAsset: {fileID: 0}
