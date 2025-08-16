@@ -13,6 +13,10 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
     [SerializeField] Camera playerCam;
     [SerializeField] Transform goHere;
 
+    [Header("Sound")]
+    [SerializeField] SoundModulation soundModulation;
+    [SerializeField] AudioSource damageSource;
+
     private bool playerControlled;
     private float health;
     private Color colorOG;
@@ -50,6 +54,9 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
 
     public void TakeDamage(float damage)
     {
+        soundModulation.ModulateSound(Random.Range(0.8f, 1.2f));
+        damageSource.Play();
+
         health -= damage;
 
         StartCoroutine(FlashRed());

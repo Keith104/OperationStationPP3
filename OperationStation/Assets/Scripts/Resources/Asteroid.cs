@@ -21,6 +21,10 @@ public class Asteroid : MonoBehaviour, IDamage
     [SerializeField] Color hitColor = Color.red;
     private Color origColor;
 
+    [Header("Sound")]
+    [SerializeField] SoundModulation soundModulation;
+    [SerializeField] AudioSource damageSource;
+
     [Header("Border")]
     [SerializeField] Vector2 borderLimits;
 
@@ -118,6 +122,9 @@ public class Asteroid : MonoBehaviour, IDamage
 
     public void TakeDamage(float damage)
     {
+        soundModulation.ModulateSound(Random.Range(0.8f, 1.2f));
+        damageSource.Play();
+
         health -= damage;
         StartCoroutine(FlashRed());
 
