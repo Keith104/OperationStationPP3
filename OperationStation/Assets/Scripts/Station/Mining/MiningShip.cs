@@ -72,6 +72,8 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
             other.GetComponentInParent<Asteroid>().canMove = false;
 
             StartCoroutine(Mine(other));
+
+            noControl = false;
         }
     }
 
