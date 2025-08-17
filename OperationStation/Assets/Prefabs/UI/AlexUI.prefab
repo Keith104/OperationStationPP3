@@ -588,8 +588,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 316.6, y: -160}
-  m_SizeDelta: {x: 100.8586, y: 37}
+  m_AnchoredPosition: {x: 293.88, y: -160}
+  m_SizeDelta: {x: 145.68, y: 37}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1039335243868173469
 CanvasRenderer:
@@ -1921,8 +1921,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 316.6, y: -238.20004}
-  m_SizeDelta: {x: 100.8586, y: 37}
+  m_AnchoredPosition: {x: 294.38, y: -238.20004}
+  m_SizeDelta: {x: 144.7, y: 37}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1054557253742883980
 CanvasRenderer:
@@ -3813,14 +3813,13 @@ GameObject:
   m_Component:
   - component: {fileID: 762464601598882165}
   - component: {fileID: 3542671111699246946}
-  - component: {fileID: 4741780893321596664}
   m_Layer: 5
   m_Name: ReactorProductionBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &762464601598882165
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3840,8 +3839,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -35.501217}
-  m_SizeDelta: {x: 400, y: 407.1966}
+  m_AnchoredPosition: {x: 0, y: -35}
+  m_SizeDelta: {x: 400, y: 546.78}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3542671111699246946
 CanvasRenderer:
@@ -3851,31 +3850,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5120676791276019081}
   m_CullTransparentMesh: 1
---- !u!114 &4741780893321596664
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5120676791276019081}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8caa710cd7eb2c6448a8450de74bda2e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fuelSlider: {fileID: 6871919833065576383}
-  btn10: {fileID: 5827127070302676828}
-  btn25: {fileID: 198274158780109294}
-  btn50: {fileID: 6229011531661746689}
-  btnStart: {fileID: 3462443561920947269}
-  txtUnitsHeld: {fileID: 3663605093393212787}
-  txtProjected: {fileID: 515051457190879320}
-  txtEvery: {fileID: 5062631413446367234}
-  txtCountdown: {fileID: 7153144839827659312}
-  cooldownFill: {fileID: 7464106802055300322}
-  cooldownSeconds: 10
-  yieldScalar: 0.25
-  burnPerTick: 0
 --- !u!1 &5313139652017644243
 GameObject:
   m_ObjectHideFlags: 0
@@ -5570,6 +5544,7 @@ GameObject:
   - component: {fileID: 2356799945520942702}
   - component: {fileID: 3226771892439950722}
   - component: {fileID: 3201009954681758341}
+  - component: {fileID: 7727291642286003615}
   m_Layer: 5
   m_Name: AlexUI
   m_TagString: UI
@@ -5627,7 +5602,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_TargetDisplay: 0
 --- !u!114 &3226771892439950722
 MonoBehaviour:
@@ -5669,6 +5644,29 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &7727291642286003615
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9161131948248108630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8caa710cd7eb2c6448a8450de74bda2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fuelSlider: {fileID: 6871919833065576383}
+  btn10: {fileID: 5827127070302676828}
+  btn25: {fileID: 198274158780109294}
+  btn50: {fileID: 6229011531661746689}
+  btnStart: {fileID: 3462443561920947269}
+  txtUnitsHeld: {fileID: 3663605093393212787}
+  txtProjected: {fileID: 515051457190879320}
+  txtEvery: {fileID: 5062631413446367234}
+  txtCountdown: {fileID: 7153144839827659312}
+  cooldownFill: {fileID: 7464106802055300322}
+  cooldownSeconds: 10
 --- !u!1001 &1817242866520185339
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6808,15 +6806,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1224491603328551547, guid: d5e30e4e9390052448e43a34f03ee2fd, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1224491603328551547, guid: d5e30e4e9390052448e43a34f03ee2fd, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1224491603328551547, guid: d5e30e4e9390052448e43a34f03ee2fd, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5055657941146353644, guid: d5e30e4e9390052448e43a34f03ee2fd, type: 3}
       propertyPath: m_Name
@@ -6824,11 +6822,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7370503046736011175, guid: d5e30e4e9390052448e43a34f03ee2fd, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7370503046736011175, guid: d5e30e4e9390052448e43a34f03ee2fd, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7705153773961470970, guid: d5e30e4e9390052448e43a34f03ee2fd, type: 3}

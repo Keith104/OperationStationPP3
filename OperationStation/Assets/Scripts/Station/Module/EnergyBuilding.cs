@@ -4,6 +4,8 @@ public class EnergyBuilding : MonoBehaviour, ISelectable, IModule, IDamage
 {
     [SerializeField] string menuToActivate;
 
+    GameObject parent;
+
     public void ModuleDie()
     {
         Destroy(gameObject);
@@ -19,7 +21,8 @@ public class EnergyBuilding : MonoBehaviour, ISelectable, IModule, IDamage
                 UnitUIManager.instance.unitMenu.SetActive(true);
                 UnitUIManager.instance.reactorMenu.SetActive(true);
                 UnitUIManager.instance.tmpUnitName.text = GetComponent<Module>().name;
-                var controller = UnitUIManager.instance.reactorMenu.GetComponent<ReactorUIController>();
+                parent = UnitUIManager.instance.reactorMenu.gameObject.transform.parent.gameObject;
+                var controller = parent.GetComponentInParent<ReactorUIController>();
 
                 if (controller)
                     controller.Bind(GetComponent<Module>().stats);

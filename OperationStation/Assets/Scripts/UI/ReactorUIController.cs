@@ -11,9 +11,9 @@ public class ReactorUIController : MonoBehaviour
     [SerializeField] Button btn10;
     [SerializeField] Button btn25;
     [SerializeField] Button btn50;
-    [SerializeField] Button btnStart;
-    [SerializeField] TextMeshProUGUI txtUnitsHeld;   // reactor's internal fuel reserve
-    [SerializeField] TextMeshProUGUI txtProjected;    // energy per tick (per 1 polonium)
+    [SerializeField] Button btnStart;             // Start/Stop toggle
+    [SerializeField] TextMeshProUGUI txtUnitsHeld;
+    [SerializeField] TextMeshProUGUI txtProjected;
     [SerializeField] TextMeshProUGUI txtEvery;
     [SerializeField] TextMeshProUGUI txtCountdown;
     [SerializeField] Image cooldownFill;
@@ -21,18 +21,20 @@ public class ReactorUIController : MonoBehaviour
     [Header("Timing")]
     [SerializeField] float cooldownSeconds = 10f;
 
-    int energyPerPolonium;      // from UnitSO
+    int energyPerPolonium;
     bool running;
     float countdown;
-    int unitsHeld;              // reactor-internal fuel reserve; decrements each tick
+    int unitsHeld;                      // reactor-internal fuel reserve
     Coroutine loop;
+    Coroutine initWait;
 
     int lastStoragePolonium = int.MinValue;
+    static FieldInfo poloniumField;
 
     public void Bind(UnitSO unitSo)
     {
         energyPerPolonium = Mathf.Max(0, unitSo.energyProductionAmount);
-        ResetUI();
+        if (ResourceManager.instance != null) ResetUI();
     }
 
     void OnEnable()
@@ -48,7 +50,12 @@ public class ReactorUIController : MonoBehaviour
             UpdateLoadInteractivity();
         });
 
-        ResetUI();
+        if (poloniumField == null)
+            poloniumField = typeof(ResourceManager).GetField("polonium",
+                BindingFlags.NonPublic | BindingFlags.Instance);
+
+        if (initWait != null) StopCoroutine(initWait);
+        initWait = StartCoroutine(WaitForResourceManagerThenInit());
     }
 
     void OnDisable()
@@ -61,7 +68,17 @@ public class ReactorUIController : MonoBehaviour
 
         if (loop != null) StopCoroutine(loop);
         loop = null;
+
+        if (initWait != null) StopCoroutine(initWait);
+        initWait = null;
+
         running = false;
+    }
+
+    IEnumerator WaitForResourceManagerThenInit()
+    {
+        while (ResourceManager.instance == null) yield return null;
+        ResetUI();
     }
 
     void Update()
@@ -87,7 +104,7 @@ public class ReactorUIController : MonoBehaviour
         }
     }
 
-    void Toggle()
+    public void Toggle()
     {
         if (running) StopBurn();
         else StartBurn();
@@ -97,10 +114,16 @@ public class ReactorUIController : MonoBehaviour
     {
         int storage = GetStoragePolonium();
         int desired = Mathf.Clamp(Mathf.RoundToInt(fuelSlider.value), 0, storage);
-        if (desired <= 0) return;
 
-        ResourceManager.instance.RemoveResource(ResourceSO.ResourceType.Polonium, desired);
-        unitsHeld = desired;
+        if (desired > 0)
+        {
+            ResourceManager.instance.RemoveResource(ResourceSO.ResourceType.Polonium, desired);
+            unitsHeld += desired;
+        }
+        else if (unitsHeld <= 0)
+        {
+            return;
+        }
 
         running = true;
         LockLoadInputs(true);
@@ -112,6 +135,7 @@ public class ReactorUIController : MonoBehaviour
         if (loop != null) StopCoroutine(loop);
         loop = StartCoroutine(BurnLoop());
         SetStartButtonText("Stop");
+        btnStart.interactable = true; // always enabled to stop
     }
 
     void StopBurn()
@@ -120,12 +144,15 @@ public class ReactorUIController : MonoBehaviour
         if (loop != null) StopCoroutine(loop);
         loop = null;
 
+        fuelSlider.value = 0; // keep unitsHeld, reset load intent
         LockLoadInputs(false);
+        RefreshProjected();
+        UpdateLoadInteractivity();
+
         if (cooldownFill) cooldownFill.fillAmount = 0f;
         if (txtCountdown) txtCountdown.text = $"00:{Mathf.RoundToInt(cooldownSeconds):00}";
         SetStartButtonText("Start Burn");
-
-        ResetUI();
+        btnStart.interactable = true; // can start again with existing unitsHeld
     }
 
     IEnumerator BurnLoop()
@@ -164,13 +191,16 @@ public class ReactorUIController : MonoBehaviour
     {
         lastStoragePolonium = GetStoragePolonium();
         ClampSliderToStorage();
-        RefreshUnitsHeld();            // shows reactor reserve (0 until loaded)
+        RefreshUnitsHeld();
         RefreshProjected();
         UpdateLoadInteractivity();
 
         if (txtEvery) txtEvery.text = $"Every {Mathf.RoundToInt(cooldownSeconds)}s";
         if (txtCountdown) txtCountdown.text = $"00:{Mathf.RoundToInt(cooldownSeconds):00}";
         if (cooldownFill) cooldownFill.fillAmount = 0f;
+
+        SetStartButtonText(running ? "Stop" : "Start Burn");
+        btnStart.interactable = running || (unitsHeld > 0); // safe default before first onValueChanged
     }
 
     void RefreshUnitsHeld()
@@ -192,21 +222,25 @@ public class ReactorUIController : MonoBehaviour
 
     void UpdateLoadInteractivity()
     {
-        bool canAdjust = !running;
         int storage = lastStoragePolonium;
         int desired = Mathf.RoundToInt(fuelSlider.value);
 
+        bool canAdjust = !running;
         btn10.interactable = canAdjust && storage >= 10;
         btn25.interactable = canAdjust && storage >= 25;
         btn50.interactable = canAdjust && storage >= 50;
 
-        if (canAdjust && storage <= 0)
+        if (canAdjust && storage <= 0 && desired > 0)
         {
             fuelSlider.value = 0;
+            desired = 0;
             RefreshProjected();
         }
 
-        btnStart.interactable = canAdjust && desired > 0 && desired <= storage;
+        // Start/Stop button rule:
+        // - Running: always enabled (acts as Stop).
+        // - Stopped: enabled only if (unitsHeld > 0) OR (desired > 0 && desired <= storage).
+        btnStart.interactable = running || (unitsHeld > 0) || (desired > 0 && desired <= storage);
     }
 
     void LockLoadInputs(bool on)
@@ -215,7 +249,7 @@ public class ReactorUIController : MonoBehaviour
         btn10.interactable = !on ? btn10.interactable : false;
         btn25.interactable = !on ? btn25.interactable : false;
         btn50.interactable = !on ? btn50.interactable : false;
-        btnStart.interactable = true;
+        // btnStart remains enabled per UpdateLoadInteractivity
     }
 
     void SetStartButtonText(string s)
@@ -226,8 +260,19 @@ public class ReactorUIController : MonoBehaviour
 
     int GetStoragePolonium()
     {
-        var f = typeof(ResourceManager).GetField("polonium", BindingFlags.NonPublic | BindingFlags.Instance);
-        return f != null ? (int)f.GetValue(ResourceManager.instance) : 0;
+        var rm = ResourceManager.instance;
+        if (rm == null)
+            return 0;
+
+        if (poloniumField == null)
+            poloniumField = typeof(ResourceManager).GetField("polonium",
+                BindingFlags.NonPublic | BindingFlags.Instance);
+
+        if (poloniumField == null)
+            return 0;
+
+        object val = poloniumField.GetValue(rm);
+        return val is int i ? i : 0;
     }
 
     static string Format(float s)
