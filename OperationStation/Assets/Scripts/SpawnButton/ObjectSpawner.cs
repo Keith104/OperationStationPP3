@@ -60,8 +60,7 @@ public class ObjectSpawner : MonoBehaviour
             RaycastHit hit;
 
 
-            if(Physics.Raycast(ray, out hit) && objectToInstantiate != wall && 
-                objectToInstantiate != grapeJam && objectToInstantiate != basicTurret)
+            if(Physics.Raycast(ray, out hit))
             {
 
                 GameObject hitObject = hit.collider.gameObject;

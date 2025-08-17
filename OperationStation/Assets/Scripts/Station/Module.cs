@@ -16,21 +16,12 @@ public class Module : MonoBehaviour, ISelectable, IDamage
     [SerializeField] SoundModulation soundModulation;
     [SerializeField] AudioSource damageSource;
 
-    public bool isRightAvailable;
-    public bool isLeftAvailable;
-    public bool isUpAvailable;
-    public bool isDownAvailable;
-
     private Color origColor;
-<<<<<<< Updated upstream
-=======
 
-    public bool isUpAvailable;
-    public bool isDownAvailable;
     public bool isRightAvailable;
     public bool isLeftAvailable;
-
->>>>>>> Stashed changes
+    public bool isUpAvailable;
+    public bool isDownAvailable;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -38,12 +29,7 @@ public class Module : MonoBehaviour, ISelectable, IDamage
         localHealth = stats.unitHealth;
         resourceCosts = stats.cost;
         for (int i = 0; i < resourceCosts.Length; i++)
-<<<<<<< Updated upstream
              costsLeft[i] = resourceCosts[i].cost;
-=======
-            costsLeft[i] = resourceCosts[i].cost;
-        
->>>>>>> Stashed changes
     }
 
     // Update is called once per frame

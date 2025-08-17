@@ -18,11 +18,7 @@ public class Grid : MonoBehaviour
 
         if (module.isRightAvailable == true && !Physics.Raycast(transform.position, transform.right, out hit, 10f))
         {
-<<<<<<< Updated upstream
             var spawnTileRight = Instantiate(_tilePrefab, new Vector3(module.transform.position.x + 1, 
-=======
-            var spawnTileRight = Instantiate(_tilePrefab, new Vector3(module.transform.position.x + 5, 
->>>>>>> Stashed changes
                 module.transform.position.y, module.transform.position.z), 
                 Quaternion.identity, transform);
             spawnTileRight.name = $"Right";
@@ -34,11 +30,7 @@ public class Grid : MonoBehaviour
         }
         if (module.isLeftAvailable == true && !Physics.Raycast(transform.position, -transform.right, out hit, 10f))
         {
-<<<<<<< Updated upstream
             var spawnTileLeft = Instantiate(_tilePrefab, new Vector3(module.transform.position.x - 1,
-=======
-            var spawnTileLeft = Instantiate(_tilePrefab, new Vector3(module.transform.position.x - 5,
->>>>>>> Stashed changes
                 module.transform.position.y, module.transform.position.z), 
                 Quaternion.identity, transform);
             spawnTileLeft.name = $"Left";
@@ -50,11 +42,7 @@ public class Grid : MonoBehaviour
         if (module.isUpAvailable == true && !Physics.Raycast(transform.position, transform.forward, out hit, 10f))
         {
             var spawnTileUp = Instantiate(_tilePrefab, new Vector3(module.transform.position.x,
-<<<<<<< Updated upstream
                 module.transform.position.y, module.transform.position.z + 1), 
-=======
-                module.transform.position.y, module.transform.position.z + 5), 
->>>>>>> Stashed changes
                 Quaternion.identity, transform);
             spawnTileUp.name = $"Up";
         }
@@ -65,11 +53,7 @@ public class Grid : MonoBehaviour
         if (module.isDownAvailable == true && !Physics.Raycast(transform.position, -transform.forward, out hit, 10f))
         {
             var spawnTileDown = Instantiate(_tilePrefab, new Vector3(module.transform.position.x,
-<<<<<<< Updated upstream
                 module.transform.position.y, module.transform.position.z - 1), 
-=======
-                module.transform.position.y, module.transform.position.z - 5), 
->>>>>>> Stashed changes
                 Quaternion.identity, transform);
             spawnTileDown.name = $"Down";
         }

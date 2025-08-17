@@ -9,7 +9,6 @@ public class ButtonFunctions : MonoBehaviour
     [SerializeField] AudioSource hoverInSource;
     [SerializeField] AudioSource hoverOutSource;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-<<<<<<< Updated upstream
     void Start()
     {
         
@@ -22,10 +21,6 @@ public class ButtonFunctions : MonoBehaviour
     }
 
     public void PlayClick()
-=======
-    
-    public void Resume()
->>>>>>> Stashed changes
     {
         clickSource.Play();
     }
@@ -78,7 +73,6 @@ public class ButtonFunctions : MonoBehaviour
         SceneManager.LoadScene(scene);
         LevelUIManager.instance.StateUnpause();
     }
-<<<<<<< Updated upstream
     IEnumerator QuitGameWaitForSourceToFinish(AudioSource playingSource)
     {
         yield return new WaitForSeconds(playingSource.clip.length);
@@ -90,8 +84,6 @@ public class ButtonFunctions : MonoBehaviour
         Application.Quit();
 #endif
     }
-=======
->>>>>>> Stashed changes
 
     public void SetActiveMenu(GameObject menuActive)
     {
