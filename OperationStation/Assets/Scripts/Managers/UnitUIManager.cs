@@ -10,6 +10,7 @@ public class UnitUIManager : MonoBehaviour
     public GameObject unitMenu;
     public GameObject costMenu;
     public GameObject reactorMenu;
+    public GameObject solarMenu;
     public TextMeshProUGUI tmpUnitName;
     public TextMeshProUGUI tmpUnitDesc;
     public TextMeshProUGUI tmpUnitCost;

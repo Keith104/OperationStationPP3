@@ -10,6 +10,8 @@ public class EnergyBuilding : MonoBehaviour, ISelectable, IModule, IDamage
     Module moduleRef;
     Coroutine autoLoop;
 
+    GameObject parent;
+
     public void Awake()
     {
         moduleRef = GetComponent<Module>();
@@ -55,13 +57,9 @@ public class EnergyBuilding : MonoBehaviour, ISelectable, IModule, IDamage
                 UnitUIManager.instance.unitMenu.SetActive(true);
                 UnitUIManager.instance.reactorMenu.SetActive(true);
                 if (moduleRef) UnitUIManager.instance.tmpUnitName.text = moduleRef.name;
-                var parent = UnitUIManager.instance.reactorMenu.gameObject.transform.parent.gameObject;
-                var controller = parent.GetComponentInParent<ReactorUIController>();
-                if (controller && moduleRef && moduleRef.stats) controller.Bind(moduleRef.stats);
-                break;
-
-            case "UnitMenu":
-                UnitUIManager.instance.unitMenu.SetActive(true);
+                parent = UnitUIManager.instance.reactorMenu.gameObject.transform.parent.gameObject;
+                var reactController = parent.GetComponentInParent<ReactorUIController>();
+                if (reactController && moduleRef && moduleRef.stats) reactController.Bind(moduleRef.stats);
                 break;
         }
         UnitUIManager.instance.currUnit = gameObject;
