@@ -76,6 +76,8 @@ public class DeathCat : MonoBehaviour, ISelectable, IModule, IDamage
 
     public void TakeControl()
     {
+        UnitUIManager.instance.DisableAllMenus();
+        UnitUIManager.instance.unitMenu.SetActive(true);
         UnitUIManager.instance.costMenu.SetActive(true);
         ((ISelectable)module).TakeControl();
     }

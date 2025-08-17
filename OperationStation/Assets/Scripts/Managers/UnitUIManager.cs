@@ -39,6 +39,12 @@ public class UnitUIManager : MonoBehaviour
         
     }
 
+    public void DisableAllMenus()
+    {
+        costMenu.SetActive(false);
+        reactorMenu.SetActive(false);
+    }
+
     public void OnSpendClick(int num)
     {
         buttonFunctions.PlayClick();
