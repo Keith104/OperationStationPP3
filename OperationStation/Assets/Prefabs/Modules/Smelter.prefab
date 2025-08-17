@@ -15,9 +15,8 @@ GameObject:
   - component: {fileID: 6901402491665857037}
   - component: {fileID: 5053440431739187927}
   - component: {fileID: 9089107403820886792}
-  - component: {fileID: 7846787521427899733}
   m_Layer: 6
-  m_Name: Solar Panel Array
+  m_Name: Smelter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -245,21 +244,6 @@ MonoBehaviour:
   onStart: 0
   randomMin: 0
   randomMax: 0
---- !u!114 &7846787521427899733
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5181112579491600659}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: caef045895a0ec3499158708cd6609e8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  menuToActivate: 
-  autoGenerate: 1
-  autoIntervalSeconds: 3
 --- !u!1001 &9034889412836088309
 PrefabInstance:
   m_ObjectHideFlags: 0
