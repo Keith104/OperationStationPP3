@@ -15,9 +15,9 @@ GameObject:
   - component: {fileID: 6901402491665857037}
   - component: {fileID: 5053440431739187927}
   - component: {fileID: 9089107403820886792}
-  - component: {fileID: 7846787521427899733}
+  - component: {fileID: 2315513264197548960}
   m_Layer: 6
-  m_Name: Solar Panel Array
+  m_Name: Smelter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -59,7 +59,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cbef3499396ad34bb7f85c46474d550, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stats: {fileID: 11400000, guid: 3b8e51a8b7ae64b4d9f9f83ad653b27a, type: 2}
+  stats: {fileID: 11400000, guid: 23d389fe2fdadf7469388697a7c5fd47, type: 2}
   model: {fileID: 7625927308510609161}
   resourceCosts: []
   costsLeft: 0000000000000000
@@ -245,7 +245,7 @@ MonoBehaviour:
   onStart: 0
   randomMin: 0
   randomMax: 0
---- !u!114 &7846787521427899733
+--- !u!114 &2315513264197548960
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -254,12 +254,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 5181112579491600659}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: caef045895a0ec3499158708cd6609e8, type: 3}
+  m_Script: {fileID: 11500000, guid: c06511b7a67595a4a91c7be3b873757c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  menuToActivate: 
-  autoGenerate: 1
-  autoIntervalSeconds: 3
+  module: {fileID: 5612627323844087658}
 --- !u!1001 &9034889412836088309
 PrefabInstance:
   m_ObjectHideFlags: 0

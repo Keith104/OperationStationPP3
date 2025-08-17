@@ -233,7 +233,23 @@ public class PlayerCamera : MonoBehaviour
 
     void TrySelect(GameObject go)
     {
-        if (go.TryGetComponent(out ISelectable sel)) sel.TakeControl();
+        var selectables = new List<ISelectable>(go.GetComponents<ISelectable>());
+
+        // Prefer Smelter if present
+        foreach (var sel in selectables)
+        {
+            if (sel is Smelter)
+            {
+                sel.TakeControl();
+                return;
+            }
+        }
+
+        // Otherwise call the first one
+        if (selectables.Count > 0)
+        {
+            selectables[0].TakeControl();
+        }
     }
 
     Vector2 GetPointerPosOrCenter()

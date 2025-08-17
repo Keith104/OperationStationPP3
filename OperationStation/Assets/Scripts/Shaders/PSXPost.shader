@@ -11,12 +11,7 @@
 
     SubShader
     {
-        Tags
-        {
-            "RenderPipeline"="UniversalRenderPipeline"
-            "Queue"="Transparent"
-            "IgnoreProjector"="True"
-        }
+        Tags { "RenderPipeline"="UniversalRenderPipeline" "Queue"="Transparent" "IgnoreProjector"="True" }
 
         Pass
         {
@@ -31,10 +26,11 @@
             #pragma vertex   Vert
             #pragma fragment Frag
 
-            // --- Bound by URP Full Screen Pass ---
+            // ---- Bound by URP Full Screen Pass ----
+            // Source frame
             Texture2D    _BlitTexture;
             SamplerState sampler_BlitTexture;
-            // (1/w, 1/h, w, h)
+            // (1/w, 1/h, w, h)  NOTE: y can be NEGATIVE when a flip is required.
             float4       _BlitTexture_TexelSize;
 
             // Per-material params
@@ -47,52 +43,62 @@
                 float  _EnableDither;    // 0/1
             };
 
-            // Per-camera data (URP sets this).
-            // 1 = Game, 2 = SceneView, 4 = Preview, etc.
+            // Per-camera (URP sets this): 1=Game, 2=SceneView, 4=Preview...
             cbuffer UnityPerCamera
             {
                 float _CameraType;
             };
 
-            // ---------- Fullscreen triangle ----------
-            float4 FS_TrianglePosition(uint id)
+            // -------- Fullscreen triangle (no mesh) --------
+            float4 FS_Pos(uint id)
             {
-                float2 pos = (id == 0) ? float2(-1.0, -1.0) :
-                             (id == 1) ? float2(-1.0,  3.0) :
-                                         float2( 3.0, -1.0);
-                return float4(pos, 0.0, 1.0);
+                float2 p = (id == 0) ? float2(-1,-1) :
+                           (id == 1) ? float2(-1, 3) :
+                                       float2( 3,-1);
+                return float4(p, 0, 1);
             }
-            float2 FS_TriangleTexCoord(uint id)
+            float2 FS_UV(uint id)
             {
-                return (id == 0) ? float2(0.0, 0.0) :
-                       (id == 1) ? float2(0.0, 2.0) :
-                                   float2(2.0, 0.0);
+                // 0..1 across the visible area via 0..2 UVs on a big triangle
+                return (id == 0) ? float2(0,0) :
+                       (id == 1) ? float2(0,2) :
+                                   float2(2,0);
             }
 
-            struct Attributes { uint   vertexID   : SV_VertexID; };
-            struct Varyings   { float4 positionHCS: SV_Position; float2 uv: TEXCOORD0; };
+            struct Attributes { uint vertexID : SV_VertexID; };
+            struct Varyings   { float4 pos : SV_Position; float2 uv : TEXCOORD0; };
 
-            Varyings Vert (Attributes IN)
+            Varyings Vert(Attributes IN)
             {
                 Varyings OUT;
-                OUT.positionHCS = FS_TrianglePosition(IN.vertexID);
-                OUT.uv          = FS_TriangleTexCoord(IN.vertexID);
+                OUT.pos = FS_Pos(IN.vertexID);
+                OUT.uv  = FS_UV(IN.vertexID);
                 return OUT;
             }
 
-            // ---------- Helpers ----------
+            // -------- Helpers --------
+            // Conditional UV flip (Unity-recommended): flip only when top-origin AND texelSize.y < 0
+            float2 FixUV(float2 uv)
+            {
+                #if defined(UNITY_UV_STARTS_AT_TOP)
+                    if (_BlitTexture_TexelSize.y < 0.0)
+                        uv.y = 1.0 - uv.y;
+                #endif
+                return uv;
+            }
+
             float2 PixelateUV(float2 uv, float2 grid, float enable)
             {
                 if (enable < 0.5 || grid.x <= 0.0 || grid.y <= 0.0) return uv;
                 return floor(uv * grid) / grid;
             }
 
-            // 4x4 Bayer dithering prior to quantization
-            float3 BayerDither(float2 uv, float3 c, float steps, float strength, float enable)
+            // 4x4 Bayer dithering before quantization
+            float3 BayerDither(float2 uvForPattern, float3 c, float steps, float strength, float enable)
             {
                 if (enable < 0.5 || strength <= 0.0 || steps <= 1.0) return c;
 
-                float2 pixel = uv * _BlitTexture_TexelSize.zw;
+                float2 pixel = uvForPattern * _BlitTexture_TexelSize.zw; // (width,height)
                 int2 p = int2(fmod(floor(pixel), 4.0));
 
                 const float M[16] = {
@@ -104,8 +110,7 @@
                 float t = (M[p.y*4 + p.x] + 0.5) / 16.0;
 
                 float inv = 1.0 / (steps - 1.0);
-                float3 jitter = (t - 0.5) * inv * strength;
-                return saturate(c + jitter);
+                return saturate(c + (t - 0.5) * inv * strength);
             }
 
             float3 Posterize(float3 c, float steps)
@@ -115,28 +120,25 @@
 
             float4 Frag (Varyings IN) : SV_Target
             {
-                // ----- Bypass Scene/Preview/etc. so Scene View stays clean -----
-                // Treat any non-Game camera (>1.5) as editor and skip effect.
-                if (_CameraType > 1.5)
+                // ---- Keep Scene/Preview clean ----
+                if (_CameraType > 1.5) // non-Game cameras
                 {
-                    // Optionally handle possible top-origin UVs in some editor paths:
-                    float2 uvBypass = IN.uv;
-                #ifdef UNITY_UV_STARTS_AT_TOP
-                    uvBypass.y = 1.0 - uvBypass.y;
-                #endif
+                    float2 uvBypass = FixUV(IN.uv);
                     return _BlitTexture.Sample(sampler_BlitTexture, uvBypass);
                 }
 
-                // ----- Effect for Game cameras -----
-                float2 uv  = PixelateUV(IN.uv, _PixelGrid, _EnablePixelate);
+                // ---- Game cameras: apply effect ----
+                // Get correct-orientation UV first
+                float2 uvScreen = FixUV(IN.uv);
 
-                // If you ever see a flipped Game View on a specific platform, enable this:
-                // #ifdef UNITY_UV_STARTS_AT_TOP
-                //     uv.y = 1.0 - uv.y;
-                // #endif
+                // Pixelation works on screen-space UVs
+                float2 uvSample = PixelateUV(uvScreen, _PixelGrid, _EnablePixelate);
 
-                float3 col = _BlitTexture.Sample(sampler_BlitTexture, uv).rgb;
-                col = BayerDither(IN.uv, col, _Steps, _DitherStrength, _EnableDither);
+                float3 col = _BlitTexture.Sample(sampler_BlitTexture, uvSample).rgb;
+
+                // Use unpixelated screen UV for a stable Bayer pattern
+                col = BayerDither(uvScreen, col, _Steps, _DitherStrength, _EnableDither);
+
                 col = Posterize(col, max(_Steps, 2.0));
                 return float4(col, 1.0);
             }
