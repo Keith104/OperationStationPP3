@@ -21,7 +21,6 @@ public class UnitUIManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(instance);
         }
         else
         {

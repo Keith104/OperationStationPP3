@@ -856,26 +856,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1860025412572323582, guid: 7badf4c813dff404690ad2239242cefa, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2227063477418880255, guid: 7badf4c813dff404690ad2239242cefa, type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2495936026024612541, guid: 7badf4c813dff404690ad2239242cefa, type: 3}
-      propertyPath: inputActions
-      value: 
-      objectReference: {fileID: -944628639613478452, guid: dbce36154c4008e4c96020357277a091, type: 3}
-    - target: {fileID: 5460663326098639600, guid: 7badf4c813dff404690ad2239242cefa, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6795622734064256597, guid: 7badf4c813dff404690ad2239242cefa, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7813998781396424135, guid: 7badf4c813dff404690ad2239242cefa, type: 3}
       propertyPath: m_Pivot.x
       value: 0

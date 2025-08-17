@@ -19,7 +19,6 @@ public class LevelUIManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(instance);
         }
         else
         {
