@@ -18,4 +18,4 @@ MonoBehaviour:
   health: 3
   bullet: {fileID: 2181284486069709208, guid: e43fc242e25252d40bb048865086b253, type: 3}
   damageAmount: 1
-  attackCooldown: 2
+  attackCooldown: 3

@@ -5,17 +5,17 @@ public class ResourceManager : MonoBehaviour
     public static ResourceManager instance { get; private set; }
 
     [Header("Basic Resources")]
-    [SerializeField] int tritium;
-    [SerializeField] int silver;
-    [SerializeField] int polonium;
+    [SerializeField] public int tritium;
+    [SerializeField] public int silver;
+    [SerializeField] public int polonium;
 
     [Header("Smelted Resources")]
-    [SerializeField] int tritiumIngot;
-    [SerializeField] int silverCoins;
-    [SerializeField] int poloniumCrystal;
+    [SerializeField] public int tritiumIngot;
+    [SerializeField] public int silverCoins;
+    [SerializeField] public int poloniumCrystal;
 
     [Header("Special Resources")]
-    [SerializeField] int energy;
+    [SerializeField] public int energy;
 
     [Header("Debug Tools")]
     [SerializeField] bool debug;

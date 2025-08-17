@@ -16,34 +16,42 @@ public class ObjectSpawner : MonoBehaviour
     private Vector3 spawnLocation;
     public static bool awaitingPlacement;
 
-    public void DeathCatSpawn()
+    ResourceManager resourceManager = ResourceManager.instance;
+
+    public void DeathCatSpawn(int resourcePrice)
     {
-        awaitingPlacement = true;
-        objectToInstantiate = deathCat;
+        ResourceSO.ResourceType resource = ResourceSO.ResourceType.PoloniumCrystal;
+        if (resourceManager.poloniumCrystal >= resourcePrice)
+        {
+            resourceManager.RemoveResource(resource, resourcePrice);
+            awaitingPlacement = true;
+            objectToInstantiate = deathCat;
+
+        }
     }
-    public void NullSpaceFabricatorSpawn()
+    public void NullSpaceFabricatorSpawn(int resourcePrice)
     {
         awaitingPlacement = true;
         objectToInstantiate = nullSpaceFabricator;
     }
-    public void MacroParticleSmelterSpawn()
+    public void MacroParticleSmelterSpawn(int resourcePrice)
     {
         awaitingPlacement = true;
         objectToInstantiate = macroParticleSmelter;
     }
-    public void BasicTurretSpawn()
+    public void BasicTurretSpawn(int resourcePrice)
     {
         awaitingPlacement = true;
         objectToInstantiate = basicTurret;
     }
 
-    public void WallSpawn()
+    public void WallSpawn(int resourcePrice)
     {
         awaitingPlacement = true;
         objectToInstantiate = wall;
     }
 
-    public void GrapeJamSpawn()
+    public void GrapeJamSpawn(int resourcePrice)
     {
         awaitingPlacement = true;
         objectToInstantiate = grapeJam;
