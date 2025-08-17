@@ -84,4 +84,9 @@ public class ButtonFunctions : MonoBehaviour
         Application.Quit();
 #endif
     }
+
+    public void SetActiveMenu(GameObject menuActive)
+    {
+        LevelUIManager.instance.SetActiveMenu(menuActive);
+    }
 }
