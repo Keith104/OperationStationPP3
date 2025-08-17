@@ -11,6 +11,11 @@ public class Module : MonoBehaviour, ISelectable, IDamage
     public int[] costsLeft;
 
     public float localHealth;
+
+    [Header("Sound")]
+    [SerializeField] SoundModulation soundModulation;
+    [SerializeField] AudioSource damageSource;
+
     private Color origColor;
 
     public bool isUpAvailable;
@@ -76,6 +81,10 @@ public class Module : MonoBehaviour, ISelectable, IDamage
     }
     public void TakeDamage(float damage)
     {
+
+        soundModulation.ModulateSound(Random.Range(0.8f, 1.2f));
+        damageSource.Play();
+
         Debug.Log(gameObject.name + " has taken damage");
         StartCoroutine(FlashRed());
 

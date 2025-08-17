@@ -1,4 +1,6 @@
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -8,6 +10,7 @@ public class MainMenuManager : MonoBehaviour
 {
     [Header("Buttons")]
     [SerializeField] Button exitButton;
+    [SerializeField] Button[] menuButtons;
 
     [Header("Menu UI")]
     [SerializeField] CanvasGroup menuGroup;
@@ -18,7 +21,7 @@ public class MainMenuManager : MonoBehaviour
 
     [SerializeField] float fadeSeconds = 0.75f;
 
-    private void Start()
+    void Start()
     {
 #if UNITY_WEBGL
         if (exitButton != null)
@@ -30,16 +33,23 @@ public class MainMenuManager : MonoBehaviour
             menuGroup.interactable = true;
             menuGroup.blocksRaycasts = true;
         }
+
+        // Ensure buttons start interactable
+        SetMenuButtonsInteractable(true);
     }
 
     public void PlayButton(string sceneName)
     {
+        SetMenuButtonsInteractable(false);
         SceneTransition.Run(sceneName);
     }
 
     public void CreditsButton()
     {
         if (creditsMenu == null || creditsCanvasGroup == null) return;
+
+        SetMenuButtonsInteractable(false);
+
         creditsCanvasGroup.alpha = 0f;
         creditsMenu.SetActive(true);
         StartCoroutine(CreditsFadeIn());
@@ -68,5 +78,15 @@ public class MainMenuManager : MonoBehaviour
 #else
         Application.Quit();
 #endif
+    }
+
+    // Called by this manager and by CreditsScroller when credits finish.
+    public void SetMenuButtonsInteractable(bool interactable)
+    {
+        if (menuButtons == null) return;
+        foreach (var btn in menuButtons)
+        {
+            if (btn != null) btn.interactable = interactable;
+        }
     }
 }

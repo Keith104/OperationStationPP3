@@ -17,6 +17,11 @@ public class EnemyAI : MonoBehaviour, IDamage
     [SerializeField] Transform shootPos;
     [SerializeField] bool spinFire;
 
+    [Header("Sound")]
+    [SerializeField] SoundBank soundBank;
+    [SerializeField] SoundModulation soundModulation;
+    [SerializeField] AudioSource damageSource;
+
     [Header("Debug")]
     [SerializeField] bool debug;
     
@@ -36,13 +41,18 @@ public class EnemyAI : MonoBehaviour, IDamage
 
     void Start()
     {
+        Debug.Log("Hey they are here");
+
         //This isn't final I'll fix/change this when I know how we're implementing the station
         station = GameObject.FindWithTag("Player");
         colorOG = model.material.color;
 
         health = enemy.health;
 
-        enemy.bullet.GetComponent<Damage>().damageAmount = enemy.damageAmount;
+        if (enemy.bullet.GetComponent<Damage>() != null)
+        {
+            enemy.bullet.GetComponent<Damage>().damageAmount = enemy.damageAmount;
+        }
     }
 
     void Update()
@@ -58,6 +68,10 @@ public class EnemyAI : MonoBehaviour, IDamage
 
     public void TakeDamage(float amount)
     {
+        soundBank.SetSourceToRandomClip();
+        soundModulation.ModulateSound(Random.Range(0.8f, 1.2f));
+        damageSource.Play();
+
         health -= amount;
         StartCoroutine(FlashRed());
 

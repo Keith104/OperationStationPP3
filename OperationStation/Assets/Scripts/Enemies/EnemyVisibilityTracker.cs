@@ -19,12 +19,14 @@ public class EnemyVisibilityTracker : MonoBehaviour
             enemyAdded = true;
             enemySubed = false;
         }
-        if (!GetComponent<Renderer>().isVisible && enemySubed == false)
+        else if (!GetComponent<Renderer>().isVisible && enemySubed == false)
         {
             MusicManager.instance.enemiesSeen--;
             enemySubed = true;
             enemyAdded = false;
         }
+        else
+            return;
 
     }
 }
