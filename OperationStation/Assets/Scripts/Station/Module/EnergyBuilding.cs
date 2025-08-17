@@ -34,5 +34,6 @@ public class EnergyBuilding : MonoBehaviour, ISelectable, IModule, IDamage
 
     public void TakeDamage(float damage)
     {
+
     }
 }
