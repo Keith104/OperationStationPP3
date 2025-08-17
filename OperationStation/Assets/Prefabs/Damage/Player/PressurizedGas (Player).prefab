@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3014631877281216747
+--- !u!1 &7396409408485287275
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,58 +8,59 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5547448820086597642}
-  - component: {fileID: 8347722284277568128}
-  - component: {fileID: 5968145230355826079}
-  - component: {fileID: 6676244325269352401}
-  - component: {fileID: 4296211044255252031}
-  - component: {fileID: 5285502393502865205}
-  - component: {fileID: -8532246540103819329}
-  m_Layer: 0
-  m_Name: NeutronMissle
+  - component: {fileID: 395626922046234963}
+  - component: {fileID: 2654180901060380347}
+  - component: {fileID: 8657239251711080533}
+  - component: {fileID: 3875350402087791604}
+  - component: {fileID: 6768065493248567373}
+  - component: {fileID: 6953686546996404605}
+  - component: {fileID: 4254062971991427607}
+  m_Layer: 10
+  m_Name: PressurizedGas (Player)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5547448820086597642
+--- !u!4 &395626922046234963
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3014631877281216747}
+  m_GameObject: {fileID: 7396409408485287275}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.967213, y: 5.5568824, z: 6.8125973}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -16.249996, y: 6.5793333, z: 23.759619}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8347722284277568128
+--- !u!114 &2654180901060380347
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3014631877281216747}
+  m_GameObject: {fileID: 7396409408485287275}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b5836e8bd847da428c39c5e7eb22824, type: 3}
+  m_Script: {fileID: 11500000, guid: edf19a5c5513c9f4dba0ef5c3d2c0725, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 6676244325269352401}
-  speed: 10
-  explosion: {fileID: 754968027998991650, guid: 1c148214519e0a942be883404929ca87, type: 3}
+  type: 0
+  rb: {fileID: 3875350402087791604}
+  regSpeed: 25
+  damageAmount: 1
   destroyTime: 3
---- !u!135 &5968145230355826079
+--- !u!135 &8657239251711080533
 SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3014631877281216747}
+  m_GameObject: {fileID: 7396409408485287275}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -74,13 +75,13 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!54 &6676244325269352401
+--- !u!54 &3875350402087791604
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3014631877281216747}
+  m_GameObject: {fileID: 7396409408485287275}
   serializedVersion: 4
   m_Mass: 1
   m_Drag: 0
@@ -101,14 +102,14 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!96 &4296211044255252031
+--- !u!96 &6768065493248567373
 TrailRenderer:
   serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3014631877281216747}
+  m_GameObject: {fileID: 7396409408485287275}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -208,34 +209,34 @@ TrailRenderer:
   m_Autodestruct: 0
   m_Emitting: 1
   m_ApplyActiveColorSpace: 1
---- !u!114 &5285502393502865205
+--- !u!114 &6953686546996404605
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3014631877281216747}
+  m_GameObject: {fileID: 7396409408485287275}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9d03415016519fb44ac95663e7f8fd39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioSource: {fileID: -8532246540103819329}
+  audioSource: {fileID: 4254062971991427607}
   onStart: 1
   randomMin: 0.7
   randomMax: 1.4
---- !u!82 &-8532246540103819329
+--- !u!82 &4254062971991427607
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3014631877281216747}
+  m_GameObject: {fileID: 7396409408485287275}
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 9182307619651584671, guid: 78950690dd40a7141a7d499ea454f64e, type: 2}
-  m_audioClip: {fileID: 8300000, guid: 4f04c83f8cdcf094d98455c328947786, type: 3}
-  m_Resource: {fileID: 8300000, guid: 4f04c83f8cdcf094d98455c328947786, type: 3}
+  m_audioClip: {fileID: 8300000, guid: c5c2f89466cf57745873d1ba345270f4, type: 3}
+  m_Resource: {fileID: 8300000, guid: c5c2f89466cf57745873d1ba345270f4, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1

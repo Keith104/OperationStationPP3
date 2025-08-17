@@ -15,8 +15,8 @@ GameObject:
   - component: {fileID: 7001045904364791272}
   - component: {fileID: 5167020210212859280}
   - component: {fileID: 2360507374624348700}
-  m_Layer: 8
-  m_Name: PressurizedGas
+  m_Layer: 3
+  m_Name: PressurizedGas (Enemy)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

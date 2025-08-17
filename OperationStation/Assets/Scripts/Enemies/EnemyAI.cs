@@ -83,7 +83,9 @@ public class EnemyAI : MonoBehaviour, IDamage
                 Instantiate(enemyToSpawn, transform.position, transform.rotation);
             }
 
-            WaveManager.instance.DeadEnemy();
+            if(WaveManager.instance != null)
+                WaveManager.instance.DeadEnemy();
+
             Destroy(gameObject);
         }
     }

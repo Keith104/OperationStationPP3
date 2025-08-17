@@ -822,7 +822,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1008239324
 Transform:
   m_ObjectHideFlags: 0
@@ -837,6 +837,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2026264802}
+  - {fileID: 8338106190828149430}
   - {fileID: 1287036391}
   - {fileID: 789338695}
   - {fileID: 1521846628}
@@ -2002,7 +2003,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2181284486069709208, guid: e43fc242e25252d40bb048865086b253, type: 3}
       propertyPath: m_Name
-      value: PressurizedGas
+      value: PressurizedGas (Enemy)
       objectReference: {fileID: 0}
     - target: {fileID: 3075541620036002342, guid: e43fc242e25252d40bb048865086b253, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2071,7 +2072,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3014631877281216747, guid: 6da807d98d4147343952697c34185682, type: 3}
       propertyPath: m_Name
-      value: NeutronMissle
+      value: NeutronMissle (Enemy)
       objectReference: {fileID: 0}
     - target: {fileID: 5547448820086597642, guid: 6da807d98d4147343952697c34185682, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2248,6 +2249,63 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cda219b034cb6e74d825e0883ce22b01, type: 3}
+--- !u!1001 &6639134297824827490
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1008239324}
+    m_Modifications:
+    - target: {fileID: 395626922046234963, guid: 7df9b6faafd1c3c40aac8025213c8011, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -16.249996
+      objectReference: {fileID: 0}
+    - target: {fileID: 395626922046234963, guid: 7df9b6faafd1c3c40aac8025213c8011, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 6.5793333
+      objectReference: {fileID: 0}
+    - target: {fileID: 395626922046234963, guid: 7df9b6faafd1c3c40aac8025213c8011, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 23.759619
+      objectReference: {fileID: 0}
+    - target: {fileID: 395626922046234963, guid: 7df9b6faafd1c3c40aac8025213c8011, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 395626922046234963, guid: 7df9b6faafd1c3c40aac8025213c8011, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 395626922046234963, guid: 7df9b6faafd1c3c40aac8025213c8011, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 395626922046234963, guid: 7df9b6faafd1c3c40aac8025213c8011, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 395626922046234963, guid: 7df9b6faafd1c3c40aac8025213c8011, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 395626922046234963, guid: 7df9b6faafd1c3c40aac8025213c8011, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 395626922046234963, guid: 7df9b6faafd1c3c40aac8025213c8011, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7396409408485287275, guid: 7df9b6faafd1c3c40aac8025213c8011, type: 3}
+      propertyPath: m_Name
+      value: PressurizedGas (Player)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 7df9b6faafd1c3c40aac8025213c8011, type: 3}
 --- !u!1001 &6844125657186438959
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2370,6 +2428,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ff0f2a3adbcc36d49a522dcb779e9ae0, type: 3}
+--- !u!4 &8338106190828149430 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 395626922046234963, guid: 7df9b6faafd1c3c40aac8025213c8011, type: 3}
+  m_PrefabInstance: {fileID: 6639134297824827490}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
