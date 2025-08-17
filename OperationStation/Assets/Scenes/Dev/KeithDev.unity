@@ -319,6 +319,63 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 1
+--- !u!1001 &587089466
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5181112579491600659, guid: 075e225452f63ce42943d3fac77bc975, type: 3}
+      propertyPath: m_Name
+      value: Solar Panel Array
+      objectReference: {fileID: 0}
+    - target: {fileID: 6393130529554726897, guid: 075e225452f63ce42943d3fac77bc975, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 128
+      objectReference: {fileID: 0}
+    - target: {fileID: 6393130529554726897, guid: 075e225452f63ce42943d3fac77bc975, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -2.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 6393130529554726897, guid: 075e225452f63ce42943d3fac77bc975, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 123.88
+      objectReference: {fileID: 0}
+    - target: {fileID: 6393130529554726897, guid: 075e225452f63ce42943d3fac77bc975, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6393130529554726897, guid: 075e225452f63ce42943d3fac77bc975, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6393130529554726897, guid: 075e225452f63ce42943d3fac77bc975, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6393130529554726897, guid: 075e225452f63ce42943d3fac77bc975, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6393130529554726897, guid: 075e225452f63ce42943d3fac77bc975, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6393130529554726897, guid: 075e225452f63ce42943d3fac77bc975, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6393130529554726897, guid: 075e225452f63ce42943d3fac77bc975, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 075e225452f63ce42943d3fac77bc975, type: 3}
 --- !u!1001 &594782940
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -391,9 +448,15 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: -20
       objectReference: {fileID: 0}
+<<<<<<< HEAD
     - target: {fileID: 5581078884884317909, guid: 7badf4c813dff404690ad2239242cefa, type: 3}
       propertyPath: m_SizeDelta.y
       value: -20
+=======
+    - target: {fileID: 5787578479841672560, guid: 7badf4c813dff404690ad2239242cefa, type: 3}
+      propertyPath: txtEvery
+      value: 
+>>>>>>> parent of fea87f0 (Smelter works and also added Resource UI too)
       objectReference: {fileID: 0}
     - target: {fileID: 5581078884884317909, guid: 7badf4c813dff404690ad2239242cefa, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -532,7 +595,12 @@ PrefabInstance:
       value: AlexUI
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+<<<<<<< HEAD
     m_RemovedGameObjects: []
+=======
+    m_RemovedGameObjects:
+    - {fileID: 346382691491916819, guid: 7badf4c813dff404690ad2239242cefa, type: 3}
+>>>>>>> parent of fea87f0 (Smelter works and also added Resource UI too)
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7badf4c813dff404690ad2239242cefa, type: 3}
@@ -704,6 +772,66 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1690661975}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+<<<<<<< HEAD
+=======
+--- !u!1001 &1268081473
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1826742274521941465, guid: 79625718a0588914fab3fbb9e64337af, type: 3}
+      propertyPath: m_Name
+      value: DeathCat
+      objectReference: {fileID: 0}
+    - target: {fileID: 6765949016062805750, guid: 79625718a0588914fab3fbb9e64337af, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6765949016062805750, guid: 79625718a0588914fab3fbb9e64337af, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6765949016062805750, guid: 79625718a0588914fab3fbb9e64337af, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6765949016062805750, guid: 79625718a0588914fab3fbb9e64337af, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6765949016062805750, guid: 79625718a0588914fab3fbb9e64337af, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6765949016062805750, guid: 79625718a0588914fab3fbb9e64337af, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6765949016062805750, guid: 79625718a0588914fab3fbb9e64337af, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6765949016062805750, guid: 79625718a0588914fab3fbb9e64337af, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6765949016062805750, guid: 79625718a0588914fab3fbb9e64337af, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6765949016062805750, guid: 79625718a0588914fab3fbb9e64337af, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 79625718a0588914fab3fbb9e64337af, type: 3}
+>>>>>>> parent of fea87f0 (Smelter works and also added Resource UI too)
 --- !u!1001 &1279453590
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1544,4 +1672,9 @@ SceneRoots:
   - {fileID: 1364828779}
   - {fileID: 1279453590}
   - {fileID: 1835093992}
+<<<<<<< HEAD
   - {fileID: 1923731873}
+=======
+  - {fileID: 1268081473}
+  - {fileID: 587089466}
+>>>>>>> parent of fea87f0 (Smelter works and also added Resource UI too)

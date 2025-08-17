@@ -10,6 +10,10 @@ public class UnitUIManager : MonoBehaviour
     public GameObject unitMenu;
     public GameObject costMenu;
     public GameObject reactorMenu;
+<<<<<<< HEAD
+=======
+    public GameObject solarMenu;
+>>>>>>> parent of fea87f0 (Smelter works and also added Resource UI too)
     public TextMeshProUGUI tmpUnitName;
     public TextMeshProUGUI tmpUnitDesc;
     public TextMeshProUGUI tmpUnitCost;
@@ -31,12 +35,26 @@ public class UnitUIManager : MonoBehaviour
     void Start()
     {
         
+<<<<<<< HEAD
+=======
     }
 
     // Update is called once per frame
     void Update()
     {
         
+>>>>>>> parent of fea87f0 (Smelter works and also added Resource UI too)
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+<<<<<<< HEAD
+        
+=======
+        costMenu.SetActive(false);
+        reactorMenu.SetActive(false);
+>>>>>>> parent of fea87f0 (Smelter works and also added Resource UI too)
     }
 
     public void OnSpendClick(int num)
