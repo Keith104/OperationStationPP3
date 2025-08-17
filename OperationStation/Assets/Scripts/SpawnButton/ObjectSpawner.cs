@@ -1,4 +1,4 @@
-using System.Data;
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -14,7 +14,7 @@ public class ObjectSpawner : MonoBehaviour
     private GameObject objectToInstantiate;
 
     private Vector3 spawnLocation;
-    public static bool awaitingPlacement;
+    public static bool awaitingPlacement = false;
 
     ResourceManager resourceManager = ResourceManager.instance;
 
@@ -31,30 +31,55 @@ public class ObjectSpawner : MonoBehaviour
     }
     public void NullSpaceFabricatorSpawn(int resourcePrice)
     {
-        awaitingPlacement = true;
-        objectToInstantiate = nullSpaceFabricator;
+        ResourceSO.ResourceType resource = ResourceSO.ResourceType.PoloniumCrystal;
+        if (resourceManager.poloniumCrystal >= resourcePrice)
+        {
+            resourceManager.RemoveResource(resource, resourcePrice);
+            awaitingPlacement = true;
+            objectToInstantiate = nullSpaceFabricator;
+        }
     }
     public void MacroParticleSmelterSpawn(int resourcePrice)
     {
-        awaitingPlacement = true;
-        objectToInstantiate = macroParticleSmelter;
+        ResourceSO.ResourceType resource = ResourceSO.ResourceType.PoloniumCrystal;
+        if (resourceManager.poloniumCrystal >= resourcePrice)
+        {
+            resourceManager.RemoveResource(resource, resourcePrice);
+            awaitingPlacement = true;
+            objectToInstantiate = macroParticleSmelter;
+        }
     }
     public void BasicTurretSpawn(int resourcePrice)
     {
-        awaitingPlacement = true;
-        objectToInstantiate = basicTurret;
+        ResourceSO.ResourceType resource = ResourceSO.ResourceType.PoloniumCrystal;
+        if (resourceManager.poloniumCrystal >= resourcePrice)
+        {
+            resourceManager.RemoveResource(resource, resourcePrice);
+            awaitingPlacement = true;
+            objectToInstantiate = basicTurret;
+        }
     }
 
     public void WallSpawn(int resourcePrice)
     {
-        awaitingPlacement = true;
-        objectToInstantiate = wall;
+        ResourceSO.ResourceType resource = ResourceSO.ResourceType.PoloniumCrystal;
+        if (resourceManager.poloniumCrystal >= resourcePrice)
+        {
+            resourceManager.RemoveResource(resource, resourcePrice);
+            awaitingPlacement = true;
+            objectToInstantiate = wall;
+        }
     }
 
     public void GrapeJamSpawn(int resourcePrice)
     {
-        awaitingPlacement = true;
-        objectToInstantiate = grapeJam;
+        ResourceSO.ResourceType resource = ResourceSO.ResourceType.PoloniumCrystal;
+        if (resourceManager.poloniumCrystal >= resourcePrice)
+        {
+            resourceManager.RemoveResource(resource, resourcePrice);
+            awaitingPlacement = true;
+            objectToInstantiate = grapeJam;
+        }
     }
 
     // Update is called once per frame
@@ -66,38 +91,41 @@ public class ObjectSpawner : MonoBehaviour
         
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
+            Physics.Raycast(ray, out hit);
+            GameObject hitObject = hit.collider.gameObject;
+            Tile tile = hitObject.GetComponent<Tile>();
+            Defence defence = hitObject.GetComponent<Defence>();
 
-
-            if(Physics.Raycast(ray, out hit))
+            if (hitObject != null)
             {
-
-                GameObject hitObject = hit.collider.gameObject;
-                Tile tile = hitObject.GetComponent<Tile>();
-                GridSystem grid = tile.GetComponentInParent<GridSystem>();
-
-                if (hitObject != null && tile != null)
+                if(objectToInstantiate == deathCat || objectToInstantiate == nullSpaceFabricator || 
+                    objectToInstantiate == macroParticleSmelter)
                 {
-                    Vector3 Location = hitObject.transform.position;
-                    grid.spawnAvailableSpaces();
-                    spawnLocation = Location;
-                    Instantiate(objectToInstantiate, spawnLocation, Quaternion.identity, hitObject.transform.parent);
-                    awaitingPlacement = false;
-                    Destroy(hitObject);
-                }
-            }
-            else
-            {
-                if(objectToInstantiate == wall || objectToInstantiate == grapeJam || 
-                    objectToInstantiate == basicTurret)
-                {
-                    GameObject foundDeathCat = GameObject.Find("DeathCat");
-
-                    if (foundDeathCat != null)
+                    if (tile != null)
                     {
-                        Instantiate(objectToInstantiate, spawnLocation, Quaternion.identity, foundDeathCat.transform.parent);
+                        GridSystem grid = tile.GetComponentInParent<GridSystem>();
+                        Vector3 Location = hitObject.transform.position;
+                        grid.spawnAvailableSpaces();
+                        spawnLocation = Location;
+                        Instantiate(objectToInstantiate, spawnLocation, Quaternion.identity, hitObject.transform.parent);
+                        awaitingPlacement = false;
+                        Destroy(hitObject);
+
                     }
 
+                }else
+                { 
+                    if(defence == null && tile == null)
+                    {
+                        GameObject foundDeathCat = GameObject.Find("DeathCat");
+                        spawnLocation = hit.point + hit.normal * 0.5f;
+                        if (foundDeathCat != null)
+                        {
+                            Instantiate(objectToInstantiate, spawnLocation, Quaternion.identity, foundDeathCat.transform.parent);
+                            awaitingPlacement = false;
+                        }
 
+                    }
                 }
             }
         

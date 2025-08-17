@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7089344556675058946}
   - component: {fileID: 2124164269580918739}
   - component: {fileID: 7866484478317199886}
+  - component: {fileID: 3917251138071493715}
   - component: {fileID: 2948214755387389818}
   - component: {fileID: 1665498974327456353}
   m_Layer: 0
@@ -88,6 +89,18 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &3917251138071493715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9109297272713609667}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c4ce42668108f947ac95d5dea2fa93c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &2948214755387389818
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -102,7 +115,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   detectionRange: 10
   fireRate: 1
-  projectilePrefab: {fileID: 0}
+  projectilePrefab: {fileID: 2181284486069709208, guid: e43fc242e25252d40bb048865086b253, type: 3}
   firePoint: {fileID: 7089344556675058946}
   stats: {fileID: 11400000, guid: 5a33aa828215e824d8ad3d3b7b662198, type: 2}
   model: {fileID: 7866484478317199886}
