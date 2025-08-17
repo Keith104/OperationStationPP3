@@ -17,12 +17,6 @@ public class Module : MonoBehaviour, ISelectable, IDamage
     [SerializeField] AudioSource damageSource;
 
     private Color origColor;
-
-    public bool isUpAvailable;
-    public bool isDownAvailable;
-    public bool isRightAvailable;
-    public bool isLeftAvailable;
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -30,8 +24,7 @@ public class Module : MonoBehaviour, ISelectable, IDamage
         localHealth = stats.unitHealth;
         resourceCosts = stats.cost;
         for (int i = 0; i < resourceCosts.Length; i++)
-            costsLeft[i] = resourceCosts[i].cost;
-        
+             costsLeft[i] = resourceCosts[i].cost;
     }
 
     // Update is called once per frame
@@ -63,7 +56,8 @@ public class Module : MonoBehaviour, ISelectable, IDamage
             UnitUIManager.instance.tmpUnitCost.text +=
                 resourceSO.resourceType.ToString() + ": " +
                 costsLeft[costIndex] + "\n";
-            costIndex++;
+            if (costIndex < costsLeft.Length)
+                costIndex++;
         }
     }
 

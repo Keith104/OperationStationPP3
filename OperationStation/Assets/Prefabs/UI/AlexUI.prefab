@@ -1532,7 +1532,7 @@ GameObject:
   - component: {fileID: 6621286097257624433}
   - component: {fileID: 7970841437070660618}
   - component: {fileID: 2024861428870533909}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Minimap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5234,8 +5234,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currUnit: {fileID: 0}
   unitMenu: {fileID: 1860025412572323582}
-  costMenu: {fileID: 0}
-  reactorMenu: {fileID: 0}
+  costMenu: {fileID: 1394502349423958327}
+  reactorMenu: {fileID: 5120676791276019081}
   tmpUnitName: {fileID: 1954423352264304780}
   tmpUnitDesc: {fileID: 974846799153968820}
   tmpUnitCost: {fileID: 7915151121921661986}
@@ -6837,6 +6837,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7813998781396424135}
     m_Modifications:
+    - target: {fileID: 645330435996104147, guid: 3a66fdb7757625a47ab635a5b35723c5, type: 3}
+      propertyPath: inputActions
+      value: 
+      objectReference: {fileID: -944628639613478452, guid: dbce36154c4008e4c96020357277a091, type: 3}
     - target: {fileID: 2046778776706506616, guid: 3a66fdb7757625a47ab635a5b35723c5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 2
