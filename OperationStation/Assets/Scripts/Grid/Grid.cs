@@ -12,7 +12,7 @@ public class Grid : MonoBehaviour
     }
 
     // Update is called once per frame
-    void spawnAvailableSpaces()
+    public void spawnAvailableSpaces()
     {
         RaycastHit hit;
 
