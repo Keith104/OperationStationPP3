@@ -754,6 +754,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2227063477418880255, guid: 7badf4c813dff404690ad2239242cefa, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7813998781396424135, guid: 7badf4c813dff404690ad2239242cefa, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -838,6 +842,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: ModuleType
       objectReference: {fileID: 0}
+    - target: {fileID: 8827579843082528841, guid: 7badf4c813dff404690ad2239242cefa, type: 3}
+      propertyPath: wall
+      value: 
+      objectReference: {fileID: 1826742274521941465, guid: 79625718a0588914fab3fbb9e64337af, type: 3}
+    - target: {fileID: 8827579843082528841, guid: 7badf4c813dff404690ad2239242cefa, type: 3}
+      propertyPath: grapeJam
+      value: 
+      objectReference: {fileID: 1826742274521941465, guid: 79625718a0588914fab3fbb9e64337af, type: 3}
+    - target: {fileID: 8827579843082528841, guid: 7badf4c813dff404690ad2239242cefa, type: 3}
+      propertyPath: basicTurret
+      value: 
+      objectReference: {fileID: 1826742274521941465, guid: 79625718a0588914fab3fbb9e64337af, type: 3}
+    - target: {fileID: 8827579843082528841, guid: 7badf4c813dff404690ad2239242cefa, type: 3}
+      propertyPath: nullSpaceFabricator
+      value: 
+      objectReference: {fileID: 1826742274521941465, guid: 79625718a0588914fab3fbb9e64337af, type: 3}
+    - target: {fileID: 8827579843082528841, guid: 7badf4c813dff404690ad2239242cefa, type: 3}
+      propertyPath: macroParticleSmelter
+      value: 
+      objectReference: {fileID: 1826742274521941465, guid: 79625718a0588914fab3fbb9e64337af, type: 3}
     - target: {fileID: 9161131948248108630, guid: 7badf4c813dff404690ad2239242cefa, type: 3}
       propertyPath: m_Name
       value: AlexUI

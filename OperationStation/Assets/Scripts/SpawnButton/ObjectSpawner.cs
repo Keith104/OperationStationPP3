@@ -65,7 +65,7 @@ public class ObjectSpawner : MonoBehaviour
 
                 GameObject hitObject = hit.collider.gameObject;
                 Tile tile = hitObject.GetComponent<Tile>();
-                Grid grid = tile.GetComponentInParent<Grid>();
+                GridSystem grid = tile.GetComponentInParent<GridSystem>();
 
                 if (hitObject != null && tile != null)
                 {

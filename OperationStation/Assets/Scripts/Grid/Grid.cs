@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Grid : MonoBehaviour
+public class GridSystem : MonoBehaviour
 {
     [SerializeField] Module module;
     [SerializeField] Tile _tilePrefab;
