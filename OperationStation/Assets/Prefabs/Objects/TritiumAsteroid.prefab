@@ -197,7 +197,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d03415016519fb44ac95663e7f8fd39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioSource: {fileID: 0}
+  audioSource: {fileID: 1482279800495260343}
   onStart: 0
   randomMin: 0
   randomMax: 0
@@ -288,6 +288,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   soundBank: {fileID: 1176431617721133854}
   audioSource: {fileID: 910811926730686801}
+  mainRB: {fileID: 0}
 --- !u!1 &4077955209119049440
 GameObject:
   m_ObjectHideFlags: 0

@@ -435,6 +435,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   soundBank: {fileID: 1276270472203340329}
   audioSource: {fileID: 3488185099810337533}
+  mainRB: {fileID: 5058036149151091971}
 --- !u!1 &5687362527646377302
 GameObject:
   m_ObjectHideFlags: 0
