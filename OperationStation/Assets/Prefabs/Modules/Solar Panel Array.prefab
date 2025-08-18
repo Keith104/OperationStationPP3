@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 7625927308510609161}
   - component: {fileID: 6901402491665857037}
   - component: {fileID: 5053440431739187927}
+  - component: {fileID: 6623736595550436792}
   - component: {fileID: 9089107403820886792}
   - component: {fileID: 7846787521427899733}
   m_Layer: 6
@@ -66,6 +67,10 @@ MonoBehaviour:
   localHealth: 0
   soundModulation: {fileID: 9089107403820886792}
   damageSource: {fileID: 5053440431739187927}
+  isRightAvailable: 1
+  isLeftAvailable: 1
+  isUpAvailable: 1
+  isDownAvailable: 1
 --- !u!23 &7625927308510609161
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -89,7 +94,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 93096939ea6c3964fb5ef396b593ad40, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -229,6 +234,20 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &6623736595550436792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5181112579491600659}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff84e3770eaf6924dac2f650f1083d16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  module: {fileID: 5612627323844087658}
+  _tilePrefab: {fileID: 2818478639610119390, guid: c0c9f63d750695548aa9826a36d776a2, type: 3}
 --- !u!114 &9089107403820886792
 MonoBehaviour:
   m_ObjectHideFlags: 0

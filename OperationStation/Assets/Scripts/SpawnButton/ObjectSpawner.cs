@@ -11,6 +11,10 @@ public class ObjectSpawner : MonoBehaviour
     public GameObject wall;
     public GameObject grapeJam;
 
+    public GameObject poloniumReactor;
+    public GameObject smelter;
+    public GameObject solarPanelArray;
+
     private GameObject objectToInstantiate;
 
     private Vector3 spawnLocation;
@@ -45,6 +49,41 @@ public class ObjectSpawner : MonoBehaviour
             ResourceManager.instance.RemoveResource(resource, resourcePrice);
             awaitingPlacement = true;
             objectToInstantiate = macroParticleSmelter;
+        }
+    }
+
+    public void PoloniumReactorSpawn(int resourcePrice)
+    {
+        ResourceSO.ResourceType resource = ResourceSO.ResourceType.PoloniumCrystal;
+        if (ResourceManager.instance.poloniumCrystal >= resourcePrice)
+        {
+            ResourceManager.instance.RemoveResource(resource, resourcePrice);
+            awaitingPlacement = true;
+            objectToInstantiate = poloniumReactor;
+
+        }
+    }
+
+    public void SmelterSpawn(int resourcePrice)
+    {
+        ResourceSO.ResourceType resource = ResourceSO.ResourceType.PoloniumCrystal;
+        if (ResourceManager.instance.poloniumCrystal >= resourcePrice)
+        {
+            ResourceManager.instance.RemoveResource(resource, resourcePrice);
+            awaitingPlacement = true;
+            objectToInstantiate = smelter;
+
+        }
+    }
+        public void SolarPanelArraySpawn(int resourcePrice)
+    {
+        ResourceSO.ResourceType resource = ResourceSO.ResourceType.PoloniumCrystal;
+        if (ResourceManager.instance.poloniumCrystal >= resourcePrice)
+        {
+            ResourceManager.instance.RemoveResource(resource, resourcePrice);
+            awaitingPlacement = true;
+            objectToInstantiate = solarPanelArray;
+
         }
     }
     public void BasicTurretSpawn(int resourcePrice)
@@ -97,7 +136,8 @@ public class ObjectSpawner : MonoBehaviour
             if (hitObject != null)
             {
                 if(objectToInstantiate == deathCat || objectToInstantiate == nullSpaceFabricator || 
-                    objectToInstantiate == macroParticleSmelter)
+                    objectToInstantiate == macroParticleSmelter || objectToInstantiate == poloniumReactor || 
+                    objectToInstantiate == smelter || objectToInstantiate == solarPanelArray)
                 {
                     if (tile != null)
                     {
