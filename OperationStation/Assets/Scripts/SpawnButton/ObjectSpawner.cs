@@ -1,6 +1,15 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+
+[Serializable]
+public struct ResourceCostSpawner
+{
+    public ResourceSO.ResourceType type;
+    public int amount;
+}
 
 public class ObjectSpawner : MonoBehaviour
 {
@@ -20,100 +29,88 @@ public class ObjectSpawner : MonoBehaviour
     private Vector3 spawnLocation;
     public static bool awaitingPlacement = false;
 
+    public List<ResourceCostSpawner> deathCatCosts = new List<ResourceCostSpawner>();
+    public List<ResourceCostSpawner> basicTurretCosts = new List<ResourceCostSpawner>();
+    public List<ResourceCostSpawner> nullSpaceFabricatorCosts = new List<ResourceCostSpawner>();
+    public List<ResourceCostSpawner> macroParticleSmelterCosts = new List<ResourceCostSpawner>();
+    public List<ResourceCostSpawner> wallCosts = new List<ResourceCostSpawner>();
+    public List<ResourceCostSpawner> grapeJamCosts = new List<ResourceCostSpawner>();
+    public List<ResourceCostSpawner> poloniumReactorCosts = new List<ResourceCostSpawner>();
+    public List<ResourceCostSpawner> smelterCosts = new List<ResourceCostSpawner>();
+    public List<ResourceCostSpawner> solarPanelArrayCosts = new List<ResourceCostSpawner>();
+
     public void DeathCatSpawn(int resourcePrice)
     {
-        ResourceSO.ResourceType resource = ResourceSO.ResourceType.PoloniumCrystal;
-        if (ResourceManager.instance.poloniumCrystal >= resourcePrice)
+        if (TrySpend(deathCatCosts))
         {
-            ResourceManager.instance.RemoveResource(resource, resourcePrice);
             awaitingPlacement = true;
             objectToInstantiate = deathCat;
-
         }
     }
-    public void NullSpaceFabricatorSpawn(int resourcePrice)
+    public void NullSpaceFabricatorSpawn()
     {
-        ResourceSO.ResourceType resource = ResourceSO.ResourceType.PoloniumCrystal;
-        if (ResourceManager.instance.poloniumCrystal >= resourcePrice)
+        if (TrySpend(nullSpaceFabricatorCosts))
         {
-            ResourceManager.instance.RemoveResource(resource, resourcePrice);
             awaitingPlacement = true;
             objectToInstantiate = nullSpaceFabricator;
         }
     }
-    public void MacroParticleSmelterSpawn(int resourcePrice)
+    public void MacroParticleSmelterSpawn()
     {
-        ResourceSO.ResourceType resource = ResourceSO.ResourceType.PoloniumCrystal;
-        if (ResourceManager.instance.poloniumCrystal >= resourcePrice)
+        if(TrySpend(macroParticleSmelterCosts))
         {
-            ResourceManager.instance.RemoveResource(resource, resourcePrice);
             awaitingPlacement = true;
             objectToInstantiate = macroParticleSmelter;
         }
     }
 
-    public void PoloniumReactorSpawn(int resourcePrice)
+    public void PoloniumReactorSpawn()
     {
-        ResourceSO.ResourceType resource = ResourceSO.ResourceType.PoloniumCrystal;
-        if (ResourceManager.instance.poloniumCrystal >= resourcePrice)
+        if (TrySpend(poloniumReactorCosts))
         {
-            ResourceManager.instance.RemoveResource(resource, resourcePrice);
             awaitingPlacement = true;
             objectToInstantiate = poloniumReactor;
-
         }
     }
 
-    public void SmelterSpawn(int resourcePrice)
+    public void SmelterSpawn()
     {
-        ResourceSO.ResourceType resource = ResourceSO.ResourceType.PoloniumCrystal;
-        if (ResourceManager.instance.poloniumCrystal >= resourcePrice)
+        if (TrySpend(smelterCosts))
         {
-            ResourceManager.instance.RemoveResource(resource, resourcePrice);
             awaitingPlacement = true;
             objectToInstantiate = smelter;
-
         }
     }
-        public void SolarPanelArraySpawn(int resourcePrice)
+        public void SolarPanelArraySpawn()
     {
-        ResourceSO.ResourceType resource = ResourceSO.ResourceType.PoloniumCrystal;
-        if (ResourceManager.instance.poloniumCrystal >= resourcePrice)
+        if (TrySpend(solarPanelArrayCosts))
         {
-            ResourceManager.instance.RemoveResource(resource, resourcePrice);
             awaitingPlacement = true;
             objectToInstantiate = solarPanelArray;
-
         }
     }
-    public void BasicTurretSpawn(int resourcePrice)
+    public void BasicTurretSpawn()
     {
-        ResourceSO.ResourceType resource = ResourceSO.ResourceType.PoloniumCrystal;
-        if (ResourceManager.instance.poloniumCrystal >= resourcePrice)
+        if (TrySpend(basicTurretCosts))
         {
-            ResourceManager.instance.RemoveResource(resource, resourcePrice);
             awaitingPlacement = true;
             objectToInstantiate = basicTurret;
         }
     }
 
-    public void WallSpawn(int resourcePrice)
+    public void WallSpawn()
     {
-        ResourceSO.ResourceType resource = ResourceSO.ResourceType.PoloniumCrystal;
-        if (ResourceManager.instance.poloniumCrystal >= resourcePrice)
+        if (TrySpend(wallCosts))
         {
-            ResourceManager.instance.RemoveResource(resource, resourcePrice);
             awaitingPlacement = true;
             objectToInstantiate = wall;
         }
     }
 
-    public void GrapeJamSpawn(int resourcePrice)
+    public void GrapeJamSpawn()
     {
-        ResourceSO.ResourceType resource = ResourceSO.ResourceType.PoloniumCrystal;
-        if (ResourceManager.instance.poloniumCrystal >= resourcePrice)
+        if (TrySpend(grapeJamCosts))
         {
-            ResourceManager.instance.RemoveResource(resource, resourcePrice);
             awaitingPlacement = true;
             objectToInstantiate = grapeJam;
         }
@@ -169,5 +166,47 @@ public class ObjectSpawner : MonoBehaviour
         
         }
 
+    }
+
+    // Helpers
+    private bool TrySpend(List<ResourceCostSpawner> costs)
+    {
+        if (!CanAfford(costs)) return false;
+
+        // Spend all costs atomically
+        foreach(var c in costs)
+        {
+            ResourceManager.instance.RemoveResource(c.type, c.amount);
+        }
+        return true;
+    }
+
+    private bool CanAfford(List<ResourceCostSpawner> costs)
+    {
+        if (costs == null) return true;
+
+        foreach(var c in costs)
+        {
+            if (GetAmount(c.type) < c.amount) return false;
+        }
+        return true;
+    }
+
+    private int GetAmount(ResourceSO.ResourceType type)
+    {
+        var rm = ResourceManager.instance;
+
+        switch (type)
+        {
+            case ResourceSO.ResourceType.Tritium: return rm.tritium;
+            case ResourceSO.ResourceType.Silver: return rm.silver;
+            case ResourceSO.ResourceType.Polonium: return rm.polonium;
+            case ResourceSO.ResourceType.TritiumIngot: return rm.tritiumIngot;
+            case ResourceSO.ResourceType.SilverCoin: return rm.silverCoins;
+            case ResourceSO.ResourceType.PoloniumCrystal: return rm.poloniumCrystal;
+            case ResourceSO.ResourceType.Energy: return rm.energy;
+            default: return 0;
+
+        }
     }
 }
