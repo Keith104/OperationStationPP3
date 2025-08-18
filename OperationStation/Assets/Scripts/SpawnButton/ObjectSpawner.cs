@@ -16,14 +16,12 @@ public class ObjectSpawner : MonoBehaviour
     private Vector3 spawnLocation;
     public static bool awaitingPlacement = false;
 
-    ResourceManager resourceManager = ResourceManager.instance;
-
     public void DeathCatSpawn(int resourcePrice)
     {
         ResourceSO.ResourceType resource = ResourceSO.ResourceType.PoloniumCrystal;
-        if (resourceManager.poloniumCrystal >= resourcePrice)
+        if (ResourceManager.instance.poloniumCrystal >= resourcePrice)
         {
-            resourceManager.RemoveResource(resource, resourcePrice);
+            ResourceManager.instance.RemoveResource(resource, resourcePrice);
             awaitingPlacement = true;
             objectToInstantiate = deathCat;
 
@@ -32,9 +30,9 @@ public class ObjectSpawner : MonoBehaviour
     public void NullSpaceFabricatorSpawn(int resourcePrice)
     {
         ResourceSO.ResourceType resource = ResourceSO.ResourceType.PoloniumCrystal;
-        if (resourceManager.poloniumCrystal >= resourcePrice)
+        if (ResourceManager.instance.poloniumCrystal >= resourcePrice)
         {
-            resourceManager.RemoveResource(resource, resourcePrice);
+            ResourceManager.instance.RemoveResource(resource, resourcePrice);
             awaitingPlacement = true;
             objectToInstantiate = nullSpaceFabricator;
         }
@@ -42,9 +40,9 @@ public class ObjectSpawner : MonoBehaviour
     public void MacroParticleSmelterSpawn(int resourcePrice)
     {
         ResourceSO.ResourceType resource = ResourceSO.ResourceType.PoloniumCrystal;
-        if (resourceManager.poloniumCrystal >= resourcePrice)
+        if (ResourceManager.instance.poloniumCrystal >= resourcePrice)
         {
-            resourceManager.RemoveResource(resource, resourcePrice);
+            ResourceManager.instance.RemoveResource(resource, resourcePrice);
             awaitingPlacement = true;
             objectToInstantiate = macroParticleSmelter;
         }
@@ -52,9 +50,9 @@ public class ObjectSpawner : MonoBehaviour
     public void BasicTurretSpawn(int resourcePrice)
     {
         ResourceSO.ResourceType resource = ResourceSO.ResourceType.PoloniumCrystal;
-        if (resourceManager.poloniumCrystal >= resourcePrice)
+        if (ResourceManager.instance.poloniumCrystal >= resourcePrice)
         {
-            resourceManager.RemoveResource(resource, resourcePrice);
+            ResourceManager.instance.RemoveResource(resource, resourcePrice);
             awaitingPlacement = true;
             objectToInstantiate = basicTurret;
         }
@@ -63,9 +61,9 @@ public class ObjectSpawner : MonoBehaviour
     public void WallSpawn(int resourcePrice)
     {
         ResourceSO.ResourceType resource = ResourceSO.ResourceType.PoloniumCrystal;
-        if (resourceManager.poloniumCrystal >= resourcePrice)
+        if (ResourceManager.instance.poloniumCrystal >= resourcePrice)
         {
-            resourceManager.RemoveResource(resource, resourcePrice);
+            ResourceManager.instance.RemoveResource(resource, resourcePrice);
             awaitingPlacement = true;
             objectToInstantiate = wall;
         }
@@ -74,9 +72,9 @@ public class ObjectSpawner : MonoBehaviour
     public void GrapeJamSpawn(int resourcePrice)
     {
         ResourceSO.ResourceType resource = ResourceSO.ResourceType.PoloniumCrystal;
-        if (resourceManager.poloniumCrystal >= resourcePrice)
+        if (ResourceManager.instance.poloniumCrystal >= resourcePrice)
         {
-            resourceManager.RemoveResource(resource, resourcePrice);
+            ResourceManager.instance.RemoveResource(resource, resourcePrice);
             awaitingPlacement = true;
             objectToInstantiate = grapeJam;
         }
