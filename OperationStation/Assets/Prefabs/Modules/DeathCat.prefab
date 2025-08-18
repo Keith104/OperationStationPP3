@@ -93,7 +93,7 @@ MonoBehaviour:
   stats: {fileID: 11400000, guid: 05f8d5e67778682409e48a1a572fc1aa, type: 2}
   model: {fileID: 553107750580895635}
   resourceCosts: []
-  costsLeft: 0200000002000000
+  costsLeft: 0000000000000000
   localHealth: 0
   soundModulation: {fileID: 6259907922155810609}
   damageSource: {fileID: 1720165920429209523}

@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 6659310059403017736}
   - component: {fileID: 4616704492381926808}
   - component: {fileID: 4027809876818563729}
+  - component: {fileID: 8983600868643554763}
   - component: {fileID: 7602847276540376343}
   m_Layer: 6
   m_Name: Polonium Reactor
@@ -60,6 +61,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   menuToActivate: ReactorMenu
+  autoGenerate: 0
+  autoIntervalSeconds: 10
 --- !u!114 &1929285881804112622
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -79,6 +82,10 @@ MonoBehaviour:
   localHealth: 0
   soundModulation: {fileID: 7602847276540376343}
   damageSource: {fileID: 4027809876818563729}
+  isRightAvailable: 1
+  isLeftAvailable: 1
+  isUpAvailable: 1
+  isDownAvailable: 1
 --- !u!23 &6659310059403017736
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -102,7 +109,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 7322d1061d1c04246aae3fe65b757c8f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -242,6 +249,20 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &8983600868643554763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2773928973720823125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff84e3770eaf6924dac2f650f1083d16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  module: {fileID: 1929285881804112622}
+  _tilePrefab: {fileID: 2818478639610119390, guid: c0c9f63d750695548aa9826a36d776a2, type: 3}
 --- !u!114 &7602847276540376343
 MonoBehaviour:
   m_ObjectHideFlags: 0
