@@ -96,7 +96,12 @@ public class ObjectSpawner : MonoBehaviour
             Tile tile = hitObject.GetComponent<Tile>();
             Defence defence = hitObject.GetComponent<Defence>();
 
+<<<<<<< HEAD
             if (hitObject != null)
+=======
+
+            if(Physics.Raycast(ray, out hit))
+>>>>>>> parent of a33fb57 (Update before checking my stash)
             {
                 if(objectToInstantiate == deathCat || objectToInstantiate == nullSpaceFabricator || 
                     objectToInstantiate == macroParticleSmelter)

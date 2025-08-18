@@ -17,11 +17,14 @@ public class Module : MonoBehaviour, ISelectable, IDamage
     [SerializeField] AudioSource damageSource;
 
     private Color origColor;
+<<<<<<< HEAD
 
     public bool isRightAvailable;
     public bool isLeftAvailable;
     public bool isUpAvailable;
     public bool isDownAvailable;
+=======
+>>>>>>> parent of a33fb57 (Update before checking my stash)
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
