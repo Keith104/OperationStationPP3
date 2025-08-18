@@ -174,6 +174,8 @@ public class SimpleMenuNavigator : MonoBehaviour
     {
         if (_es == null) return false;
         var go = _es.currentSelectedGameObject;
+        if (go == null)
+            return false;
         var sel = go?.GetComponent<Selectable>();
         return sel && sel.IsActive() && sel.interactable;
     }
