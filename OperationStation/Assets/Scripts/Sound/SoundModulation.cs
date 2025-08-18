@@ -29,7 +29,8 @@ public class SoundModulation : MonoBehaviour
         }
         else
         {
-            audioSource.pitch = newPitch;
+            if(audioSource)
+                audioSource.pitch = newPitch;
         }
     }
 }
