@@ -10,39 +10,31 @@ public class UnitUIManager : MonoBehaviour
     public GameObject unitMenu;
     public GameObject costMenu;
     public GameObject reactorMenu;
+    public GameObject smelterMenu;
     public TextMeshProUGUI tmpUnitName;
     public TextMeshProUGUI tmpUnitDesc;
     public TextMeshProUGUI tmpUnitCost;
     public int buttonNum;
 
     [SerializeField] ButtonFunctions buttonFunctions;
-    private void Awake()
+
+    void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
+        if (instance == null) { instance = this; }
+        else { Destroy(gameObject); }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void DisableAllMenus()
     {
-        
+        if (costMenu) costMenu.SetActive(false);
+        if (reactorMenu) reactorMenu.SetActive(false);
+        if (smelterMenu) smelterMenu.SetActive(false);
+        if (unitMenu) unitMenu.SetActive(false);
     }
 
     public void OnSpendClick(int num)
     {
-        buttonFunctions.PlayClick();
-        Debug.Log("Spend Button Clicked");
+        if (buttonFunctions) buttonFunctions.PlayClick();
         buttonNum = num;
     }
 }

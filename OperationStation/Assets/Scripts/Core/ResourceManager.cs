@@ -106,4 +106,20 @@ public class ResourceManager : MonoBehaviour
 
         }
     }
+
+    public int GetResource(ResourceSO.ResourceType resource)
+    {
+        return resource switch
+        {
+            ResourceSO.ResourceType.Tritium => tritium,
+            ResourceSO.ResourceType.Silver => silver,
+            ResourceSO.ResourceType.Polonium => polonium,
+            ResourceSO.ResourceType.TritiumIngot => tritiumIngot,
+            ResourceSO.ResourceType.SilverCoin => silverCoins,
+            ResourceSO.ResourceType.PoloniumCrystal => poloniumCrystal,
+            ResourceSO.ResourceType.Energy => energy,
+            _ => 0
+        };
+    }
+
 }
