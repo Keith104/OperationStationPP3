@@ -41,6 +41,7 @@ public class MainMenuManager : MonoBehaviour
     public void PlayButton(string sceneName)
     {
         SetMenuButtonsInteractable(false);
+        Time.timeScale = 1;
         SceneTransition.Run(sceneName);
     }
 

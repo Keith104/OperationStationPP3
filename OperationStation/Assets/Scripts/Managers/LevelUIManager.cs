@@ -32,7 +32,7 @@ public class LevelUIManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        timescaleOrig = Time.timeScale;
     }
 
     // Update is called once per frame
@@ -44,16 +44,12 @@ public class LevelUIManager : MonoBehaviour
     {
         isPaused = !isPaused;
         Time.timeScale = 0;
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
     }
 
     public void StateUnpause()
     {
         isPaused = !isPaused;
         Time.timeScale = timescaleOrig;
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
         menuActive.SetActive(false);
         menuActive = null;
     }

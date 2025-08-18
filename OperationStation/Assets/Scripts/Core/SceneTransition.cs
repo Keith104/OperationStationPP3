@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -87,6 +88,11 @@ public class SceneTransition : MonoBehaviour
 
     float hintsNextCycleAt = 0f;
 
+    // Tracks new-scene Selectables we temporarily disable, so we can restore them
+    struct SavedSelectableState { public Selectable sel; public bool wasInteractable; }
+    readonly List<SavedSelectableState> _disabledNewSceneUI = new List<SavedSelectableState>();
+    bool _armDisableNewSceneUI = false;
+
     void Awake()
     {
         if (Instance != null) { Destroy(gameObject); return; }
@@ -120,7 +126,7 @@ public class SceneTransition : MonoBehaviour
         ort.anchorMax = Vector2.one;
         ort.offsetMin = Vector2.zero;
         ort.offsetMax = Vector2.zero;
-        overlay.raycastTarget = false;
+        overlay.raycastTarget = false; // default off; we enable it during transitions
 
         runtimeMat = new Material(wipeMaterial);
         overlay.material = runtimeMat;
@@ -374,16 +380,17 @@ public class SceneTransition : MonoBehaviour
     void OnHintNext(InputAction.CallbackContext ctx) { if (hintsText != null && hintsText.enabled) NextHint(); }
     void OnHintPrev(InputAction.CallbackContext ctx) { if (hintsText != null && hintsText.enabled) PrevHint(); }
 
-    // -------- NEW: global cleanup so nothing is selected / no arrows linger ----------
+    // Clear selection and optional hover arrows
     void ClearUISelectionAndArrows()
     {
-        // If you use the hover arrow script, this hides all chevrons instantly
+        // If you use a hover arrow helper, you can clear it here.
+        // Remove these two lines if you don't have UIHoverArrow in your project.
         UIHoverArrow.HideAll();
+        UIHoverArrow.KeyboardMode = false;
 
         var es = EventSystem.current;
         if (es != null) es.SetSelectedGameObject(null);
     }
-    // -------------------------------------------------------------------------------
 
     public static void Run(string sceneName)
     {
@@ -391,10 +398,54 @@ public class SceneTransition : MonoBehaviour
             Instance.StartCoroutine(Instance.CoverLoadRevealOptions(sceneName, true, true));
     }
 
+    public static void Run(int scene)
+    {
+        if (Instance != null)
+            Instance.StartCoroutine(Instance.CoverLoadRevealOptions(scene, true, true));
+    }
+
     public static void RunNoHints(string sceneName)
     {
         if (Instance != null)
             Instance.StartCoroutine(Instance.CoverLoadRevealOptions(sceneName, false, false));
+    }
+
+    public static void RunNoHints(int scene)
+    {
+        if (Instance != null)
+            Instance.StartCoroutine(Instance.CoverLoadRevealOptions(scene, false, false));
+    }
+
+    // Disable all Selectables in the newly loaded scene (except our overlay canvas)
+    void HandleSceneLoadedDisableUI(Scene scene, LoadSceneMode mode)
+    {
+        if (!_armDisableNewSceneUI) return;
+        _armDisableNewSceneUI = false;
+        SceneManager.sceneLoaded -= HandleSceneLoadedDisableUI;
+
+        _disabledNewSceneUI.Clear();
+
+        var roots = scene.GetRootGameObjects();
+        foreach (var root in roots)
+        {
+            var sels = root.GetComponentsInChildren<Selectable>(true);
+            foreach (var s in sels)
+            {
+                if (canvas != null && s && s.transform.IsChildOf(canvas.transform)) continue;
+                _disabledNewSceneUI.Add(new SavedSelectableState { sel = s, wasInteractable = s.interactable });
+                if (s) s.interactable = false;
+            }
+        }
+    }
+
+    void RestoreNewSceneUI()
+    {
+        for (int i = 0; i < _disabledNewSceneUI.Count; i++)
+        {
+            var entry = _disabledNewSceneUI[i];
+            if (entry.sel) entry.sel.interactable = entry.wasInteractable;
+        }
+        _disabledNewSceneUI.Clear();
     }
 
     IEnumerator CoverLoadRevealOptions(string sceneName, bool showHintsDuringLoad, bool showContinueButton)
@@ -406,6 +457,10 @@ public class SceneTransition : MonoBehaviour
 
         runtimeMat.SetFloat("_Progress", 0f);
         overlay.enabled = true;
+
+        // Block all clicks beneath during transition; button will be above overlay
+        overlay.raycastTarget = true;
+
         SetLoadingVisible(false);
         SetHintsVisible(false);
         yield return Animate(0f, 1f, coverDuration, coverEase);
@@ -438,19 +493,16 @@ public class SceneTransition : MonoBehaviour
                 continueButton.onClick.RemoveAllListeners();
                 continueButton.onClick.AddListener(() => clicked = true);
 
-                // NEW: make keyboard submit work during loading by selecting the button
                 var es = EventSystem.current;
                 if (es != null)
                 {
-                    UIHoverArrow.KeyboardMode = true; // optional: ensures chevron follows selection
+                    UIHoverArrow.KeyboardMode = true; // optional helper
                     es.SetSelectedGameObject(continueButton.gameObject);
                 }
 
                 while (!clicked) yield return null;
 
-                // NEW: immediately clear selection & arrows so it won't linger into next scene
                 ClearUISelectionAndArrows();
-
                 continueButton.gameObject.SetActive(false);
             }
         }
@@ -459,8 +511,11 @@ public class SceneTransition : MonoBehaviour
             SetLoadingVisible(true);
         }
 
-        // Ensure nothing is selected when we flip scenes
         ClearUISelectionAndArrows();
+
+        // Arm: as soon as the new scene activates, we disable its UI until reveal completes
+        _armDisableNewSceneUI = true;
+        SceneManager.sceneLoaded += HandleSceneLoadedDisableUI;
 
         op.allowSceneActivation = true;
         while (!op.isDone) yield return null;
@@ -471,9 +526,98 @@ public class SceneTransition : MonoBehaviour
         runtimeMat.SetFloat("_Progress", 1f);
         yield return Animate(1f, 0f, revealDuration, revealEase);
 
-        overlay.enabled = false;
+        // Reveal complete: restore new-scene UI and stop blocking raycasts
+        RestoreNewSceneUI();
+        overlay.raycastTarget = false;
 
-        // Final safety: clear again after reveal
+        overlay.enabled = false;
+        ClearUISelectionAndArrows();
+
+        isRunning = false;
+    }
+
+    IEnumerator CoverLoadRevealOptions(int scene, bool showHintsDuringLoad, bool showContinueButton)
+    {
+        if (isRunning) yield break;
+        isRunning = true;
+
+        ApplyLook();
+
+        runtimeMat.SetFloat("_Progress", 0f);
+        overlay.enabled = true;
+
+        // Block all clicks beneath during transition; button will be above overlay
+        overlay.raycastTarget = true;
+
+        SetLoadingVisible(false);
+        SetHintsVisible(false);
+        yield return Animate(0f, 1f, coverDuration, coverEase);
+
+        SetLoadingVisible(true);
+        if (showHintsDuringLoad) SetHintsVisible(true); else SetHintsVisible(false);
+
+        if (waitAfterCoverSeconds > 0f)
+            yield return new WaitForSecondsRealtime(waitAfterCoverSeconds);
+
+        var op = SceneManager.LoadSceneAsync(scene, LoadSceneMode.Single);
+        op.allowSceneActivation = false;
+
+        float shownAt = Time.realtimeSinceStartup;
+        while (op.progress < 0.9f) yield return null;
+
+        float elapsed = Time.realtimeSinceStartup - shownAt;
+        float hold = Mathf.Max(0f, minLoadingDisplaySeconds - elapsed) + Mathf.Max(0f, loadDelaySeconds);
+        if (hold > 0f) yield return new WaitForSecondsRealtime(hold);
+
+        if (showContinueButton)
+        {
+            if (continueButton == null) continueButton = BuildContinueButton();
+            if (continueButton != null)
+            {
+                SetLoadingVisible(false);
+                continueButton.gameObject.SetActive(true);
+
+                bool clicked = false;
+                continueButton.onClick.RemoveAllListeners();
+                continueButton.onClick.AddListener(() => clicked = true);
+
+                var es = EventSystem.current;
+                if (es != null)
+                {
+                    UIHoverArrow.KeyboardMode = true; // optional helper
+                    es.SetSelectedGameObject(continueButton.gameObject);
+                }
+
+                while (!clicked) yield return null;
+
+                ClearUISelectionAndArrows();
+                continueButton.gameObject.SetActive(false);
+            }
+        }
+        else
+        {
+            SetLoadingVisible(true);
+        }
+
+        ClearUISelectionAndArrows();
+
+        _armDisableNewSceneUI = true;
+        SceneManager.sceneLoaded += HandleSceneLoadedDisableUI;
+
+        op.allowSceneActivation = true;
+        while (!op.isDone) yield return null;
+
+        SetHintsVisible(false);
+        SetLoadingVisible(false);
+
+        runtimeMat.SetFloat("_Progress", 1f);
+        yield return Animate(1f, 0f, revealDuration, revealEase);
+
+        // Reveal complete: restore new-scene UI and stop blocking raycasts
+        RestoreNewSceneUI();
+        overlay.raycastTarget = false;
+
+        overlay.enabled = false;
         ClearUISelectionAndArrows();
 
         isRunning = false;
