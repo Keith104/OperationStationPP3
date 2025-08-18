@@ -16,7 +16,7 @@ MonoBehaviour:
   unitOutline: {fileID: 0}
   unitName: Solar Panel Array
   unitDescription: 'Passively generate a unit of the energy resource per second '
-  unitHealth: 1
+  unitHealth: 10
   cost:
   - resource: {fileID: 11400000, guid: 8ce94c1c8f11e6640bed8fa2e20a8521, type: 2}
     cost: 1

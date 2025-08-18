@@ -114,7 +114,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   detectionRange: 10
-  fireRate: 1
+  fireRate: 1.5
   projectilePrefab: {fileID: 2181284486069709208, guid: e43fc242e25252d40bb048865086b253, type: 3}
   firePoint: {fileID: 7089344556675058946}
   stats: {fileID: 11400000, guid: 5a33aa828215e824d8ad3d3b7b662198, type: 2}

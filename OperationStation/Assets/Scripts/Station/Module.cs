@@ -71,8 +71,10 @@ public class Module : MonoBehaviour, ISelectable, IDamage
         int currIndex = UnitUIManager.instance.buttonNum;
         if (currIndex != -1)
         {
-            if (costsLeft[currIndex] > 0)
-                costsLeft[currIndex]--;
+                if (costsLeft[currIndex] > 0)
+                    costsLeft[currIndex]--;
+            
+       
         }
 
         SetCost();

@@ -17,7 +17,7 @@ MonoBehaviour:
   unitName: Polonium Reactor
   unitDescription: 'Place polonium into the reactor to generate units of the energy
     resource '
-  unitHealth: 1
+  unitHealth: 50
   cost:
   - resource: {fileID: 11400000, guid: 60a71c38a16d39f4c9a2adde86ef8299, type: 2}
     cost: 1
