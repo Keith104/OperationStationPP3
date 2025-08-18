@@ -446,6 +446,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: DeathCat
       objectReference: {fileID: 0}
+    - target: {fileID: 6441910625288224433, guid: 79625718a0588914fab3fbb9e64337af, type: 3}
+      propertyPath: 'costsLeft.Array.data[0]'
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6441910625288224433, guid: 79625718a0588914fab3fbb9e64337af, type: 3}
+      propertyPath: 'costsLeft.Array.data[1]'
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6765949016062805750, guid: 79625718a0588914fab3fbb9e64337af, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.2
