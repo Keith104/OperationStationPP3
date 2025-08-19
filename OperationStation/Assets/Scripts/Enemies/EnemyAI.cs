@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
 using System.Collections;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
 
 public class EnemyAI : MonoBehaviour, IDamage
 {
@@ -41,8 +40,6 @@ public class EnemyAI : MonoBehaviour, IDamage
 
     void Start()
     {
-        Debug.Log("Hey they are here");
-
         //This isn't final I'll fix/change this when I know how we're implementing the station
         station = GameObject.FindWithTag("Player");
         colorOG = model.material.color;
