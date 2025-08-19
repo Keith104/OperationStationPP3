@@ -1779,6 +1779,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1890369982697866814, guid: 2fe0c1854e5e5e747adde61fae5ba3dd, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 45
+      objectReference: {fileID: 0}
+    - target: {fileID: 1890369982697866814, guid: 2fe0c1854e5e5e747adde61fae5ba3dd, type: 3}
       propertyPath: m_LocalPosition.x
       value: 126
       objectReference: {fileID: 0}
@@ -1816,6 +1820,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1890369982697866814, guid: 2fe0c1854e5e5e747adde61fae5ba3dd, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4225556742546991285, guid: 2fe0c1854e5e5e747adde61fae5ba3dd, type: 3}
+      propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5135661070859300273, guid: 2fe0c1854e5e5e747adde61fae5ba3dd, type: 3}
@@ -1981,7 +1989,7 @@ Light:
     m_Type: 2
     m_Resolution: -1
     m_CustomResolution: -1
-    m_Strength: 1
+    m_Strength: 0
     m_Bias: 0.05
     m_NormalBias: 0.4
     m_NearPlane: 0.2
