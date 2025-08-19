@@ -378,11 +378,11 @@ PrefabInstance:
     - target: {fileID: 3460871933342828798, guid: f115d1b92ccfed14196bef8150d94bc7, type: 3}
       propertyPath: m_Resource
       value: 
-      objectReference: {fileID: 8300000, guid: b80c732df65c1f7499540c34792f3665, type: 3}
+      objectReference: {fileID: 8300000, guid: ae1e501be98a6a3449deadf6352db06f, type: 3}
     - target: {fileID: 3460871933342828798, guid: f115d1b92ccfed14196bef8150d94bc7, type: 3}
       propertyPath: m_audioClip
       value: 
-      objectReference: {fileID: 8300000, guid: b80c732df65c1f7499540c34792f3665, type: 3}
+      objectReference: {fileID: 8300000, guid: ae1e501be98a6a3449deadf6352db06f, type: 3}
     - target: {fileID: 6061539347451195308, guid: f115d1b92ccfed14196bef8150d94bc7, type: 3}
       propertyPath: m_Pitch
       value: 0.6
@@ -390,11 +390,11 @@ PrefabInstance:
     - target: {fileID: 6061539347451195308, guid: f115d1b92ccfed14196bef8150d94bc7, type: 3}
       propertyPath: m_Resource
       value: 
-      objectReference: {fileID: 8300000, guid: b80c732df65c1f7499540c34792f3665, type: 3}
+      objectReference: {fileID: 8300000, guid: ae1e501be98a6a3449deadf6352db06f, type: 3}
     - target: {fileID: 6061539347451195308, guid: f115d1b92ccfed14196bef8150d94bc7, type: 3}
       propertyPath: m_audioClip
       value: 
-      objectReference: {fileID: 8300000, guid: b80c732df65c1f7499540c34792f3665, type: 3}
+      objectReference: {fileID: 8300000, guid: ae1e501be98a6a3449deadf6352db06f, type: 3}
     - target: {fileID: 8737938473530881325, guid: f115d1b92ccfed14196bef8150d94bc7, type: 3}
       propertyPath: m_Name
       value: SoundObject
