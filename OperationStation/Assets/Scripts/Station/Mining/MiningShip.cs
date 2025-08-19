@@ -22,6 +22,8 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
     private Color colorOG;
     private Vector3 idlePos;
     private bool noControl;
+    private bool foundAsteroid;
+    private GameObject curAsteroid;
 
     void Start()
     {
@@ -30,11 +32,18 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
         idlePos = transform.position;
         playerControlled = false;
         noControl = false;
+        foundAsteroid = false;
         goHere.gameObject.SetActive(false);
+        curAsteroid = null;
     }
 
     void Update()
     {
+        if (foundAsteroid && curAsteroid != null)
+        {
+            GetThatAsteroid(curAsteroid);
+        }
+
         if (playerControlled)
         {
             ShipMove();
@@ -62,9 +71,7 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
         StartCoroutine(FlashRed());
 
         if (health <= 0)
-        {
             Destroy(gameObject);
-        }
     }
 
     public void OnTriggerEnter(Collider other)
@@ -73,10 +80,13 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
         {
             playerControlled = false;
             noControl = true;
+            curAsteroid = null;
             agent.SetDestination(transform.position);
 
             other.transform.parent.transform.SetParent(transform, true);
-            other.GetComponentInParent<Asteroid>().canMove = false;
+            
+            if(other.GetComponentInParent<Asteroid>() != null)
+                other.GetComponentInParent<Asteroid>().canMove = false;
 
             StartCoroutine(Mine(other));
 
@@ -95,6 +105,12 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
 
             if (Physics.Raycast(ray, out hit))
             {
+                if (hit.collider.gameObject.CompareTag("Asteroid"))
+                {
+                    foundAsteroid = true;
+                    curAsteroid = hit.collider.gameObject;
+                }
+                
                 goHere.position = hit.point;
                 agent.SetDestination(goHere.position);
             }
@@ -121,7 +137,7 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
             {
                 dmg.TakeDamage(stats.miningDamage);
 
-                if (asteroid.GetComponentInParent<Asteroid>().health <= 10)
+                if (asteroid.GetComponentInParent<Asteroid>() != null && asteroid.GetComponentInParent<Asteroid>().health <= 10)
                 {
                     asteroid.transform.parent.transform.SetParent(null);
                 }
@@ -129,5 +145,13 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
         } while (asteroid.GetComponentInParent<Asteroid>().health > 0);
 
         agent.SetDestination(idlePos);
+    }
+
+    private void GetThatAsteroid(GameObject asteroid)
+    {
+        goHere = asteroid.transform;
+        agent.SetDestination(goHere.position);
+
+        return;
     }
 }
