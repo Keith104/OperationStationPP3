@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: MineShip
   m_EditorClassIdentifier: 
   found: 0
-  enemyType: 0
+  enemyType: 4
   enemyObject: {fileID: 0}
   health: 0
   bullet: {fileID: 0}
-  damageAmount: 0
-  attackCooldown: 0
+  damageAmount: 3
+  attackCooldown: 5
