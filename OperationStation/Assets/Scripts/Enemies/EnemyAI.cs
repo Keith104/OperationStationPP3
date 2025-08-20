@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
 using System.Collections;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
 
 public class EnemyAI : MonoBehaviour, IDamage
 {
@@ -9,29 +8,29 @@ public class EnemyAI : MonoBehaviour, IDamage
     [SerializeField] Renderer model;
 
     [Header("Enemy Data")]
-    [SerializeField] EnemiesSO enemy;
-    [SerializeField] NavMeshAgent agent;
-    [SerializeField] GameObject enemyToSpawn;
+    [SerializeField] protected EnemiesSO enemy;
+    [SerializeField] protected NavMeshAgent agent;
+    [SerializeField] protected GameObject enemyToSpawn;
 
     [Header("Damage Data")]
-    [SerializeField] Transform shootPos;
+    [SerializeField] protected Transform shootPos;
     [SerializeField] bool spinFire;
 
     [Header("Sound")]
-    [SerializeField] SoundBank soundBank;
-    [SerializeField] SoundModulation soundModulation;
-    [SerializeField] AudioSource damageSource;
+    [SerializeField] protected SoundBank soundBank;
+    [SerializeField] protected SoundModulation soundModulation;
+    [SerializeField] protected AudioSource damageSource;
 
     [Header("Debug")]
     [SerializeField] bool debug;
-    
-    float shootTimer;
 
-    private GameObject station;
-    private Color colorOG;
+    protected float shootTimer;
+
+    protected GameObject station;
+    protected Color colorOG;
     private float shootY;
 
-    private float health;
+    protected float health;
 
 
     public void Initialized(EnemiesSO enemyData)
@@ -41,8 +40,6 @@ public class EnemyAI : MonoBehaviour, IDamage
 
     void Start()
     {
-        Debug.Log("Hey they are here");
-
         //This isn't final I'll fix/change this when I know how we're implementing the station
         station = GameObject.FindWithTag("Player");
         colorOG = model.material.color;
@@ -91,7 +88,7 @@ public class EnemyAI : MonoBehaviour, IDamage
     }
 
     //Once the enemy is spawned they'll b-line to the player to attack
-    public void Attack()
+    public virtual void Attack()
     {
         if (station != null)
         {
