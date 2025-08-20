@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 7885078006477406400}
   m_Layer: 6
   m_Name: MiningShip
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -59,6 +59,7 @@ MonoBehaviour:
   goHere: {fileID: 3611655240735372612}
   soundModulation: {fileID: 7885078006477406400}
   damageSource: {fileID: 1094766714909806917}
+  nullScript: {fileID: 0}
 --- !u!33 &3969661566738208297
 MeshFilter:
   m_ObjectHideFlags: 0

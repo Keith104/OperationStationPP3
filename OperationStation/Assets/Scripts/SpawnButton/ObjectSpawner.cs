@@ -16,7 +16,6 @@ public class ObjectSpawner : MonoBehaviour
     public GameObject deathCat;
     public GameObject basicTurret;
     public GameObject nullSpaceFabricator;
-    public GameObject macroParticleSmelter;
     public GameObject wall;
     public GameObject grapeJam;
 
@@ -32,7 +31,6 @@ public class ObjectSpawner : MonoBehaviour
     public List<ResourceCostSpawner> deathCatCosts = new List<ResourceCostSpawner>();
     public List<ResourceCostSpawner> basicTurretCosts = new List<ResourceCostSpawner>();
     public List<ResourceCostSpawner> nullSpaceFabricatorCosts = new List<ResourceCostSpawner>();
-    public List<ResourceCostSpawner> macroParticleSmelterCosts = new List<ResourceCostSpawner>();
     public List<ResourceCostSpawner> wallCosts = new List<ResourceCostSpawner>();
     public List<ResourceCostSpawner> grapeJamCosts = new List<ResourceCostSpawner>();
     public List<ResourceCostSpawner> poloniumReactorCosts = new List<ResourceCostSpawner>();
@@ -55,14 +53,6 @@ public class ObjectSpawner : MonoBehaviour
             objectToInstantiate = nullSpaceFabricator;
         }
     }
-    public void MacroParticleSmelterSpawn()
-    {
-        if(TrySpend(macroParticleSmelterCosts))
-        {
-            awaitingPlacement = true;
-            objectToInstantiate = macroParticleSmelter;
-        }
-    }
 
     public void PoloniumReactorSpawn()
     {
@@ -81,7 +71,7 @@ public class ObjectSpawner : MonoBehaviour
             objectToInstantiate = smelter;
         }
     }
-        public void SolarPanelArraySpawn()
+    public void SolarPanelArraySpawn()
     {
         if (TrySpend(solarPanelArrayCosts))
         {
@@ -132,9 +122,9 @@ public class ObjectSpawner : MonoBehaviour
 
             if (hitObject != null)
             {
-                if(objectToInstantiate == deathCat || objectToInstantiate == nullSpaceFabricator || 
-                    objectToInstantiate == macroParticleSmelter || objectToInstantiate == poloniumReactor || 
-                    objectToInstantiate == smelter || objectToInstantiate == solarPanelArray)
+                if(objectToInstantiate == deathCat || objectToInstantiate == nullSpaceFabricator ||
+                    objectToInstantiate == poloniumReactor || objectToInstantiate == smelter ||
+                    objectToInstantiate == solarPanelArray)
                 {
                     if (tile != null)
                     {

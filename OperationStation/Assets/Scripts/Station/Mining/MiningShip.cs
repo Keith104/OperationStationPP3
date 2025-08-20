@@ -23,8 +23,12 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
     private Vector3 idlePos;
     private bool noControl;
 
+    public NullSpaceFabricator nullScript;
+    
+
     void Start()
     {
+        this.name = nullScript.DesignatedName();
         health = stats.unitHealth;
         colorOG = model.material.color;
         idlePos = transform.position;
@@ -64,6 +68,12 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
         if (health <= 0)
         {
             Destroy(gameObject);
+            if(nullScript.totalShips > 0)
+            {
+
+                nullScript.totalShips--;
+
+            }
         }
     }
 

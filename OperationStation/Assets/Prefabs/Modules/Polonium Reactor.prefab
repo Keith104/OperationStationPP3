@@ -146,9 +146,9 @@ GameObject:
   - component: {fileID: 4027809876818563729}
   - component: {fileID: 8983600868643554763}
   - component: {fileID: 7602847276540376343}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Polonium Reactor
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

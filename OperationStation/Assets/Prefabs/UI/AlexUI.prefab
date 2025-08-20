@@ -3019,7 +3019,7 @@ MonoBehaviour:
       - m_Target: {fileID: 4294387896813794488}
         m_TargetAssemblyTypeName: ObjectSpawner, Assembly-CSharp
         m_MethodName: SmelterSpawn
-        m_Mode: 3
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -5533,7 +5533,7 @@ MonoBehaviour:
       - m_Target: {fileID: 4294387896813794488}
         m_TargetAssemblyTypeName: ObjectSpawner, Assembly-CSharp
         m_MethodName: DeathCatSpawn
-        m_Mode: 3
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -6565,7 +6565,7 @@ MonoBehaviour:
       - m_Target: {fileID: 4294387896813794488}
         m_TargetAssemblyTypeName: ObjectSpawner, Assembly-CSharp
         m_MethodName: BasicTurretSpawn
-        m_Mode: 3
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -6624,13 +6624,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   deathCat: {fileID: 1826742274521941465, guid: 79625718a0588914fab3fbb9e64337af, type: 3}
   basicTurret: {fileID: 9109297272713609667, guid: 1db07d84c7772e14ab3328a0a89b54b3, type: 3}
-  nullSpaceFabricator: {fileID: 1826742274521941465, guid: 79625718a0588914fab3fbb9e64337af, type: 3}
-  macroParticleSmelter: {fileID: 1826742274521941465, guid: 79625718a0588914fab3fbb9e64337af, type: 3}
+  nullSpaceFabricator: {fileID: 0}
   wall: {fileID: 1826742274521941465, guid: 79625718a0588914fab3fbb9e64337af, type: 3}
   grapeJam: {fileID: 1826742274521941465, guid: 79625718a0588914fab3fbb9e64337af, type: 3}
   poloniumReactor: {fileID: 2773928973720823125, guid: 8d0b58627e7f6af4e89b51b86434a803, type: 3}
   smelter: {fileID: 5181112579491600659, guid: 8110eec864f71ff4a99e7a36a3716b2b, type: 3}
   solarPanelArray: {fileID: 5181112579491600659, guid: 075e225452f63ce42943d3fac77bc975, type: 3}
+  deathCatCosts: []
+  basicTurretCosts: []
+  nullSpaceFabricatorCosts: []
+  wallCosts: []
+  grapeJamCosts: []
+  poloniumReactorCosts: []
+  smelterCosts: []
+  solarPanelArrayCosts: []
 --- !u!1 &4166876707929551227
 GameObject:
   m_ObjectHideFlags: 0
@@ -9740,7 +9747,7 @@ MonoBehaviour:
       - m_Target: {fileID: 4294387896813794488}
         m_TargetAssemblyTypeName: ObjectSpawner, Assembly-CSharp
         m_MethodName: SolarPanelArraySpawn
-        m_Mode: 3
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -10006,7 +10013,7 @@ MonoBehaviour:
       - m_Target: {fileID: 4294387896813794488}
         m_TargetAssemblyTypeName: ObjectSpawner, Assembly-CSharp
         m_MethodName: PoloniumReactorSpawn
-        m_Mode: 3
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
