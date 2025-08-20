@@ -9,13 +9,13 @@ public class AsteroidSpawner : MonoBehaviour
     [Tooltip("Rare spawn points")] public Transform[] rareSpawnPoints;
     [Range(0f, 1f), Tooltip("Chance to pick a rare spawn point each spawn")] public float rarePointChance = 0.2f;
 
-   
     [Serializable]
     public class AsteroidEntry
     {
         [Tooltip("The AsteroidSO ScriptableObject")] public AsteroidSO asteroidSO;
         [Tooltip("Relative weight for weighted random selection")] public float weight = 1f;
     }
+
     [Header("Asteroid Prefabs & Weights")]
     [Tooltip("Asteroid types and their spawn weights")] public AsteroidEntry[] asteroidEntries;
 
@@ -27,11 +27,10 @@ public class AsteroidSpawner : MonoBehaviour
     [Header("Spawn Collision Avoidance")]
     [Tooltip("Minimum clearance around spawn point to allow spawning")] public float spawnRadius = 2f;
 
-    [Tooltip("Optional parent for spawned asteroids")] public Transform parent;
+    private int currentAsteroidCount = 0;
 
     private void Start()
     {
-        if (parent == null) parent = transform;
         StartCoroutine(SpawnLoop());
     }
 
@@ -48,7 +47,7 @@ public class AsteroidSpawner : MonoBehaviour
     private void TrySpawn()
     {
         // Don't spawn if at max count
-        if (parent.childCount >= maxAsteroids) return;
+        if (currentAsteroidCount >= maxAsteroids) return;
 
         // Pick spawn point
         bool useRare = UnityEngine.Random.value < rarePointChance;
@@ -80,10 +79,17 @@ public class AsteroidSpawner : MonoBehaviour
         }
 
         // Instantiate and pass data
-        GameObject go = Instantiate(chosen.asteroidObject, spawnPoint.position, spawnPoint.rotation, parent);
+        GameObject go = Instantiate(chosen.asteroidObject, spawnPoint.position, spawnPoint.rotation);
         Asteroid asteroidComp = go.GetComponentInChildren<Asteroid>();
         if (asteroidComp != null)
+        {
             asteroidComp.Initialize(chosen);
+
+            // Subscribe to this specific asteroid's instance event
+            asteroidComp.OnAsteroidDestroyed += HandleAsteroidDestroyed;
+        }
+
+        currentAsteroidCount++;
     }
 
     private AsteroidSO SelectAsteroid()
@@ -102,6 +108,11 @@ public class AsteroidSpawner : MonoBehaviour
         }
 
         return asteroidEntries[0].asteroidSO;
+    }
+
+    private void HandleAsteroidDestroyed()
+    {
+        currentAsteroidCount = Mathf.Max(0, currentAsteroidCount - 1);
     }
 
     // Optional: visualize spawn radius in editor
