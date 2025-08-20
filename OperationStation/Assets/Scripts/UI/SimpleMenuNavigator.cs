@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -34,7 +35,7 @@ public class SimpleMenuNavigator : MonoBehaviour
     public string[] preferredNames = new[] { "Continue", "Resume" };
 
     [Header("Input Switching")]
-    [Tooltip("Seconds to ignore mouse input after a keyboard/gamepad press to avoid micro-mouse wiggle stealing focus.")]
+    [Tooltip("Seconds to ignore mouse after a keyboard/gamepad press (prevents touchpad wiggle from stealing focus).")]
     public float mouseSuppressAfterKeyboard = 0.20f;
 
     readonly List<Selectable> _list = new List<Selectable>();
@@ -42,8 +43,13 @@ public class SimpleMenuNavigator : MonoBehaviour
     float _nextHealAt;
     GameObject _lastSelectedKeyboard;
     GameObject _lastSelected;
-    bool _mouseMode = false; // default to keyboard mode
+
+    // Start in keyboard mode so something is selected immediately
+    bool _mouseMode = false;
     float _ignoreMouseUntilTime;
+
+    // LateUpdate guard to restore selection after the UI module processes events
+    bool _forceReselectInLateUpdate;
 
     void Reset() { menuRoot = transform; }
 
@@ -51,6 +57,7 @@ public class SimpleMenuNavigator : MonoBehaviour
     {
         if (!menuRoot) menuRoot = transform;
         EnsureEventSystem();
+        EnterKeyboardMode(initial: true);
     }
 
     void OnEnable()
@@ -61,16 +68,18 @@ public class SimpleMenuNavigator : MonoBehaviour
             BuildNavigationIfRequested();
         }
 
-        // Start in keyboard mode and select immediately.
-        EnterKeyboardMode(initial: true);
+        if (!_mouseMode)
+        {
+            SelectDefaultOrBest();
+            UIHoverArrow.KeyboardMode = true;
+            UIHoverArrow.PingSelectedArrow();
+            _forceReselectInLateUpdate = true;
+        }
 
         SceneManager.activeSceneChanged += OnSceneChanged;
     }
 
-    void OnDisable()
-    {
-        SceneManager.activeSceneChanged -= OnSceneChanged;
-    }
+    void OnDisable() => SceneManager.activeSceneChanged -= OnSceneChanged;
 
     void OnTransformChildrenChanged() => DebouncedReselect(); // picks up runtime "Continue"
 
@@ -78,27 +87,49 @@ public class SimpleMenuNavigator : MonoBehaviour
     {
         _es = EventSystem.current;
 
-        // IMPORTANT: prioritize keyboard/gamepad over mouse, then apply mouse only if no keyboard this frame
-        if (KeyboardOrGamepadUsedThisFrame())
-        {
-            EnterKeyboardMode();
-        }
-        else if (MouseUsedThisFrame())
-        {
-            EnterMouseMode();
-        }
+        // Keyboard/gamepad wins this frame; mouse only if no keyboard/gamepad
+        bool kb = KeyboardOrGamepadUsedThisFrame();
+        bool mouse = !kb && MouseUsedThisFrame();
 
-        if (!_mouseMode && autoHealSelection && Time.unscaledTime >= _nextHealAt && !HasValidSelection())
+        if (kb) EnterKeyboardMode();
+        else if (mouse) EnterMouseMode();
+
+        // If a Submit happened, reselect next frame after onClick side-effects (e.g., Continue hides/disables)
+        if (SubmitPressedThisFrame())
+            StartCoroutine(ReselectNextFrame());
+
+        // Immediate heal while in keyboard mode
+        if (!_mouseMode && autoHealSelection && !HasValidSelection())
+        {
             TrySelectBest();
+            _forceReselectInLateUpdate = true;
+        }
 
-        if (!_mouseMode && _es?.currentSelectedGameObject != _lastSelected)
+        // Arrow ping on selection change
+        if (!_mouseMode && _es && _es.currentSelectedGameObject != _lastSelected)
         {
             _lastSelected = _es.currentSelectedGameObject;
             UIHoverArrow.PingSelectedArrow();
         }
 
+        // Remember last keyboard selection
         if (!_mouseMode && _es && _es.currentSelectedGameObject)
             _lastSelectedKeyboard = _es.currentSelectedGameObject;
+    }
+
+    void LateUpdate()
+    {
+        if (_mouseMode) return;
+        if (!_forceReselectInLateUpdate) return;
+
+        _forceReselectInLateUpdate = false;
+
+        // After UI module finishes this frame, ensure we still have valid selection
+        if (!HasValidSelection())
+        {
+            SelectDefaultOrBest();
+            UIHoverArrow.PingSelectedArrow();
+        }
     }
 
     public void RescanAndRebuild()
@@ -112,7 +143,13 @@ public class SimpleMenuNavigator : MonoBehaviour
     {
         Rescan();
         BuildNavigationIfRequested();
-        if (!_mouseMode) SelectDefaultOrBest();
+        if (!_mouseMode)
+        {
+            SelectDefaultOrBest();
+            UIHoverArrow.KeyboardMode = true;
+            UIHoverArrow.PingSelectedArrow();
+            _forceReselectInLateUpdate = true;
+        }
     }
 
     void EnsureEventSystem()
@@ -129,15 +166,14 @@ public class SimpleMenuNavigator : MonoBehaviour
             DontDestroyOnLoad(esGO);
         }
         _es = EventSystem.current;
+    }
 
 #if ENABLE_INPUT_SYSTEM
-        // FYI: If you ever want clicks on empty background NOT to clear selection,
-        // you can toggle this on the module (kept as-is per your current behavior).
-        // var module = _es.currentInputModule as InputSystemUIInputModule;
-        // if (module != null) module.deselectOnBackgroundClick = false; // prevents auto-deselect on empty click. See docs. 
-        // (You asked to keep 'no selection' in mouse mode, so we leave it at default 'true'.)  :contentReference[oaicite:2]{index=2}
-#endif
+    InputSystemUIInputModule GetUIModule()
+    {
+        return EventSystem.current ? EventSystem.current.currentInputModule as InputSystemUIInputModule : null;
     }
+#endif
 
     void Rescan()
     {
@@ -153,11 +189,11 @@ public class SimpleMenuNavigator : MonoBehaviour
 
         for (int i = 0; i < _list.Count; i++)
         {
-            var sel = _list[i];
-            if (!sel) continue;
+            var sel = _list[i]; if (!sel) continue;
 
             var nav = sel.navigation;
             nav.mode = Navigation.Mode.Explicit;
+
             int prev = wrap ? (i - 1 + _list.Count) % _list.Count : Mathf.Max(0, i - 1);
             int next = wrap ? (i + 1) % _list.Count : Mathf.Min(_list.Count - 1, i + 1);
 
@@ -174,9 +210,7 @@ public class SimpleMenuNavigator : MonoBehaviour
     {
         if (_es == null) return false;
         var go = _es.currentSelectedGameObject;
-        if (go == null)
-            return false;
-        var sel = go?.GetComponent<Selectable>();
+        var sel = go ? go.GetComponent<Selectable>() : null;
         return sel && sel.IsActive() && sel.interactable;
     }
 
@@ -184,12 +218,13 @@ public class SimpleMenuNavigator : MonoBehaviour
     {
         if (_es == null) return;
 
+        // Prefer last keyboard-selected control if still valid
         if (_lastSelectedKeyboard)
         {
             var sel = _lastSelectedKeyboard.GetComponent<Selectable>();
             if (sel && sel.IsActive() && sel.interactable)
             {
-                _es.SetSelectedGameObject(_lastSelectedKeyboard);
+                _es.SetSelectedGameObject(_lastSelectedKeyboard); // fires OnDeselect/OnSelect
                 return;
             }
         }
@@ -211,7 +246,7 @@ public class SimpleMenuNavigator : MonoBehaviour
         // 2) Prefer names (e.g., "Continue", "Resume")
         if (preferredNames != null && preferredNames.Length > 0)
         {
-            Rescan();
+            if (_list.Count == 0) Rescan();
             foreach (var s in _list)
             {
                 if (!s) continue;
@@ -221,7 +256,8 @@ public class SimpleMenuNavigator : MonoBehaviour
                     for (int i = 0; i < preferredNames.Length; i++)
                     {
                         if (!string.IsNullOrEmpty(preferredNames[i]) &&
-                            n.IndexOf(preferredNames[i], System.StringComparison.OrdinalIgnoreCase) >= 0)
+                            n.IndexOf(preferredNames[i], System.StringComparison.OrdinalIgnoreCase) >= 0 &&
+                            s.IsActive() && s.interactable)
                         {
                             _es.SetSelectedGameObject(s.gameObject);
                             return;
@@ -231,7 +267,7 @@ public class SimpleMenuNavigator : MonoBehaviour
             }
         }
 
-        // 3) Fallback to first valid selectable under the menu root
+        // 3) Fallback to first valid selectable
         if (_list.Count == 0) Rescan();
         foreach (var s in _list)
         {
@@ -254,10 +290,17 @@ public class SimpleMenuNavigator : MonoBehaviour
         if (_mouseMode) return;
 
         _mouseMode = true;
+
+#if ENABLE_INPUT_SYSTEM
+        var mod = GetUIModule();
+        if (mod != null) mod.deselectOnBackgroundClick = true;   // allow clearing selection in mouse mode
+#endif
+
         UIHoverArrow.KeyboardMode = false;
         if (menuRoot) UIHoverArrow.HideAllInParent(menuRoot);
+
         if (_es?.currentSelectedGameObject != null)
-            _es.SetSelectedGameObject(null); // supported way to clear selection. :contentReference[oaicite:3]{index=3}
+            _es.SetSelectedGameObject(null);
     }
 
     void EnterKeyboardMode(bool initial = false)
@@ -265,11 +308,30 @@ public class SimpleMenuNavigator : MonoBehaviour
         if (!initial && !_mouseMode) return;
 
         _mouseMode = false;
-        _ignoreMouseUntilTime = Time.unscaledTime + mouseSuppressAfterKeyboard; // hysteresis
+        _ignoreMouseUntilTime = Time.unscaledTime + mouseSuppressAfterKeyboard;
+
+#if ENABLE_INPUT_SYSTEM
+        var mod = GetUIModule();
+        if (mod != null) mod.deselectOnBackgroundClick = false;  // keep selection while in keyboard mode
+#endif
+
         UIHoverArrow.KeyboardMode = true;
 
         SelectDefaultOrBest();
         UIHoverArrow.PingSelectedArrow();
+        _forceReselectInLateUpdate = true;
+    }
+
+    // End-of-frame reselection after Submit (Space/Enter/A) disables the selected button
+    IEnumerator ReselectNextFrame()
+    {
+        yield return null; // let onClick finish
+        if (!_mouseMode && !HasValidSelection())
+        {
+            TrySelectBest();
+            UIHoverArrow.PingSelectedArrow();
+            _forceReselectInLateUpdate = true;
+        }
     }
 
     // ---------------- Input detection ----------------
@@ -291,7 +353,7 @@ public class SimpleMenuNavigator : MonoBehaviour
             g.dpad.down.wasPressedThisFrame ||
             g.dpad.left.wasPressedThisFrame ||
             g.dpad.right.wasPressedThisFrame ||
-            g.buttonSouth.wasPressedThisFrame ||
+            g.buttonSouth.wasPressedThisFrame || // A / Cross
             g.startButton.wasPressedThisFrame ||
             g.selectButton.wasPressedThisFrame))
             return true;
@@ -318,5 +380,24 @@ public class SimpleMenuNavigator : MonoBehaviour
         if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1) || Input.GetMouseButtonDown(2)) return true;
 #endif
         return false;
+    }
+
+    static bool SubmitPressedThisFrame()
+    {
+#if ENABLE_INPUT_SYSTEM
+        var k = Keyboard.current;
+        bool submitKey = k != null && (
+            k.enterKey.wasPressedThisFrame ||
+            k.numpadEnterKey.wasPressedThisFrame ||
+            k.spaceKey.wasPressedThisFrame
+        );
+        var g = Gamepad.current;
+        bool submitPad = g != null && g.buttonSouth.wasPressedThisFrame; // A/Cross
+        return submitKey || submitPad;
+#else
+        return Input.GetKeyDown(KeyCode.Return) ||
+               Input.GetKeyDown(KeyCode.KeypadEnter) ||
+               Input.GetKeyDown(KeyCode.Space);
+#endif
     }
 }

@@ -21,18 +21,20 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: TempYellow
-  m_Shader: {fileID: 4800000, guid: 9478c9729cf4cd24d94bc7c84bf8e9ab, type: 3}
+  m_Shader: {fileID: 4800000, guid: 136695ca4036a624ba7c7dfec0bcbe06, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
-  m_InvalidKeywords: []
+  m_InvalidKeywords:
+  - _VERTEX_SNAP_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 2000
   stringTagMap:
     RenderType: Opaque
-  disabledShaderPasses: []
+  disabledShaderPasses:
+  - MOTIONVECTORS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -121,11 +123,14 @@ Material:
     - _ReceiveShadows: 1
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
+    - _SnapPixels: 1
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _Surface: 0
+    - _Transparent: 0
     - _VertexSnap: 1
+    - _WobbleStrength: 1
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
@@ -133,5 +138,6 @@ Material:
     - _Color: {r: 0.7836715, g: 0.7987421, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+    - _TargetRes: {r: 320, g: 240, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
