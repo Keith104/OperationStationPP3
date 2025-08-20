@@ -5,7 +5,7 @@ using System.Collections;
 public class EnemyAI : MonoBehaviour, IDamage
 {
     [SerializeField] WaveManager waveManager;
-    [SerializeField] Renderer model;
+    [SerializeField] protected Renderer model;
 
     [Header("Enemy Data")]
     [SerializeField] protected EnemiesSO enemy;
@@ -22,7 +22,7 @@ public class EnemyAI : MonoBehaviour, IDamage
     [SerializeField] protected AudioSource damageSource;
 
     [Header("Debug")]
-    [SerializeField] bool debug;
+    [SerializeField] protected bool debug;
 
     protected float shootTimer;
 
