@@ -18,9 +18,8 @@ Material:
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 1
-  m_CustomRenderQueue: 3000
-  stringTagMap:
-    RenderType: Transparent
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
   disabledShaderPasses:
   - SHADOWCASTER
   - DepthOnly
@@ -89,6 +88,7 @@ Material:
     m_Floats:
     - _AddPrecomputedVelocity: 0
     - _AffineAmount: 1
+    - _AffineStrength: 1
     - _AlphaClip: 0
     - _AlphaToMask: 0
     - _Blend: 0
@@ -98,6 +98,7 @@ Material:
     - _ClearCoatSmoothness: 0
     - _Cull: 1
     - _Cutoff: 0.5
+    - _DepthPrepass: 0
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 10

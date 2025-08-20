@@ -9,37 +9,34 @@
         [Toggle(_ALPHATEST_ON)] _AlphaClip("Alpha Clipping", Float) = 0
         _Cutoff("Alpha Clip Threshold", Range(0,1)) = 0.5
 
-        // Turn this ON for the clouds, OFF for the planet
         [Toggle(_DEPTH_PREPASS_ON)] _DepthPrepass("Self-Occluding (Depth Prepass)", Float) = 0
 
-        // Material-driven states (set by your GUI/converter)
-        [HideInInspector]_SrcBlend("SrcBlend", Int) = 1
-        [HideInInspector]_DstBlend("DstBlend", Int) = 0
-        [HideInInspector]_ZWrite ("ZWrite",  Int) = 1
+        [HideInInspector]_SrcBlend("SrcBlend", Float) = 1
+        [HideInInspector]_DstBlend("DstBlend", Float) = 0
+        [HideInInspector]_ZWrite ("ZWrite",  Float) = 1
 
-        // PSX vibe
         _TargetRes("Vertex Snap Target Res (x,y)", Vector) = (320,240,0,0)
         [Toggle(_VERTEX_SNAP_ON)] _VertexSnap("Enable Vertex Snap", Float) = 1
 
-        // 0 = normal UVs, 1 = full affine
         _AffineStrength("Affine Strength", Range(0,1)) = 1
     }
 
     SubShader
     {
-        Tags { "RenderPipeline"="UniversalPipeline" "IgnoreProjector"="True" }
+        Tags { "RenderPipeline"="UniversalRenderPipeline" "IgnoreProjector"="True" }
         Cull Back
 
-        // --------- helpers ---------
+        // ------------ helper macro -------------
         HLSLINCLUDE
-        #if defined(SHADER_API_D3D11) || defined(SHADER_API_GLCORE) || defined(SHADER_API_VULKAN)
-            #define NOPER noperspective
-        #else
-            #define NOPER                // fallback: disables affine on unsupported backends
-        #endif
+            // WebGL/GLSL ES has no 'noperspective' → make it a no-op there
+            #if defined(UNITY_WEBGL)
+                #define NOPER
+            #else
+                #define NOPER noperspective
+            #endif
         ENDHLSL
 
-        // ---------- Depth prepass ----------
+        // -------- Depth prepass (unchanged behavior) --------
         Pass
         {
             Name "DepthOnlyPrepass"
@@ -49,7 +46,7 @@
             ColorMask 0
 
             HLSLPROGRAM
-            #pragma target 4.5
+            #pragma target 2.0
             #pragma vertex   vert
             #pragma fragment fragDepth
             #pragma shader_feature_local _ALPHATEST_ON
@@ -63,18 +60,16 @@
                 float  _Cutoff;
                 float2 _TargetRes;
                 float  _VertexSnap;
-                float  _AffineStrength; // kept for layout consistency
+                float  _AffineStrength;
             CBUFFER_END
 
             TEXTURE2D(_BaseMap); SAMPLER(sampler_BaseMap);
 
             struct Attributes { float4 positionOS:POSITION; float2 uv:TEXCOORD0; };
-
-            // Shared VS→PS varyings (note: BOTH uv sets live here)
             struct Varyings {
                 float4 positionCS : SV_POSITION;
-                float2 uvPersp    : TEXCOORD0;        // normal, perspective-correct
-                NOPER  float2 uvAffine : TEXCOORD1;   // affine (screen-linear)
+                float2 uvPersp    : TEXCOORD0;
+                NOPER  float2 uvAffine : TEXCOORD1;
             };
 
             Varyings vert (Attributes IN)
@@ -98,13 +93,11 @@
                 return OUT;
             }
 
-            // Use perspective UVs for depth alpha clip (stable silhouette)
             half4 fragDepth (Varyings IN) : SV_Target
             {
                 #if !defined(_DEPTH_PREPASS_ON)
-                    clip(-1); // don’t write depth if toggle is off (e.g., planet)
+                    clip(-1);
                 #endif
-
                 #if defined(_ALPHATEST_ON)
                     half a = (SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, IN.uvPersp) * _BaseColor).a;
                     clip(a - _Cutoff);
@@ -114,7 +107,7 @@
             ENDHLSL
         }
 
-        // ---------- Forward pass ----------
+        // -------- Forward (unchanged look) --------
         Pass
         {
             Name "UnlitForward"
@@ -125,7 +118,7 @@
             ZTest LEqual
 
             HLSLPROGRAM
-            #pragma target 4.5
+            #pragma target 2.0
             #pragma vertex   vert
             #pragma fragment frag
             #pragma shader_feature_local _ALPHATEST_ON
@@ -174,7 +167,6 @@
 
             half4 frag (Varyings IN) : SV_Target
             {
-                // Sample both UV paths, blend
                 half4 colP = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, IN.uvPersp);
                 half4 colA = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, IN.uvAffine);
                 half  t    = saturate(_AffineStrength);
@@ -188,6 +180,5 @@
             ENDHLSL
         }
     }
-
     Fallback Off
 }
