@@ -2,22 +2,22 @@
 {
     Properties
     {
-        _PixelScale       ("Pixel Scale", Float) = 2
-        _PosterizeSteps   ("Posterize Steps (RGB)", Vector) = (32,32,32,0)
+        _PixelScale     ("Pixel Scale", Float) = 2
+        _PosterizeSteps ("Posterize Steps (RGB)", Vector) = (32,32,32,0)
         [Toggle]_EnableDither ("Enable Dither", Float) = 1
     }
 
     SubShader
     {
-        // Correct URP tag (works in WebGL builds too)
-        Tags { "RenderPipeline"="UniversalRenderPipeline" }
+        // Use the URP tag that many versions require in builds
+        Tags { "RenderPipeline"="UniversalPipeline" }
         ZWrite Off Cull Off ZTest Always
 
         Pass
         {
             Name "PSXPostProcess"
             HLSLPROGRAM
-            #pragma target   2.0
+            #pragma target   3.0
             #pragma vertex   Vert
             #pragma fragment frag
 
@@ -53,7 +53,7 @@
                 float2 snappedPx= (floor(screenPx / scale) + 0.5) * scale;
                 float2 snappedUV= snappedPx / _ScreenParams.xy;
 
-                // URP blit source (works on WebGL) 
+                // URP blit source
                 float4 src = SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_PointClamp, snappedUV);
 
                 float3 steps = max(_PosterizeSteps.xyz, 1.0.xxx);

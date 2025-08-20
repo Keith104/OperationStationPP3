@@ -23,20 +23,10 @@
 
     SubShader
     {
-        Tags { "RenderPipeline"="UniversalRenderPipeline" "IgnoreProjector"="True" }
+        Tags { "RenderPipeline"="UniversalPipeline" "IgnoreProjector"="True" }
         Cull Back
 
-        // ------------ helper macro -------------
-        HLSLINCLUDE
-            // WebGL/GLSL ES has no 'noperspective' → make it a no-op there
-            #if defined(UNITY_WEBGL)
-                #define NOPER
-            #else
-                #define NOPER noperspective
-            #endif
-        ENDHLSL
-
-        // -------- Depth prepass (unchanged behavior) --------
+        // ---------- Depth prepass ----------
         Pass
         {
             Name "DepthOnlyPrepass"
@@ -46,7 +36,7 @@
             ColorMask 0
 
             HLSLPROGRAM
-            #pragma target 2.0
+            #pragma target 3.0
             #pragma vertex   vert
             #pragma fragment fragDepth
             #pragma shader_feature_local _ALPHATEST_ON
@@ -69,7 +59,7 @@
             struct Varyings {
                 float4 positionCS : SV_POSITION;
                 float2 uvPersp    : TEXCOORD0;
-                NOPER  float2 uvAffine : TEXCOORD1;
+                noperspective float2 uvAffine : TEXCOORD1;
             };
 
             Varyings vert (Attributes IN)
@@ -107,7 +97,7 @@
             ENDHLSL
         }
 
-        // -------- Forward (unchanged look) --------
+        // ---------- Forward ----------
         Pass
         {
             Name "UnlitForward"
@@ -118,7 +108,7 @@
             ZTest LEqual
 
             HLSLPROGRAM
-            #pragma target 2.0
+            #pragma target 3.0
             #pragma vertex   vert
             #pragma fragment frag
             #pragma shader_feature_local _ALPHATEST_ON
@@ -141,7 +131,7 @@
             struct Varyings {
                 float4 positionCS : SV_POSITION;
                 float2 uvPersp    : TEXCOORD0;
-                NOPER  float2 uvAffine : TEXCOORD1;
+                noperspective float2 uvAffine : TEXCOORD1;
             };
 
             Varyings vert (Attributes IN)
