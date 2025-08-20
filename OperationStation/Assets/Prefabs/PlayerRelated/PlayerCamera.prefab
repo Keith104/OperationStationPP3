@@ -153,7 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 50
-  fapSpeed: 10
+  fapSpeed: 100
   scrollSpeed: 1
   limit: {x: 0, y: 0}
   min: -10

@@ -3,40 +3,36 @@ using UnityEngine;
 [DisallowMultipleComponent]
 public class UrathSpin : MonoBehaviour
 {
-    [SerializeField] Material material;
+    [SerializeField] Material material;          // Optional override
     [SerializeField] float scrollSpeedX = 0.1f;
-    [SerializeField] bool ignoreTimeScale = true; // use unscaled time so it still spins in menus/pauses
+    [SerializeField] bool ignoreTimeScale = true;
 
     static readonly int BaseMapId = Shader.PropertyToID("_BaseMap");
     static readonly int MainTexId = Shader.PropertyToID("_MainTex");
 
     int propId = -1;
-    float startY;
-    float startXNorm;
-    float startClock;
-
+    float startY, startXNorm, startClock;
     Renderer _renderer;
 
-    void Awake()
+    void Start()
     {
         _renderer = GetComponent<Renderer>();
-        TryBindMaterial();
+        RebindNow();
     }
 
     void OnEnable()
     {
-        // Scene changes / reactivation: re-establish baselines so it resumes cleanly
-        TryBindMaterial();
+        RebindNow();
         startClock = CurrentClock();
     }
 
     void Update()
     {
-        if (material == null || propId == -1)
-        {
-            // If something hot-swapped the material/shader, try to rebind on the fly
-            if (!TryBindMaterial()) return;
+        if (!material || propId == -1)
+        {   // material changed at runtime? rebind
+            RebindNow();
             startClock = CurrentClock();
+            if (propId == -1) return;
         }
 
         float t = CurrentClock() - startClock;
@@ -44,13 +40,14 @@ public class UrathSpin : MonoBehaviour
         material.SetTextureOffset(propId, new Vector2(x, startY));
     }
 
-    bool TryBindMaterial()
+    public void RebindNow()
     {
-        if (!material)
+        if (_renderer)
         {
-            if (_renderer) material = _renderer.material; // instance so we can safely change offsets
-            if (!material) { enabled = false; return false; }
+            // Always prefer the renderer’s current instance material
+            material = _renderer.material;  // creates/uses instance for safe property edits
         }
+        if (!material) { enabled = false; return; }
 
         propId = material.HasProperty(BaseMapId) ? BaseMapId
               : material.HasProperty(MainTexId) ? MainTexId
@@ -59,22 +56,17 @@ public class UrathSpin : MonoBehaviour
         if (propId == -1)
         {
             Debug.LogWarning($"UrathSpin: Material '{material.name}' has no _BaseMap or _MainTex.");
-            enabled = false;
-            return false;
+            enabled = false; return;
         }
 
-        // Normalize existing offset once so we never accumulate huge values
         var o = material.GetTextureOffset(propId);
         startY = o.y;
         startXNorm = Mathf.Repeat(o.x, 1f);
         material.SetTextureOffset(propId, new Vector2(startXNorm, startY));
 
-        // Friendly wrap warning
         var tex = material.GetTexture(propId);
         if (tex && tex.wrapMode != TextureWrapMode.Repeat)
-            Debug.LogWarning($"UrathSpin: Texture '{tex.name}' wrap mode is {tex.wrapMode}. Set it to Repeat for seamless scrolling.");
-
-        return true;
+            Debug.LogWarning($"UrathSpin: Texture '{tex.name}' wrap is {tex.wrapMode}. Set to Repeat.");
     }
 
     float CurrentClock() => ignoreTimeScale ? Time.unscaledTime : Time.time;
