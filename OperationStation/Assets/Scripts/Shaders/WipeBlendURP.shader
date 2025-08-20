@@ -28,17 +28,27 @@
             float  _Progress, _Edge, _Clockwise, _StartAngleDeg;
             float4 _Center;
 
-            #define PI      3.14159265359
-            #define TWO_PI  6.28318530718
+            // URP's Core/Macros already define these; avoid redefinition warnings.
+            #ifndef PI
+            #   define PI 3.14159265359
+            #endif
+            #ifndef TWO_PI
+            #   define TWO_PI 6.28318530718
+            #endif
 
             struct appdata { float4 vertex:POSITION; float2 uv:TEXCOORD0; };
             struct v2f     { float4 pos:SV_POSITION; float2 uv:TEXCOORD0; };
 
-            v2f vert(appdata v){
-                v2f o; o.pos = TransformObjectToHClip(v.vertex.xyz); o.uv = v.uv; return o;
+            v2f vert(appdata v)
+            {
+                v2f o;
+                o.pos = TransformObjectToHClip(v.vertex.xyz);
+                o.uv  = v.uv;
+                return o;
             }
 
-            float wrap0_2pi(float a){
+            float wrap0_2pi(float a)
+            {
                 a = fmod(a, TWO_PI);
                 if (a < 0.0) a += TWO_PI;
                 return a;
@@ -52,19 +62,18 @@
                 float aspect = _ScreenParams.x / _ScreenParams.y;
                 p.x *= aspect;
 
-                float theta = atan2(p.y, p.x);                         // [-π,π] → angle, HLSL intrinsic :contentReference[oaicite:1]{index=1}
-                theta = wrap0_2pi(theta - radians(_StartAngleDeg));    // 0 at top
+                float theta = atan2(p.y, p.x);
+                theta = wrap0_2pi(theta - radians(_StartAngleDeg));
                 if (_Clockwise > 0.5) theta = TWO_PI - theta;
 
-                float a01 = theta / TWO_PI;                            // 0..1 around circle
+                float a01   = theta / TWO_PI;      // 0..1 around circle
                 float front = saturate(_Progress);
-                float e = max(_Edge, 1e-5);
+                float e     = max(_Edge, 1e-5);
 
-                // Correct semantics: at progress==0, alpha==0 everywhere.
-                float alpha = smoothstep(0.0, e, front - a01);         // smooth threshold (HLSL) :contentReference[oaicite:2]{index=2}
-
-                // Hard clamp near the end to remove any wrap-around sliver.
-                alpha = max(alpha, step(1.0 - (e * 0.5), front));      // HLSL step :contentReference[oaicite:3]{index=3}
+                // At progress==0, alpha==0 everywhere.
+                float alpha = smoothstep(0.0, e, front - a01);
+                // Clamp near the end to remove any wrap-around sliver.
+                alpha = max(alpha, step(1.0 - (e * 0.5), front));
 
                 return float4(_Color.rgb, alpha * _Color.a);
             }
