@@ -39,7 +39,7 @@ public class ObjectSpawner : MonoBehaviour
     public List<ResourceCostSpawner> smelterCosts = new List<ResourceCostSpawner>();
     public List<ResourceCostSpawner> solarPanelArrayCosts = new List<ResourceCostSpawner>();
 
-    public void DeathCatSpawn(int resourcePrice)
+    public void DeathCatSpawn()
     {
         if (TrySpend(deathCatCosts))
         {
