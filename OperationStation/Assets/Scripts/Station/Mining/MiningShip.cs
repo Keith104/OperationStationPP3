@@ -26,8 +26,12 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
     private GameObject curAsteroid;
     private Transform goHereFallback;
 
+    public NullSpaceFabricator nullScript;
+    
+
     void Start()
     {
+        this.name = nullScript.DesignatedName();
         health = stats.unitHealth;
         colorOG = model.material.color;
         idlePos = transform.position;
@@ -77,7 +81,16 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
             StartCoroutine(FlashRed());
 
             if (health <= 0)
-                Destroy(gameObject);
+            {
+
+                Destroy(gameObject)
+                if(nullScript.totalShips > 0)
+                {
+
+                    nullScript.totalShips--;
+
+                }
+            }
         }
         else
             getHurt = true;
