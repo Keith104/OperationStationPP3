@@ -56,6 +56,7 @@ public class DeathCat : MonoBehaviour, ISelectable, IModule, IDamage
     public void ModuleDie()
     {
         LevelUIManager.instance.menuLose.SetActive(true);
+        LevelUIManager.instance.StatePause();
     }
 
     public void TakeDamage(float damage)
