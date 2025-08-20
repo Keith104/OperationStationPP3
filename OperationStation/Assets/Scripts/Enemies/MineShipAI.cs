@@ -7,7 +7,6 @@ public class MineShipAI : EnemyAI
     [SerializeField] GameObject mine;
     [SerializeField] float destroyTime;
 
-    private Transform wanderArea;
     private Vector3 startingPos;
     private float xOffset;
     private float zOffset;
@@ -16,7 +15,7 @@ public class MineShipAI : EnemyAI
     {
         station = GameObject.FindWithTag("Player");
         colorOG = model.material.color;
-        wanderArea = station.transform;
+        startingPos = station.transform.position;
 
         health = enemy.health;
 
@@ -59,11 +58,11 @@ public class MineShipAI : EnemyAI
 
     private void Wander()
     {
-        xOffset += Random.Range(-20, 21);
-        zOffset += Random.Range(-20, 21);
+        xOffset = Random.Range(-20, 21);
+        zOffset = Random.Range(-20, 21);
 
-        wanderArea.position = new Vector3(startingPos.x + xOffset, station.transform.position.y, startingPos.z + zOffset);
+        Vector3 wanderArea = new Vector3(startingPos.x + xOffset, startingPos.y, startingPos.z + zOffset);
 
-        agent.SetDestination(wanderArea.position);
+        agent.SetDestination(wanderArea);
     }
 }

@@ -63,6 +63,8 @@ MonoBehaviour:
   soundModulation: {fileID: 3034605314166165839}
   damageSource: {fileID: 1647927700083485396}
   debug: 1
+  mine: {fileID: 5875068176213911186, guid: cce8582c7aa3a1046bcfd7e7c0e2c9ac, type: 3}
+  destroyTime: 15
 --- !u!114 &3811299469208052197
 MonoBehaviour:
   m_ObjectHideFlags: 0
