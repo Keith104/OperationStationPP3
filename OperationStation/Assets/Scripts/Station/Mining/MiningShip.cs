@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.AI;
-using Unity.VisualScripting;
 
 public class MiningShip : MonoBehaviour, ISelectable, IDamage
 {
@@ -25,12 +24,14 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
     private bool getHurt;
     private bool foundAsteroid;
     private GameObject curAsteroid;
+    private Transform goHereFallback;
 
     void Start()
     {
         health = stats.unitHealth;
         colorOG = model.material.color;
         idlePos = transform.position;
+        goHereFallback = goHere;
         playerControlled = false;
         noControl = false;
         foundAsteroid = false;
@@ -41,26 +42,27 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
 
     void Update()
     {
-        if (foundAsteroid && curAsteroid != null)
+        if (!noControl)
         {
-            GetThatAsteroid(curAsteroid);
-        }
+            if (goHere == null)
+                goHere = goHereFallback;
 
-        if (playerControlled)
-        {
-            ShipMove();
+            if (foundAsteroid && curAsteroid != null)
+            {
+                GetThatAsteroid(curAsteroid);
+            }
+
+            if (playerControlled)
+            {
+                ShipMove();
+            }
         }
     }
 
     public void TakeControl()
     {
-        if (!noControl)
-        {
-            playerControlled = !playerControlled;
-            Debug.Log(playerControlled);
-        }
-        else
-            return;
+        playerControlled = !playerControlled;
+        Debug.Log(playerControlled);
     }
 
     public void TakeDamage(float damage)
@@ -85,16 +87,21 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
     {
         if (other.transform.root.tag == "Asteroid" && playerControlled)
         {
+            agent.ResetPath();
+            agent.isStopped = true;
+
             playerControlled = false;
             noControl = true;
 
-            agent.SetDestination(transform.position);
+            //agent.SetDestination(transform.position);
 
             other.transform.root.transform.SetParent(transform, true);
             
-            other.transform.root.GetComponent<Asteroid>().canMove = false;
+            other.transform.root.GetComponentInChildren<Asteroid>().canMove = false;
 
-            Debug.Log(other);
+            other = other.transform.root.GetComponent<Collider>();
+
+            //Debug.Log(other);
 
             StartCoroutine(Mine(other));
 
@@ -117,7 +124,9 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
                 if (hit.collider.gameObject.CompareTag("Asteroid"))
                 {
                     foundAsteroid = true;
-                    curAsteroid = hit.collider.transform.parent.gameObject;
+
+                    if(curAsteroid == null)
+                        curAsteroid = hit.collider.transform.parent.gameObject;
                 }
                 
                 goHere.position = hit.point;
@@ -137,7 +146,7 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
 
     private IEnumerator Mine(Collider asteroid)
     {
-        IDamage dmg = asteroid.transform.root.GetComponent<IDamage>();
+        IDamage dmg = asteroid.GetComponentInChildren<Asteroid>().gameObject.GetComponent<IDamage>();
 
         do
         {
@@ -146,18 +155,20 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
             {
                 dmg.TakeDamage(stats.miningDamage);
 
-                if (asteroid.transform.root.GetComponent<Asteroid>() != null && asteroid.transform.root.GetComponent<Asteroid>().health <= 10)
-                {
-                    asteroid.transform.parent.transform.SetParent(null);
-                }
+                //if (asteroid.GetComponentInChildren<Asteroid>() != null && asteroid.GetComponentInChildren<Asteroid>().health <= 10)
+                //{
+                //    asteroid.transform.parent.transform.SetParent(null);
+                //}
             }
-        } while (asteroid.transform.root.GetComponent<Asteroid>().health > 0);
+        } while (asteroid.GetComponentInChildren<Asteroid>().health > 0);
 
+        agent.isStopped = false;
         agent.SetDestination(idlePos);
     }
 
     private void GetThatAsteroid(GameObject asteroid)
     {
+
         goHere = asteroid.transform;
         agent.SetDestination(goHere.position);
 
