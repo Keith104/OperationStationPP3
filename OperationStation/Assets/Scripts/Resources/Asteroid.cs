@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -37,6 +38,9 @@ public class Asteroid : MonoBehaviour, IDamage
     private float angularSpeed;
     private Rigidbody rb;
 
+    // Instance event (FIX: no longer static)
+    public event Action OnAsteroidDestroyed;
+
     public void Initialize(AsteroidSO data)
     {
         asteroid = data;
@@ -74,13 +78,13 @@ public class Asteroid : MonoBehaviour, IDamage
         }
         transform.localScale *= scaleFactor;
 
-        moveSpeed = Random.Range(asteroid.minMoveSpeed, asteroid.maxMoveSpeed);
+        moveSpeed = UnityEngine.Random.Range(asteroid.minMoveSpeed, asteroid.maxMoveSpeed);
 
         rb.linearVelocity = transform.forward * moveSpeed;
 
-        rotationAxis = Random.onUnitSphere;
-        angularSpeed = Random.Range(asteroid.minRotSpeed, asteroid.maxRotSpeed);
-        graphicTransform.localRotation = Random.rotation;
+        rotationAxis = UnityEngine.Random.onUnitSphere;
+        angularSpeed = UnityEngine.Random.Range(asteroid.minRotSpeed, asteroid.maxRotSpeed);
+        graphicTransform.localRotation = UnityEngine.Random.rotation;
 
         health = asteroid.health;
         minAmount = asteroid.minAmount;
@@ -101,7 +105,7 @@ public class Asteroid : MonoBehaviour, IDamage
             || transform.position.z < 0)
             DestroyAsteroid();
 
-        if(!canMove)
+        if (!canMove)
         {
             rb.linearVelocity = Vector3.zero;
         }
@@ -122,16 +126,20 @@ public class Asteroid : MonoBehaviour, IDamage
 
     public void TakeDamage(float damage)
     {
-        soundModulation.ModulateSound(Random.Range(0.8f, 1.2f));
+        soundModulation.ModulateSound(UnityEngine.Random.Range(0.8f, 1.2f));
         damageSource.Play();
 
         health -= damage;
         StartCoroutine(FlashRed());
 
-        int amount = Random.Range(minAmount, maxAmount);
+        int amount = UnityEngine.Random.Range(minAmount, maxAmount);
         if (health <= 0)
         {
             ResourceManager.instance.AddResource(asteroid.resource.resourceType, amount + bonusAmount);
+
+            // Raise the instance event
+            OnAsteroidDestroyed?.Invoke();
+
             Destroy(gameObject);
         }
         else
