@@ -152,12 +152,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b35db69d3f088e41b34bd6cd0bb958a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 50
-  fapSpeed: 100
+  moveSpeed: 50
+  rotateSpeed: 50
   scrollSpeed: 1
   limit: {x: 0, y: 0}
-  min: -10
-  max: 10
+  moveMin: 0
+  moveMax: 255
+  zoomMin: -10
+  zoomMax: 10
   UI: {fileID: 0}
   selectionBox: {fileID: 0}
   startMousePos: {x: 0, y: 0}
