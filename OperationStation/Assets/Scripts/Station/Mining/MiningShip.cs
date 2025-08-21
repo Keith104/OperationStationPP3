@@ -5,6 +5,7 @@ using UnityEngine.AI;
 public class MiningShip : MonoBehaviour, ISelectable, IDamage
 {
     [SerializeField] Renderer model;
+    [SerializeField] GameObject fragmentModel;
     [SerializeField] UnitSO stats;
 
     [Header("Movement")]
@@ -26,12 +27,12 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
     private GameObject curAsteroid;
     private Transform goHereFallback;
 
-    public NullSpaceFabricator nullScript;
+    //public NullSpaceFabricator nullScript;
     
 
     void Start()
     {
-        this.name = nullScript.DesignatedName();
+        //this.name = nullScript.DesignatedName();
         health = stats.unitHealth;
         colorOG = model.material.color;
         idlePos = transform.position;
@@ -83,13 +84,17 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
             if (health <= 0)
             {
 
-                Destroy(gameObject)
-                if(nullScript.totalShips > 0)
-                {
+                if (fragmentModel != null)
+                    fragmentModel.SetActive(true);
+                else
+                    Debug.Log("fragmentModel missing");
+                //Destroy(gameObject)
+                //if(nullScript.totalShips > 0)
+                //{
 
-                    nullScript.totalShips--;
+                //    nullScript.totalShips--;
 
-                }
+                //}
             }
         }
         else

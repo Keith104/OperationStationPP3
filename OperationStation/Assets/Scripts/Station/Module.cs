@@ -95,10 +95,11 @@ public class Module : MonoBehaviour, ISelectable, IDamage
         if (localHealth <= 0)
         {
             if (fragmentModel != null)
-                if (localHealth < 0)
-                    fragmentModel.SetActive(true);
+                fragmentModel.SetActive(true);
+            else
+                Debug.Log("fragmentModel missing");
 
-            IModule dmg = gameObject.GetComponent<IModule>();
+                IModule dmg = gameObject.GetComponent<IModule>();
 
             if (dmg != null)
             {

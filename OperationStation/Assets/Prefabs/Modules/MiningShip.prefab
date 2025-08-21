@@ -38,6 +38,7 @@ Transform:
   m_Children:
   - {fileID: 3611655240735372612}
   - {fileID: 8011347562107764763}
+  - {fileID: 4034651813548825008}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7508416065779783093
@@ -53,13 +54,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   model: {fileID: 6428885986340341072}
+  fragmentModel: {fileID: 4374726823771554570}
   stats: {fileID: 11400000, guid: 403dba74d08f6134494fe9b01a48ffaf, type: 2}
   agent: {fileID: 2505229040864052261}
   playerCam: {fileID: 0}
   goHere: {fileID: 3611655240735372612}
   soundModulation: {fileID: 7885078006477406400}
   damageSource: {fileID: 1094766714909806917}
-  nullScript: {fileID: 0}
 --- !u!33 &3969661566738208297
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -409,4 +410,75 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 3169673876170683672, guid: f115d1b92ccfed14196bef8150d94bc7, type: 3}
   m_PrefabInstance: {fileID: 4959298482111067395}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &6167922916995908829
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 5382640943749671560}
+    m_Modifications:
+    - target: {fileID: 7090120761293069677, guid: 825f54a84325286419b8d61f68ab9b10, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7090120761293069677, guid: 825f54a84325286419b8d61f68ab9b10, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7090120761293069677, guid: 825f54a84325286419b8d61f68ab9b10, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7090120761293069677, guid: 825f54a84325286419b8d61f68ab9b10, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7090120761293069677, guid: 825f54a84325286419b8d61f68ab9b10, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7090120761293069677, guid: 825f54a84325286419b8d61f68ab9b10, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7090120761293069677, guid: 825f54a84325286419b8d61f68ab9b10, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7090120761293069677, guid: 825f54a84325286419b8d61f68ab9b10, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7090120761293069677, guid: 825f54a84325286419b8d61f68ab9b10, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7090120761293069677, guid: 825f54a84325286419b8d61f68ab9b10, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7579272200886061015, guid: 825f54a84325286419b8d61f68ab9b10, type: 3}
+      propertyPath: m_Name
+      value: Mining Ship - Fragmented
+      objectReference: {fileID: 0}
+    - target: {fileID: 7579272200886061015, guid: 825f54a84325286419b8d61f68ab9b10, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 825f54a84325286419b8d61f68ab9b10, type: 3}
+--- !u!4 &4034651813548825008 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7090120761293069677, guid: 825f54a84325286419b8d61f68ab9b10, type: 3}
+  m_PrefabInstance: {fileID: 6167922916995908829}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4374726823771554570 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7579272200886061015, guid: 825f54a84325286419b8d61f68ab9b10, type: 3}
+  m_PrefabInstance: {fileID: 6167922916995908829}
   m_PrefabAsset: {fileID: 0}
