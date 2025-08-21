@@ -11,6 +11,7 @@ TagManager:
   - UI
   - DifficultyButtons
   - LowHealthIndicator
+  - Ship
   layers:
   - Default
   - TransparentFX
@@ -23,7 +24,7 @@ TagManager:
   - Asteroid
   - Icons
   - PlayerDamage
-  - 
+  - Ship
   - 
   - 
   - 

@@ -549,6 +549,8 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 53e2654a9c2e8214d897bee0314b294b, type: 2}
   - {fileID: 2100000, guid: aaca038452991c5458122d60a3ff2b06, type: 2}
   - {fileID: 2100000, guid: a0ea98f74b9ce1740a279641485f5294, type: 2}
+  - {fileID: 2100000, guid: 59cd6a49c1f3be446bac7c9b2b1f9b76, type: 2}
+  - {fileID: 2100000, guid: 70cccc841924df54da88686680a7ed28, type: 2}
   urpLitShaderName: Universal Render Pipeline/Lit
   psxShaderName: PSX/AffineUnlit
 --- !u!4 &874101942

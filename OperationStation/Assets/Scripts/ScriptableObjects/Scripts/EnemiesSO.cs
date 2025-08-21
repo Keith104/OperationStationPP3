@@ -9,7 +9,8 @@ public class EnemiesSO : ScriptableObject
         BowFighter,
         VerticalWing,
         DOGDestroyer,
-        SuperDOGDestroyer
+        SuperDOGDestroyer,
+        MineShip
     }
     public bool found;
 
