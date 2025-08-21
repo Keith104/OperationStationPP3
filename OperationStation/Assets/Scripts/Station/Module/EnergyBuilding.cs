@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class EnergyBuilding : MonoBehaviour, ISelectable, IModule, IDamage
+public class EnergyBuilding : MonoBehaviour, ISelectable, IModule
 {
     [SerializeField] string menuToActivate;
     [SerializeField] bool autoGenerate = false;
@@ -64,6 +64,4 @@ public class EnergyBuilding : MonoBehaviour, ISelectable, IModule, IDamage
         }
         UnitUIManager.instance.currUnit = gameObject;
     }
-
-    public void TakeDamage(float damage) { }
 }

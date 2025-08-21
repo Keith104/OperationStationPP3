@@ -5,6 +5,7 @@ using UnityEngine.AI;
 public class MiningShip : MonoBehaviour, ISelectable, IDamage
 {
     [SerializeField] Renderer model;
+    [SerializeField] GameObject fragmentModel;
     [SerializeField] UnitSO stats;
 
     [Header("Movement")]
@@ -26,20 +27,14 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
     private GameObject curAsteroid;
     private Transform goHereFallback;
 
-    public NullSpaceFabricator nullScript;
+    //public NullSpaceFabricator nullScript;
     
 
     void Start()
     {
-        if(nullScript != null)
-            this.name = nullScript.DesignatedName();
-        
+        //this.name = nullScript.DesignatedName();
         health = stats.unitHealth;
         colorOG = model.material.color;
-        
-        if(playerCam == null)
-            playerCam = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
-        
         idlePos = transform.position;
         goHereFallback = goHere;
         playerControlled = false;
@@ -58,10 +53,14 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
                 goHere = goHereFallback;
 
             if (foundAsteroid && curAsteroid != null)
+            {
                 GetThatAsteroid(curAsteroid);
+            }
 
             if (playerControlled)
+            {
                 ShipMove();
+            }
         }
     }
 
@@ -84,10 +83,18 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
 
             if (health <= 0)
             {
-                Destroy(gameObject);
-                
-                if(nullScript != null && nullScript.totalShips > 0)
-                   nullScript.totalShips--;
+
+                if (fragmentModel != null)
+                    fragmentModel.SetActive(true);
+                else
+                    Debug.Log("fragmentModel missing");
+                //Destroy(gameObject)
+                //if(nullScript.totalShips > 0)
+                //{
+
+                //    nullScript.totalShips--;
+
+                //}
             }
         }
         else
@@ -104,11 +111,15 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
             playerControlled = false;
             noControl = true;
 
+            //agent.SetDestination(transform.position);
+
             other.transform.root.transform.SetParent(transform, true);
             
             other.transform.root.GetComponentInChildren<Asteroid>().canMove = false;
 
             other = other.transform.root.GetComponent<Collider>();
+
+            //Debug.Log(other);
 
             StartCoroutine(Mine(other));
 
@@ -159,8 +170,14 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
         {
             yield return new WaitForSeconds(1);
             if (dmg != null)
+            {
                 dmg.TakeDamage(stats.miningDamage);
 
+                //if (asteroid.GetComponentInChildren<Asteroid>() != null && asteroid.GetComponentInChildren<Asteroid>().health <= 10)
+                //{
+                //    asteroid.transform.parent.transform.SetParent(null);
+                //}
+            }
         } while (asteroid.GetComponentInChildren<Asteroid>().health > 0);
 
         agent.isStopped = false;
