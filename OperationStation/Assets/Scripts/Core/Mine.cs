@@ -6,7 +6,7 @@ public class Mine : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Instantiate(boom);
+        Instantiate(boom, transform.position, transform.rotation);
         Destroy(gameObject);
     }
 }
