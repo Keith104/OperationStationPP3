@@ -1264,6 +1264,34 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerCamera
       objectReference: {fileID: 0}
+    - target: {fileID: 8220521304280812944, guid: 5d227a6f3d3a2ef4eb8387eb9ac2119b, type: 3}
+      propertyPath: moveMax
+      value: 255
+      objectReference: {fileID: 0}
+    - target: {fileID: 8220521304280812944, guid: 5d227a6f3d3a2ef4eb8387eb9ac2119b, type: 3}
+      propertyPath: moveMin
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8220521304280812944, guid: 5d227a6f3d3a2ef4eb8387eb9ac2119b, type: 3}
+      propertyPath: zoomMax
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8220521304280812944, guid: 5d227a6f3d3a2ef4eb8387eb9ac2119b, type: 3}
+      propertyPath: zoomMin
+      value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8220521304280812944, guid: 5d227a6f3d3a2ef4eb8387eb9ac2119b, type: 3}
+      propertyPath: moveSpeed
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 8220521304280812944, guid: 5d227a6f3d3a2ef4eb8387eb9ac2119b, type: 3}
+      propertyPath: rotateSpeed
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 8220521304280812944, guid: 5d227a6f3d3a2ef4eb8387eb9ac2119b, type: 3}
+      propertyPath: scrollSpeed
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

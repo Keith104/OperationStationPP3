@@ -6,14 +6,16 @@ using UnityEngine.InputSystem;
 public class PlayerCamera : MonoBehaviour
 {
     [Header("Camera Speed")]
-    [SerializeField] int speed;
-    [SerializeField] int fapSpeed;
+    [SerializeField] int moveSpeed;
+    [SerializeField] int rotateSpeed;
     [SerializeField] int scrollSpeed;
     [SerializeField] Vector2 limit;
 
     [Header("Camera Limits")]
-    [SerializeField] int min;
-    [SerializeField] int max;
+    [SerializeField] int moveMin;
+    [SerializeField] int moveMax;
+    [SerializeField] int zoomMin;
+    [SerializeField] int zoomMax;
 
     [Header("Selection")]
     [SerializeField] RectTransform UI;
@@ -68,10 +70,18 @@ public class PlayerCamera : MonoBehaviour
     void Move()
     {
         Vector2 move = controls.Player.Move.ReadValue<Vector2>();
-        Vector3 dir = new Vector3(move.x, 0f, move.y);
-        float yOrg = transform.position.y;
-        transform.Translate(speed * Time.deltaTime * dir, Space.Self);
-        transform.position = new Vector3(transform.position.x, yOrg, transform.position.z);
+        if (transform.position.x > moveMin && transform.position.x < moveMax
+            && transform.position.z > moveMin && transform.position.z < moveMax)
+        {
+            Vector3 dir = new Vector3(move.x, 0f, move.y);
+            float yOrg = transform.position.y;
+            transform.Translate(moveSpeed * Time.deltaTime * dir, Space.Self);
+            transform.position = new Vector3(transform.position.x, yOrg, transform.position.z);
+        }
+        if (transform.position.x < moveMin) transform.position += transform.right;
+        if (transform.position.x > moveMax) transform.position -= transform.right;
+        if (transform.position.z < moveMin) transform.position += transform.up;
+        if (transform.position.z > moveMax) transform.position -= transform.up;
     }
 
     void RotateKeys()
@@ -86,8 +96,8 @@ public class PlayerCamera : MonoBehaviour
         if (controls.Player.OrbitHold.IsPressed())
         {
             Vector2 look = controls.Player.Look.ReadValue<Vector2>();
-            transform.Rotate(Vector3.up, look.x * fapSpeed * Time.deltaTime, Space.World);
-            transform.Rotate(Vector3.right, -look.y * fapSpeed * Time.deltaTime, Space.Self);
+            transform.Rotate(Vector3.up, look.x * rotateSpeed * Time.deltaTime, Space.World);
+            transform.Rotate(Vector3.right, -look.y * rotateSpeed * Time.deltaTime, Space.Self);
             Vector3 e = transform.eulerAngles;
             transform.eulerAngles = new Vector3(e.x, e.y, 0f);
         }
@@ -96,7 +106,7 @@ public class PlayerCamera : MonoBehaviour
     void Zoom()
     {
         float scroll = controls.Player.Zoom.ReadValue<float>();
-        if (Mathf.Abs(scroll) > 0.0001f && transform.position.y > min && transform.position.y < max)
+        if (Mathf.Abs(scroll) > 0.0001f && transform.position.y > zoomMin && transform.position.y < zoomMax)
         {
             transform.position += scroll * scrollSpeed * transform.forward;
 
@@ -109,8 +119,8 @@ public class PlayerCamera : MonoBehaviour
             }
         }
 
-        if (transform.position.y < min) transform.position -= transform.forward;
-        if (transform.position.y > max) transform.position += transform.forward;
+        if (transform.position.y < zoomMin) transform.position -= transform.forward;
+        if (transform.position.y > zoomMax) transform.position += transform.forward;
     }
 
     void OnFocus(InputAction.CallbackContext _)
