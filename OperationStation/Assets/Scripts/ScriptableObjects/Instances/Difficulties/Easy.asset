@@ -13,7 +13,10 @@ MonoBehaviour:
   m_Name: Easy
   m_EditorClassIdentifier: 
   difficultyName: Easy
+  difficultyDescription: Enemies are weak with low health, deal little damage, and
+    attack slowly. A good choice for beginners.
   isLocked: 0
+  uiColor: {r: 0.2, g: 0.8, b: 0.2, a: 1}
   health: 1
   damage: 1
   attackCooldown: 1
