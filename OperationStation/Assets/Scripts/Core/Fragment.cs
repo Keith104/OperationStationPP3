@@ -3,10 +3,13 @@ using UnityEngine;
 
 public class Fragment : MonoBehaviour
 {
+    private void Awake()
+    {
+        transform.SetParent(null);        
+    }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
     }
 
     // Update is called once per frame

@@ -39,6 +39,7 @@ Transform:
   - {fileID: 5767499527654309624}
   - {fileID: 7226030942511432884}
   - {fileID: 950224737957574739}
+  - {fileID: 1557881229291811424}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7573420944328670618
@@ -85,6 +86,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stats: {fileID: 11400000, guid: 05f8d5e67778682409e48a1a572fc1aa, type: 2}
   model: {fileID: 553107750580895635}
+  fragmentModel: {fileID: 2221792035765987546}
   resourceCosts: []
   costsLeft: 0200000002000000000000000000000000000000000000000000000000000000000000000000000000000000
   localHealth: 0
@@ -343,6 +345,77 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c07ca608cac269c4ea4438a0452a3aac, type: 3}
   m_PrefabInstance: {fileID: 767117306114514872}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1260130585996621301
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 6765949016062805750}
+    m_Modifications:
+    - target: {fileID: 351939027131238293, guid: 55ea37e703b94ff4f88e52a5be8a623b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 351939027131238293, guid: 55ea37e703b94ff4f88e52a5be8a623b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 351939027131238293, guid: 55ea37e703b94ff4f88e52a5be8a623b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 351939027131238293, guid: 55ea37e703b94ff4f88e52a5be8a623b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 351939027131238293, guid: 55ea37e703b94ff4f88e52a5be8a623b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 351939027131238293, guid: 55ea37e703b94ff4f88e52a5be8a623b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 351939027131238293, guid: 55ea37e703b94ff4f88e52a5be8a623b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 351939027131238293, guid: 55ea37e703b94ff4f88e52a5be8a623b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 351939027131238293, guid: 55ea37e703b94ff4f88e52a5be8a623b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 351939027131238293, guid: 55ea37e703b94ff4f88e52a5be8a623b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1128580527674187055, guid: 55ea37e703b94ff4f88e52a5be8a623b, type: 3}
+      propertyPath: m_Name
+      value: Death Cat - Fragmented
+      objectReference: {fileID: 0}
+    - target: {fileID: 1128580527674187055, guid: 55ea37e703b94ff4f88e52a5be8a623b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 55ea37e703b94ff4f88e52a5be8a623b, type: 3}
+--- !u!4 &1557881229291811424 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 351939027131238293, guid: 55ea37e703b94ff4f88e52a5be8a623b, type: 3}
+  m_PrefabInstance: {fileID: 1260130585996621301}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2221792035765987546 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1128580527674187055, guid: 55ea37e703b94ff4f88e52a5be8a623b, type: 3}
+  m_PrefabInstance: {fileID: 1260130585996621301}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7188516476282561375
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -457,6 +530,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3460871933342828798, guid: f115d1b92ccfed14196bef8150d94bc7, type: 3}
+      propertyPath: m_Pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3460871933342828798, guid: f115d1b92ccfed14196bef8150d94bc7, type: 3}
+      propertyPath: m_Resource
+      value: 
+      objectReference: {fileID: 8300000, guid: b80c732df65c1f7499540c34792f3665, type: 3}
+    - target: {fileID: 3460871933342828798, guid: f115d1b92ccfed14196bef8150d94bc7, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: b80c732df65c1f7499540c34792f3665, type: 3}
+    - target: {fileID: 6061539347451195308, guid: f115d1b92ccfed14196bef8150d94bc7, type: 3}
+      propertyPath: m_Pitch
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6061539347451195308, guid: f115d1b92ccfed14196bef8150d94bc7, type: 3}
+      propertyPath: m_Resource
+      value: 
+      objectReference: {fileID: 8300000, guid: b80c732df65c1f7499540c34792f3665, type: 3}
+    - target: {fileID: 6061539347451195308, guid: f115d1b92ccfed14196bef8150d94bc7, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: b80c732df65c1f7499540c34792f3665, type: 3}
     - target: {fileID: 8737938473530881325, guid: f115d1b92ccfed14196bef8150d94bc7, type: 3}
       propertyPath: m_Name
       value: SoundObject
