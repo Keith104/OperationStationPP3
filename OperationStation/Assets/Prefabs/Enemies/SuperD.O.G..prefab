@@ -389,6 +389,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Super D.O.G. - Fragmented
       objectReference: {fileID: 0}
+    - target: {fileID: 7637552899179990701, guid: 8e697120a678b6d46ad5b72dff554485, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
