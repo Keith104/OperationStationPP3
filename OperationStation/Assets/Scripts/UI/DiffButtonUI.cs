@@ -96,7 +96,7 @@ public class DifficultyButtonUI : MonoBehaviour,
             DifficultyManager.instance.SetDifficulty(null); // clear last selection
             SetDescription(null);
 
-            var all = FindObjectsOfType<DifficultyButtonUI>(true);
+            var all = FindObjectsByType<DifficultyButtonUI>(FindObjectsSortMode.None);
             foreach (var b in all) b.SetBorder(b.idleBorderColor);
         }
         else
@@ -107,7 +107,7 @@ public class DifficultyButtonUI : MonoBehaviour,
 
     private void RefreshAllBorders()
     {
-        var all = FindObjectsOfType<DifficultyButtonUI>(true);
+        var all = FindObjectsByType<DifficultyButtonUI>(FindObjectsSortMode.None);
         foreach (var b in all) b.SyncWithSelection();
     }
 
