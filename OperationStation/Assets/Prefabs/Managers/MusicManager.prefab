@@ -178,16 +178,17 @@ MonoBehaviour:
   outgoingSource: {fileID: 8785926218965458090}
   incomingSource: {fileID: 6549542137500644904}
   neutralMusicClips:
-  - {fileID: 8300000, guid: 4f425ba0520127145a41cf8748285b65, type: 3}
-  - {fileID: 8300000, guid: 0d42e100cc1a62a4fa244a3288138b93, type: 3}
-  - {fileID: 8300000, guid: ef2d1519ff9acff40a217dee9f84f9c5, type: 3}
-  - {fileID: 8300000, guid: 471a52f333beaa043b35329de63554c5, type: 3}
-  - {fileID: 8300000, guid: c7558d42357bb2e429af17c34d8e3205, type: 3}
+  - {fileID: 8300000, guid: 7f07cdce78e735a419648487584f073f, type: 3}
+  - {fileID: 8300000, guid: 927e36443068a854b9179a35a52b3312, type: 3}
+  - {fileID: 8300000, guid: feb2fa364e1a9b548ad57191f36eb686, type: 3}
+  - {fileID: 8300000, guid: c0ed479d95f5f744aaf2603b5f3f407d, type: 3}
+  - {fileID: 8300000, guid: 1ea2a10e032235a4d88df39725f458d3, type: 3}
   aggressiveMusicClips:
-  - {fileID: 8300000, guid: d1f259e613bb723458593328927ed4c6, type: 3}
-  - {fileID: 8300000, guid: 9b1b957a688ff7345b45c5df0c3371e8, type: 3}
-  - {fileID: 8300000, guid: 3fe8206434f6eb9499ce3883f6290604, type: 3}
-  - {fileID: 8300000, guid: 2022a82ce5fac804e8859b0f150bd451, type: 3}
+  - {fileID: 8300000, guid: 3422c3961f78c55429bb6cb6a0ec18f6, type: 3}
+  - {fileID: 8300000, guid: f1c1938f9b569b04895a3b6251506aea, type: 3}
+  - {fileID: 8300000, guid: 0442b120b07b49d458e418572c5395a3, type: 3}
+  - {fileID: 8300000, guid: 4f58569a3e445a74eac9595680fd6028, type: 3}
+  - {fileID: 8300000, guid: dbeac4a3ed472bd4ba2d71f67760c373, type: 3}
   enemiesSeen: 0
   seenLimit: 0
   fadeNewClipIn: 0
