@@ -6,7 +6,8 @@ public class Mine : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Instantiate(boom, transform.position, transform.rotation);
+        GameObject explostion = Instantiate(boom, transform.position, transform.rotation);
+        explostion.transform.localScale = new Vector3(5, 5, 5);
         Destroy(gameObject);
     }
 }

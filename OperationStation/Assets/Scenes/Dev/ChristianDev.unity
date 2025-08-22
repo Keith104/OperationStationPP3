@@ -2078,7 +2078,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 270741439531051335, guid: cce8582c7aa3a1046bcfd7e7c0e2c9ac, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -11.827194
+      value: 0.17280579
       objectReference: {fileID: 0}
     - target: {fileID: 270741439531051335, guid: cce8582c7aa3a1046bcfd7e7c0e2c9ac, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2086,7 +2086,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 270741439531051335, guid: cce8582c7aa3a1046bcfd7e7c0e2c9ac, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 28.167145
+      value: 12.167145
       objectReference: {fileID: 0}
     - target: {fileID: 270741439531051335, guid: cce8582c7aa3a1046bcfd7e7c0e2c9ac, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2116,6 +2116,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3037128410221366043, guid: cce8582c7aa3a1046bcfd7e7c0e2c9ac, type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4108062521803806476, guid: cce8582c7aa3a1046bcfd7e7c0e2c9ac, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4108062521803806476, guid: cce8582c7aa3a1046bcfd7e7c0e2c9ac, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 59cd6a49c1f3be446bac7c9b2b1f9b76, type: 2}
     - target: {fileID: 4108954467014891506, guid: cce8582c7aa3a1046bcfd7e7c0e2c9ac, type: 3}
       propertyPath: boom
       value: 

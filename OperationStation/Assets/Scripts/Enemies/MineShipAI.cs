@@ -3,11 +3,12 @@ using UnityEngine;
 
 public class MineShipAI : EnemyAI
 {
-    [Header("Mine Ship")]
+    [Header("Mine Ship Values")]
     [SerializeField] GameObject mine;
     [SerializeField] float destroyTime;
 
     private Vector3 startingPos;
+    private float nextShootTime = 5f;
     private float xOffset;
     private float zOffset;
 
@@ -16,6 +17,7 @@ public class MineShipAI : EnemyAI
         station = GameObject.FindWithTag("Player");
         colorOG = model.material.color;
         startingPos = station.transform.position;
+        shootTimer = 0;
 
         health = enemy.health;
 
@@ -33,10 +35,12 @@ public class MineShipAI : EnemyAI
         {
             shootTimer += Time.deltaTime;
 
-            if(shootTimer % 5 == 0)
+            if(shootTimer >= nextShootTime)
             {
-                Instantiate(mine, shootPos.position, shootPos.rotation);
+                GameObject bomb = Instantiate(mine, shootPos.position, shootPos.rotation);
+                bomb.transform.localPosition = new Vector3(bomb.transform.position.x, bomb.transform.position.y - 0.5f, bomb.transform.position.z);
                 Wander();
+                nextShootTime += 5f;
             }
 
             if(shootTimer >= 15)
