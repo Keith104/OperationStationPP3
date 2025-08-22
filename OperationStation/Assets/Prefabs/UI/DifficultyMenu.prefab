@@ -436,7 +436,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6314305963812921854}
-  - component: {fileID: 3437565399639227888}
   - component: {fileID: 7005138489505083451}
   m_Layer: 5
   m_Name: DifficultyButtons
@@ -467,29 +466,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -20, y: -20}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &3437565399639227888
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7021688641008105510}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d0b41e6c01829e4eae8ef3e46c8ae88, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  index: 0
-  difficulty: {fileID: 0}
-  borderImage: {fileID: 3196669445554321056}
-  descriptionPanelImage: {fileID: 3063879499883425259}
-  descriptionTMP: {fileID: 8979503554709858329}
-  normalBorderColor: {r: 1, g: 1, b: 1, a: 0.49019608}
-  normalPanelColor: {r: 1, g: 1, b: 1, a: 0.49019608}
-  difficultyColors:
-  - {r: 0.2, g: 0.8, b: 0.2, a: 1}
-  - {r: 1, g: 0.8392157, b: 0.2, a: 1}
-  - {r: 0.8392157, g: 0.2, b: 0.2, a: 1}
 --- !u!114 &7005138489505083451
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -782,31 +758,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5713308976814160890, guid: 692fd943249d494438d1b8aea8e8e60c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 5713308976814160890, guid: 692fd943249d494438d1b8aea8e8e60c, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
-      value: 
-      objectReference: {fileID: 3437565399639227888}
     - target: {fileID: 5713308976814160890, guid: 692fd943249d494438d1b8aea8e8e60c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5713308976814160890, guid: 692fd943249d494438d1b8aea8e8e60c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: SetDiffFromHere
+      value: SetDifficulty
       objectReference: {fileID: 0}
     - target: {fileID: 5713308976814160890, guid: 692fd943249d494438d1b8aea8e8e60c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: DifficultyButtons, Assembly-CSharp
+      value: DifficultyManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5713308976814160890, guid: 692fd943249d494438d1b8aea8e8e60c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_IntArgument
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5713308976814160890, guid: 692fd943249d494438d1b8aea8e8e60c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 11400000, guid: b907781d7f84e0c46aab4252e512d01e, type: 2}
+    - target: {fileID: 5713308976814160890, guid: 692fd943249d494438d1b8aea8e8e60c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
+      value: DifficultySO, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5769614134336612202, guid: 692fd943249d494438d1b8aea8e8e60c, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -822,14 +798,14 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4027065312215733574, guid: 692fd943249d494438d1b8aea8e8e60c, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1082292666112174494}
+      addedObject: {fileID: 6661486530550424691}
   m_SourcePrefab: {fileID: 100100000, guid: 692fd943249d494438d1b8aea8e8e60c, type: 3}
 --- !u!1 &642499529765825431 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4027065312215733574, guid: 692fd943249d494438d1b8aea8e8e60c, type: 3}
   m_PrefabInstance: {fileID: 4542337052995665617}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1082292666112174494
+--- !u!114 &6661486530550424691
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -838,16 +814,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 642499529765825431}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e572ccfdc5a5b941aa92c052a33a143, type: 3}
+  m_Script: {fileID: 11500000, guid: 01f3b5ae02e615448afc4d46d9df2f02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  button: {fileID: 8088569684119012651}
   difficulty: {fileID: 11400000, guid: b907781d7f84e0c46aab4252e512d01e, type: 2}
-  borderImage: {fileID: 3196669445554321056}
-  descriptionPanelImage: {fileID: 3063879499883425259}
-  descriptionTMP: {fileID: 8979503554709858329}
-  normalBorderColor: {r: 1, g: 1, b: 1, a: 0.49019608}
-  normalPanelColor: {r: 0.54088044, g: 0.54088044, b: 0.54088044, a: 0.49019608}
+  buttonBorder: {fileID: 3196669445554321056}
+  idleBorderColor: {r: 1, g: 1, b: 1, a: 1}
+  descriptionText: {fileID: 8979503554709858329}
+  descriptionBorder: {fileID: 3063879499883425259}
+  descriptionIdleColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!224 &4299298389634807339 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 334306926709033210, guid: 692fd943249d494438d1b8aea8e8e60c, type: 3}
@@ -990,20 +965,16 @@ PrefabInstance:
       objectReference: {fileID: 1424784154697172479}
     - target: {fileID: 5713308976814160890, guid: 692fd943249d494438d1b8aea8e8e60c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5713308976814160890, guid: 692fd943249d494438d1b8aea8e8e60c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5713308976814160890, guid: 692fd943249d494438d1b8aea8e8e60c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 5713308976814160890, guid: 692fd943249d494438d1b8aea8e8e60c, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
-      value: 
-      objectReference: {fileID: 3437565399639227888}
     - target: {fileID: 5713308976814160890, guid: 692fd943249d494438d1b8aea8e8e60c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
@@ -1018,19 +989,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5713308976814160890, guid: 692fd943249d494438d1b8aea8e8e60c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: SetDiffFromHere
+      value: SetDifficulty
       objectReference: {fileID: 0}
     - target: {fileID: 5713308976814160890, guid: 692fd943249d494438d1b8aea8e8e60c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: DifficultyButtons, Assembly-CSharp
+      value: DifficultyManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5713308976814160890, guid: 692fd943249d494438d1b8aea8e8e60c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
       value: DifficultyButtons, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5713308976814160890, guid: 692fd943249d494438d1b8aea8e8e60c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 11400000, guid: dce6996b60d48e84cb55fee8bb17807f, type: 2}
+    - target: {fileID: 5713308976814160890, guid: 692fd943249d494438d1b8aea8e8e60c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
+      value: DifficultySO, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5769614134336612202, guid: 692fd943249d494438d1b8aea8e8e60c, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -1046,7 +1021,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4027065312215733574, guid: 692fd943249d494438d1b8aea8e8e60c, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2226317471022773036}
+      addedObject: {fileID: 4226340807514837962}
   m_SourcePrefab: {fileID: 100100000, guid: 692fd943249d494438d1b8aea8e8e60c, type: 3}
 --- !u!114 &2300550581493957325 stripped
 MonoBehaviour:
@@ -1069,7 +1044,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4027065312215733574, guid: 692fd943249d494438d1b8aea8e8e60c, type: 3}
   m_PrefabInstance: {fileID: 5811036251889531191}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2226317471022773036
+--- !u!114 &4226340807514837962
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1078,16 +1053,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 7442181060464503921}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e572ccfdc5a5b941aa92c052a33a143, type: 3}
+  m_Script: {fileID: 11500000, guid: 01f3b5ae02e615448afc4d46d9df2f02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  button: {fileID: 2300550581493957325}
   difficulty: {fileID: 11400000, guid: dce6996b60d48e84cb55fee8bb17807f, type: 2}
-  borderImage: {fileID: 3196669445554321056}
-  descriptionPanelImage: {fileID: 3063879499883425259}
-  descriptionTMP: {fileID: 8979503554709858329}
-  normalBorderColor: {r: 1, g: 1, b: 1, a: 0.49019608}
-  normalPanelColor: {r: 0.54088044, g: 0.54088044, b: 0.54088044, a: 0.49019608}
+  buttonBorder: {fileID: 3196669445554321056}
+  idleBorderColor: {r: 1, g: 1, b: 1, a: 1}
+  descriptionText: {fileID: 8979503554709858329}
+  descriptionBorder: {fileID: 3063879499883425259}
+  descriptionIdleColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1001 &6668733313439137285
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1454,16 +1428,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5713308976814160890, guid: 692fd943249d494438d1b8aea8e8e60c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5713308976814160890, guid: 692fd943249d494438d1b8aea8e8e60c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 5713308976814160890, guid: 692fd943249d494438d1b8aea8e8e60c, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
-      value: 
-      objectReference: {fileID: 3437565399639227888}
     - target: {fileID: 5713308976814160890, guid: 692fd943249d494438d1b8aea8e8e60c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
@@ -1478,11 +1448,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5713308976814160890, guid: 692fd943249d494438d1b8aea8e8e60c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: SetDiffFromHere
+      value: SetDifficulty
       objectReference: {fileID: 0}
     - target: {fileID: 5713308976814160890, guid: 692fd943249d494438d1b8aea8e8e60c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: DifficultyButtons, Assembly-CSharp
+      value: DifficultyManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5713308976814160890, guid: 692fd943249d494438d1b8aea8e8e60c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
@@ -1493,8 +1463,12 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5713308976814160890, guid: 692fd943249d494438d1b8aea8e8e60c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 11400000, guid: 497661b15be2d2641a98e5780d113203, type: 2}
+    - target: {fileID: 5713308976814160890, guid: 692fd943249d494438d1b8aea8e8e60c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
+      value: DifficultySO, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5769614134336612202, guid: 692fd943249d494438d1b8aea8e8e60c, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -1510,7 +1484,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4027065312215733574, guid: 692fd943249d494438d1b8aea8e8e60c, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 658791748805899982}
+      addedObject: {fileID: 7660991754883909741}
   m_SourcePrefab: {fileID: 100100000, guid: 692fd943249d494438d1b8aea8e8e60c, type: 3}
 --- !u!114 &3650107022659520528 stripped
 MonoBehaviour:
@@ -1528,7 +1502,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4027065312215733574, guid: 692fd943249d494438d1b8aea8e8e60c, type: 3}
   m_PrefabInstance: {fileID: 9074199924400813034}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &658791748805899982
+--- !u!114 &7660991754883909741
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1537,16 +1511,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 5335932479316682412}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e572ccfdc5a5b941aa92c052a33a143, type: 3}
+  m_Script: {fileID: 11500000, guid: 01f3b5ae02e615448afc4d46d9df2f02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  button: {fileID: 3650107022659520528}
   difficulty: {fileID: 11400000, guid: 497661b15be2d2641a98e5780d113203, type: 2}
-  borderImage: {fileID: 3196669445554321056}
-  descriptionPanelImage: {fileID: 3063879499883425259}
-  descriptionTMP: {fileID: 8979503554709858329}
-  normalBorderColor: {r: 1, g: 1, b: 1, a: 0.49019608}
-  normalPanelColor: {r: 0.54088044, g: 0.54088044, b: 0.54088044, a: 0.49019608}
+  buttonBorder: {fileID: 3196669445554321056}
+  idleBorderColor: {r: 1, g: 1, b: 1, a: 1}
+  descriptionText: {fileID: 8979503554709858329}
+  descriptionBorder: {fileID: 3063879499883425259}
+  descriptionIdleColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!224 &8740847656319367952 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 334306926709033210, guid: 692fd943249d494438d1b8aea8e8e60c, type: 3}

@@ -817,6 +817,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3452753176144262340, guid: e3dad5f599e51b649aa87aec47d53230, type: 3}
+      propertyPath: allButtons.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3452753176144262340, guid: e3dad5f599e51b649aa87aec47d53230, type: 3}
+      propertyPath: 'allButtons.Array.data[0]'
+      value: 
+      objectReference: {fileID: 553779241}
+    - target: {fileID: 3452753176144262340, guid: e3dad5f599e51b649aa87aec47d53230, type: 3}
+      propertyPath: 'allButtons.Array.data[1]'
+      value: 
+      objectReference: {fileID: 939087554}
+    - target: {fileID: 3452753176144262340, guid: e3dad5f599e51b649aa87aec47d53230, type: 3}
+      propertyPath: 'allButtons.Array.data[2]'
+      value: 
+      objectReference: {fileID: 1060507026}
     - target: {fileID: 3713039491608436062, guid: e3dad5f599e51b649aa87aec47d53230, type: 3}
       propertyPath: m_LocalPosition.x
       value: 128.01808
@@ -886,6 +902,28 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1973793996 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4440148759378708716, guid: 8bbab4fe034508a479f493ce51e62e30, type: 3}
+  m_PrefabInstance: {fileID: 504826219417455347}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1991370133 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7747914301521349918, guid: 8bbab4fe034508a479f493ce51e62e30, type: 3}
+  m_PrefabInstance: {fileID: 504826219417455347}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &2124406571
@@ -1045,6 +1083,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4135630744989662126, guid: 8bbab4fe034508a479f493ce51e62e30, type: 3}
+      propertyPath: descriptionText
+      value: 
+      objectReference: {fileID: 1973793996}
+    - target: {fileID: 4135630744989662126, guid: 8bbab4fe034508a479f493ce51e62e30, type: 3}
+      propertyPath: descriptionBorder
+      value: 
+      objectReference: {fileID: 1991370133}
     - target: {fileID: 4292357567146874797, guid: 8bbab4fe034508a479f493ce51e62e30, type: 3}
       propertyPath: buildMode
       value: 0
