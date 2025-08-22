@@ -13,7 +13,10 @@ MonoBehaviour:
   m_Name: Hard
   m_EditorClassIdentifier: 
   difficultyName: Hard
+  difficultyDescription: Enemies are strong with high health, deal heavy damage,
+    and strike rapidly with minimal cooldown. Only for the brave.
   isLocked: 1
+  uiColor: {r: 0.8392157, g: 0.2, b: 0.2, a: 1}
   health: 3
   damage: 3
   attackCooldown: 3

@@ -13,7 +13,10 @@ MonoBehaviour:
   m_Name: Medium
   m_EditorClassIdentifier: 
   difficultyName: Medium
+  difficultyDescription: Enemies have balanced health, damage, and attack speed.
+    A fair challenge for most players.
   isLocked: 1
+  uiColor: {r: 1, g: 0.8392157, b: 0.2, a: 1}
   health: 2
   damage: 2
   attackCooldown: 2
