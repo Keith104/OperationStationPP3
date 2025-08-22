@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Smelter : MonoBehaviour, ISelectable, IModule, IDamage
+public class Smelter : MonoBehaviour, ISelectable, IModule
 {
     [SerializeField] Module module;
 
@@ -20,5 +20,4 @@ public class Smelter : MonoBehaviour, ISelectable, IModule, IDamage
     }
 
 
-    public void TakeDamage(float damage) { }
 }

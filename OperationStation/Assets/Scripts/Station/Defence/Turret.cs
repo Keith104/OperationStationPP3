@@ -12,6 +12,7 @@ public class Turret : MonoBehaviour, IDamage
     private float nextFireTime;
     public UnitSO stats;
     [SerializeField] Renderer model;
+    [SerializeField] GameObject fragmentModel;
 
     public float health;
 
@@ -70,6 +71,11 @@ public class Turret : MonoBehaviour, IDamage
 
         if (health <= 0)
         {
+            if (fragmentModel != null)
+                fragmentModel.SetActive(true);
+            else
+                Debug.Log("fragmentModel missing");
+
             Destroy(gameObject);
         }
     }

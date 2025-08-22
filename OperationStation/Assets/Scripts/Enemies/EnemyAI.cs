@@ -5,6 +5,7 @@ using System.Collections;
 public class EnemyAI : MonoBehaviour, IDamage
 {
     [SerializeField] WaveManager waveManager;
+    [SerializeField] GameObject fragmentModel;
     [SerializeField] Renderer model;
 
     [Header("Enemy Data")]
@@ -74,7 +75,12 @@ public class EnemyAI : MonoBehaviour, IDamage
 
         if (health <= 0)
         {
-            if(enemyToSpawn != null && waveManager.maxEnemies > waveManager.curEnemies + 1)
+            if (fragmentModel != null)
+                fragmentModel.SetActive(true);
+            else
+                Debug.Log("fragmentModel missing");
+
+            if (enemyToSpawn != null && waveManager.maxEnemies > waveManager.curEnemies + 1)
             {
                 Instantiate(enemyToSpawn, shootPos.position, transform.rotation);
                 Instantiate(enemyToSpawn, transform.position, transform.rotation);

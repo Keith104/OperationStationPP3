@@ -7,6 +7,7 @@ public class Module : MonoBehaviour, ISelectable, IDamage
 {
     public UnitSO stats;
     [SerializeField] Renderer model;
+    [SerializeField] GameObject fragmentModel;
     [SerializeField] ResourceCost[] resourceCosts;
     public int[] costsLeft;
 
@@ -93,12 +94,19 @@ public class Module : MonoBehaviour, ISelectable, IDamage
 
         if (localHealth <= 0)
         {
-            IModule dmg = gameObject.GetComponent<IModule>();
+            if (fragmentModel != null)
+                fragmentModel.SetActive(true);
+            else
+                Debug.Log("fragmentModel missing");
+
+                IModule dmg = gameObject.GetComponent<IModule>();
 
             if (dmg != null)
             {
                 dmg.ModuleDie();
             }
+
+
             enabled = false;
         }
 
