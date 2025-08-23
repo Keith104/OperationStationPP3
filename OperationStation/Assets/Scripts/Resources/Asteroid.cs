@@ -12,6 +12,7 @@ public class Asteroid : MonoBehaviour, IDamage
     [Header("Asteroid Settings")]
     [SerializeField] public float health;
     [SerializeField] AsteroidSO asteroid;
+    [SerializeField] GameObject fragmentModel;
 
     [Header("Resource")]
     [SerializeField] int minAmount;
@@ -135,6 +136,11 @@ public class Asteroid : MonoBehaviour, IDamage
         int amount = UnityEngine.Random.Range(minAmount, maxAmount);
         if (health <= 0)
         {
+            if (fragmentModel != null)
+                fragmentModel.SetActive(true);
+            else
+                Debug.Log("fragmentModel missing");
+
             ResourceManager.instance.AddResource(asteroid.resource.resourceType, amount + bonusAmount);
 
             // Raise the instance event

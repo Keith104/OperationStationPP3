@@ -4,6 +4,7 @@ using UnityEngine.AI;
 
 public class MiningShip : MonoBehaviour, ISelectable, IDamage
 {
+    [SerializeField] private float hp; //Note to self DELETE THIS AFTER TEST
     [SerializeField] Renderer model;
     [SerializeField] GameObject fragmentModel;
     [SerializeField] UnitSO stats;
@@ -43,6 +44,8 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
         goHere.gameObject.SetActive(false);
         curAsteroid = null;
         getHurt = true;
+
+        hp = health;
     }
 
     void Update()
@@ -83,11 +86,11 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
 
             if (health <= 0)
             {
-
                 if (fragmentModel != null)
                     fragmentModel.SetActive(true);
                 else
                     Debug.Log("fragmentModel missing");
+
                 //Destroy(gameObject)
                 //if(nullScript.totalShips > 0)
                 //{
@@ -186,7 +189,6 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
 
     private void GetThatAsteroid(GameObject asteroid)
     {
-
         goHere = asteroid.transform;
         agent.SetDestination(goHere.position);
 

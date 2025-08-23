@@ -6,7 +6,7 @@ public class EnemyAI : MonoBehaviour, IDamage
 {
     [SerializeField] WaveManager waveManager;
     [SerializeField] GameObject fragmentModel;
-    [SerializeField] Renderer model;
+    [SerializeField] protected Renderer model;
 
     [Header("Enemy Data")]
     [SerializeField] protected EnemiesSO enemy;
