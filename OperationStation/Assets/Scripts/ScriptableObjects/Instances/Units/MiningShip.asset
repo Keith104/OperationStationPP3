@@ -16,7 +16,7 @@ MonoBehaviour:
   unitOutline: {fileID: 0}
   unitName: Mining Ship
   unitDescription: A ship sent out to mine asteroid to gain materials
-  unitHealth: 100
+  unitHealth: 10
   cost: []
   buildPercent: 0
   energyProductionAmount: 0
