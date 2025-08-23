@@ -2,18 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 [DisallowMultipleComponent]
 public class UIHoverArrow : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler
 {
-    // Track live instances so we can hide all on menu switches
     static readonly HashSet<UIHoverArrow> Instances = new HashSet<UIHoverArrow>();
-
-    // Flip this to true when using keyboard (your navigator should set it)
     public static bool KeyboardMode = false;
 
-    [Header("Refs")]
-    [SerializeField] RectTransform arrow;   // Parent that has/gets a CanvasGroup
+    [SerializeField] RectTransform arrow;
     [SerializeField, Range(0.01f, 0.4f)] float fadeTime = 0.12f;
     [SerializeField, Range(0f, 24f)] float slideInPixels = 8f;
 
@@ -23,10 +20,11 @@ public class UIHoverArrow : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     bool pointerInside;
     bool isSelected;
     bool inited;
+    Selectable sel;
 
     void Awake()
     {
-        // Do NOT disable if arrow is missing; we handle it with EnsureInit()
+        sel = GetComponent<Selectable>();
         if (arrow)
         {
             EnsureInit();
@@ -39,14 +37,13 @@ public class UIHoverArrow : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     void OnEnable()
     {
         Instances.Add(this);
-        // Sync arrow with already-selected element on the next frame
         StartCoroutine(EnsureArrowMatchesSelectionNextFrame());
     }
 
     void OnDisable()
     {
         Instances.Remove(this);
-        HideImmediate(); // panel closed -> no lingering arrow
+        HideImmediate();
     }
 
     void OnDestroy() { Instances.Remove(this); }
@@ -61,24 +58,27 @@ public class UIHoverArrow : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         return true;
     }
 
+    bool CanShow()
+    {
+        if (!sel) sel = GetComponent<Selectable>();
+        return sel && sel.IsActive() && sel.interactable;
+    }
+
     IEnumerator EnsureArrowMatchesSelectionNextFrame()
     {
-        yield return null; // wait one frame for EventSystem selection to settle
+        yield return null;
         var es = EventSystem.current;
         bool thisSelected = es && es.currentSelectedGameObject == gameObject;
         isSelected = thisSelected;
-        if (thisSelected && (KeyboardMode || pointerInside))
-            ShowArrow();
-        else if (!pointerInside)
-            HideImmediate();
+        if (thisSelected && (KeyboardMode || pointerInside) && CanShow()) ShowArrow();
+        else if (!pointerInside) HideImmediate();
     }
 
-    // --- MOUSE HOVER ONLY ---
     public void OnPointerEnter(PointerEventData e)
     {
-        KeyboardMode = false; // touching the mouse puts us in mouse mode
+        KeyboardMode = false;
         pointerInside = true;
-        ShowArrow();
+        if (CanShow()) ShowArrow();
     }
 
     public void OnPointerExit(PointerEventData e)
@@ -87,11 +87,10 @@ public class UIHoverArrow : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         if (!isSelected || KeyboardMode == false) HideArrow();
     }
 
-    // --- SELECTION EVENTS (visible only when KeyboardMode = true) ---
     public void OnSelect(BaseEventData e)
     {
         isSelected = true;
-        if (KeyboardMode) ShowArrow();
+        if (KeyboardMode && CanShow()) ShowArrow();
     }
 
     public void OnDeselect(BaseEventData e)
@@ -102,20 +101,18 @@ public class UIHoverArrow : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     void LateUpdate()
     {
-        // Safety: if arrow is visible but we no longer should show it, hide it
         if (arrow && arrow.gameObject.activeSelf)
         {
             var es = EventSystem.current;
             bool actuallySelected = es && es.currentSelectedGameObject == gameObject;
-            if (!pointerInside && (!KeyboardMode || !actuallySelected))
+            if (!CanShow() || (!pointerInside && (!KeyboardMode || !actuallySelected)))
                 HideImmediate();
         }
     }
 
-    // ----- Static helpers -----
     public static void HideAll()
     {
-        foreach (var inst in Instances) inst.HideImmediate();
+        foreach (var inst in Instances) if (inst) inst.HideImmediate();
     }
 
     public static void HideAllInParent(Transform parent)
@@ -132,21 +129,20 @@ public class UIHoverArrow : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         var go = es.currentSelectedGameObject;
         if (!go) return;
         var a = go.GetComponent<UIHoverArrow>();
-        if (!a) return;                // selected item has no arrow script; skip
-        a.ShowImmediate();             // null-safe
+        if (!a) return;
+        a.ShowImmediate();
     }
 
-    // ----- Show/Hide -----
     void ShowArrow()
     {
-        if (!EnsureInit()) return;
+        if (!EnsureInit() || !CanShow()) return;
         arrow.gameObject.SetActive(true);
         StartAnim(true);
     }
 
     void ShowImmediate()
     {
-        if (!EnsureInit()) return;
+        if (!EnsureInit() || !CanShow()) return;
         if (anim != null) StopCoroutine(anim);
         anim = null;
         cg.alpha = 1f;
@@ -184,9 +180,7 @@ public class UIHoverArrow : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         float endA = show ? 1f : 0f;
         Vector2 from = show ? (restPos + new Vector2(-slideInPixels, 0f)) : restPos;
         Vector2 to = restPos;
-
         if (show) arrow.anchoredPosition = from;
-
         while (t < fadeTime)
         {
             t += Time.unscaledDeltaTime;
@@ -195,7 +189,6 @@ public class UIHoverArrow : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
             arrow.anchoredPosition = Vector2.Lerp(show ? from : to, to, u);
             yield return null;
         }
-
         cg.alpha = endA;
         arrow.anchoredPosition = to;
         if (!show && arrow) arrow.gameObject.SetActive(false);

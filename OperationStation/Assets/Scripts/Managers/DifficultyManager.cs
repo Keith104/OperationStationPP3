@@ -32,9 +32,9 @@ public class DifficultyManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(SceneManager.GetActiveScene().name == "AlexDev" && allButtons.Count <= 0)
+        if(allButtons.Count > 0)
         {
-            FindDiffButtons();
+            //FindDiffButtons();
             SetLocks();
         }
     }
@@ -53,9 +53,9 @@ public class DifficultyManager : MonoBehaviour
         foreach (DifficultySO diff in allDifficulties)
         {
             if (diff.isLocked == false)
-                allButtons[buttDex].enabled = true;
+                allButtons[buttDex].interactable = true;
             else
-                allButtons[buttDex].enabled = false;
+                allButtons[buttDex].interactable = false;
 
             buttDex++;
         }
