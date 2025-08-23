@@ -330,7 +330,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &325753588
 Transform:
   m_ObjectHideFlags: 0
@@ -832,7 +832,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1008239324
 Transform:
   m_ObjectHideFlags: 0
@@ -2421,9 +2421,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mine Ship
       objectReference: {fileID: 0}
+    - target: {fileID: 6696543969292036802, guid: a6b87413fc8e163469232a887ee1c070, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7919059079534157395, guid: a6b87413fc8e163469232a887ee1c070, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -25
+      value: -19.5
       objectReference: {fileID: 0}
     - target: {fileID: 7919059079534157395, guid: a6b87413fc8e163469232a887ee1c070, type: 3}
       propertyPath: m_LocalPosition.y
