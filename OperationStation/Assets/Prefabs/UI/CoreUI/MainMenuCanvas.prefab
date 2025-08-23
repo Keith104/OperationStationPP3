@@ -1492,7 +1492,7 @@ PrefabInstance:
     - target: {fileID: 1424784154697172479, guid: 716b356f4680d7944b3f48986f70d08b, type: 3}
       propertyPath: m_Navigation.m_SelectOnRight
       value: 
-      objectReference: {fileID: 3549775936236168670}
+      objectReference: {fileID: 6840470568580047416}
     - target: {fileID: 1424784154697172479, guid: 716b356f4680d7944b3f48986f70d08b, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 3
@@ -1790,9 +1790,9 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 716b356f4680d7944b3f48986f70d08b, type: 3}
---- !u!114 &3549775936236168670 stripped
+--- !u!114 &6840470568580047416 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8088569684119012651, guid: 716b356f4680d7944b3f48986f70d08b, type: 3}
+  m_CorrespondingSourceObject: {fileID: 2300550581493957325, guid: 716b356f4680d7944b3f48986f70d08b, type: 3}
   m_PrefabInstance: {fileID: 4684598129587020021}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
