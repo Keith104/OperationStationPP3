@@ -26,7 +26,9 @@ public class Fragment : MonoBehaviour
                 Random.Range(0.1f, 0.01f), 
                 Random.Range(0.1f, 0.01f), 
                 Random.Range(0.1f, 0.01f));
-            if (fragment.localScale.x <= 0)
+            if (fragment.localScale.x <= 0
+                || fragment.localScale.y <= 0
+                || fragment.localScale.z <= 0)
                 Destroy(fragment.gameObject);
         }
         if(transform.childCount == 0)
