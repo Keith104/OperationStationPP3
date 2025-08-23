@@ -21,11 +21,16 @@ public class DifficultyButtonUI : MonoBehaviour,
     static int hoverCount = 0;
     static GameObject lastSelectedGO;
     bool isHovered;
+    Selectable selectable;
+
+    void Awake()
+    {
+        selectable = GetComponent<Selectable>();
+    }
 
     void OnEnable()
     {
         if (!instances.Contains(this)) instances.Add(this);
-        SetBorder(idleBorderColor);
         ApplyGlobal();
     }
 
@@ -47,18 +52,21 @@ public class DifficultyButtonUI : MonoBehaviour,
 
     public void OnPointerEnter(PointerEventData e)
     {
+        if (!IsInteractable()) return;
         if (!isHovered) { isHovered = true; hoverCount++; }
         ApplyGlobal();
     }
 
     public void OnPointerExit(PointerEventData e)
     {
+        if (!IsInteractable()) return;
         if (isHovered) { isHovered = false; hoverCount = Mathf.Max(0, hoverCount - 1); }
         ApplyGlobal();
     }
 
     public void OnPointerClick(PointerEventData e)
     {
+        if (!IsInteractable()) return;
         EventSystem.current?.SetSelectedGameObject(gameObject);
         DifficultyManager.instance.SetDifficulty(difficulty);
         ApplyGlobal();
@@ -66,6 +74,7 @@ public class DifficultyButtonUI : MonoBehaviour,
 
     public void OnSelect(BaseEventData e)
     {
+        if (!IsInteractable()) return;
         DifficultyManager.instance.SetDifficulty(difficulty);
         ApplyGlobal();
     }
@@ -75,16 +84,22 @@ public class DifficultyButtonUI : MonoBehaviour,
         ApplyGlobal();
     }
 
+    bool IsInteractable()
+    {
+        return selectable == null || (selectable.IsActive() && selectable.interactable);
+    }
+
     void ApplyGlobal()
     {
         DifficultySO active = null;
         for (int i = 0; i < instances.Count; i++)
-            if (instances[i].isHovered) { active = instances[i].difficulty; break; }
+            if (instances[i].isHovered && instances[i].IsInteractable()) { active = instances[i].difficulty; break; }
+
         if (active == null)
         {
             var go = EventSystem.current ? EventSystem.current.currentSelectedGameObject : null;
             var sel = go ? go.GetComponent<DifficultyButtonUI>() : null;
-            if (sel) active = sel.difficulty;
+            if (sel && sel.IsInteractable()) active = sel.difficulty;
         }
 
         var borders = new HashSet<Image>();
@@ -103,10 +118,5 @@ public class DifficultyButtonUI : MonoBehaviour,
         foreach (var t in descTexts) t.text = active ? active.difficultyDescription : string.Empty;
         Color dcol = active ? active.uiColor : (instances.Count > 0 ? instances[0].descriptionIdleColor : Color.white);
         foreach (var ib in descBorders) ib.color = dcol;
-    }
-
-    void SetBorder(Color c)
-    {
-        if (buttonBorder) buttonBorder.color = c;
     }
 }
