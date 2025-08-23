@@ -1,14 +1,13 @@
 using UnityEngine;
-using System;
-using System.Drawing;
 using System.Collections;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 
 public class NullSpaceFabricator : MonoBehaviour
 {
 
     [SerializeField] GameObject miningPrefab;
-
     public int totalShips;
+
 
     public enum MiningDesignations
     {
@@ -27,15 +26,16 @@ public class NullSpaceFabricator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(totalShips <= 14)
-        {
-            StartCoroutine(FlashRed());
+        //Test spawn limits for ships
+        //if(totalShips <= 14)
+        //{
+        //    StartCoroutine(SpawnTimer());
 
-        }
+        //}
     }
 
 
-    private IEnumerator FlashRed()
+    private IEnumerator SpawnTimer()
     {
         yield return new WaitForSeconds(0.5f);
         SpawnMiningShip();
@@ -77,4 +77,5 @@ public class NullSpaceFabricator : MonoBehaviour
 
         return "Mining Ship_-_" + Designation.ToString();
     }
+
 }
