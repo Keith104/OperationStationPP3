@@ -181,11 +181,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3518462944412386344, guid: c6cdb4723017453458a83b33399a1186, type: 3}
   m_PrefabInstance: {fileID: 92258199}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &259257810 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7919059079534157395, guid: a6b87413fc8e163469232a887ee1c070, type: 3}
-  m_PrefabInstance: {fileID: 1466517396}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &337970142
 GameObject:
   m_ObjectHideFlags: 0
@@ -771,17 +766,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3821355103637257185, guid: a6b87413fc8e163469232a887ee1c070, type: 3}
-      propertyPath: fragmentModel
-      value: 
-      objectReference: {fileID: 1811974917}
     - target: {fileID: 6696543969292036802, guid: a6b87413fc8e163469232a887ee1c070, type: 3}
       propertyPath: m_Name
       value: Mine Ship
-      objectReference: {fileID: 0}
-    - target: {fileID: 6696543969292036802, guid: a6b87413fc8e163469232a887ee1c070, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7919059079534157395, guid: a6b87413fc8e163469232a887ee1c070, type: 3}
       propertyPath: m_LocalPosition.x
@@ -825,10 +812,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 7919059079534157395, guid: a6b87413fc8e163469232a887ee1c070, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1811974919}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a6b87413fc8e163469232a887ee1c070, type: 3}
 --- !u!1001 &1741603960
@@ -916,16 +900,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d0ebaa8b88692814f900f151a1ce0b04, type: 3}
---- !u!1 &1811974917 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3274636946081203196, guid: 0dae08f77b518d84fb7f86a8d081d59b, type: 3}
-  m_PrefabInstance: {fileID: 7119753737846483824}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1811974919 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2754523328239245638, guid: 0dae08f77b518d84fb7f86a8d081d59b, type: 3}
-  m_PrefabInstance: {fileID: 7119753737846483824}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1939465516
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1309,7 +1283,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1826742274521941465, guid: 79625718a0588914fab3fbb9e64337af, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6765949016062805750, guid: 79625718a0588914fab3fbb9e64337af, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1360,67 +1334,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 79625718a0588914fab3fbb9e64337af, type: 3}
---- !u!1001 &7119753737846483824
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 259257810}
-    m_Modifications:
-    - target: {fileID: 2754523328239245638, guid: 0dae08f77b518d84fb7f86a8d081d59b, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2754523328239245638, guid: 0dae08f77b518d84fb7f86a8d081d59b, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2754523328239245638, guid: 0dae08f77b518d84fb7f86a8d081d59b, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2754523328239245638, guid: 0dae08f77b518d84fb7f86a8d081d59b, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2754523328239245638, guid: 0dae08f77b518d84fb7f86a8d081d59b, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2754523328239245638, guid: 0dae08f77b518d84fb7f86a8d081d59b, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2754523328239245638, guid: 0dae08f77b518d84fb7f86a8d081d59b, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2754523328239245638, guid: 0dae08f77b518d84fb7f86a8d081d59b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2754523328239245638, guid: 0dae08f77b518d84fb7f86a8d081d59b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2754523328239245638, guid: 0dae08f77b518d84fb7f86a8d081d59b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3274636946081203196, guid: 0dae08f77b518d84fb7f86a8d081d59b, type: 3}
-      propertyPath: m_Name
-      value: Mine Ship - Fragmented
-      objectReference: {fileID: 0}
-    - target: {fileID: 8970232114854512869, guid: 0dae08f77b518d84fb7f86a8d081d59b, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 0dae08f77b518d84fb7f86a8d081d59b, type: 3}
 --- !u!1001 &8452269515009760316
 PrefabInstance:
   m_ObjectHideFlags: 0

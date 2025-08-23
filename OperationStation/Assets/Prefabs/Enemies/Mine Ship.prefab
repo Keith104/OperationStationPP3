@@ -55,7 +55,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waveManager: {fileID: 0}
-  fragmentModel: {fileID: 4773835149375851103}
+  fragmentModel: {fileID: 0}
   model: {fileID: 7249654045397526266}
   enemy: {fileID: 11400000, guid: 4b96901db6645fa429eb223362e72c16, type: 2}
   agent: {fileID: 7370814152672340208}
@@ -449,11 +449,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0dae08f77b518d84fb7f86a8d081d59b, type: 3}
---- !u!1 &4773835149375851103 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3274636946081203196, guid: 0dae08f77b518d84fb7f86a8d081d59b, type: 3}
-  m_PrefabInstance: {fileID: 8012406443239541155}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5263513250999439589 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2754523328239245638, guid: 0dae08f77b518d84fb7f86a8d081d59b, type: 3}
