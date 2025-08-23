@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   found: 0
   enemyType: 4
-  enemyObject: {fileID: 0}
-  health: 0
-  bullet: {fileID: 0}
-  damageAmount: 3
-  attackCooldown: 5
+  enemyObject: {fileID: 6696543969292036802, guid: a6b87413fc8e163469232a887ee1c070, type: 3}
+  health: 1
+  bullet: {fileID: 6318967275286764619, guid: ff0f2a3adbcc36d49a522dcb779e9ae0, type: 3}
+  damageAmount: 25
+  attackCooldown: 0
