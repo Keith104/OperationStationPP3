@@ -56,7 +56,6 @@ public class EnergyBuilding : MonoBehaviour, ISelectable, IModule
                 UnitUIManager.instance.DisableAllMenus();
                 UnitUIManager.instance.unitMenu.SetActive(true);
                 UnitUIManager.instance.reactorMenu.SetActive(true);
-                if (moduleRef) UnitUIManager.instance.tmpUnitName.text = moduleRef.name;
                 parent = UnitUIManager.instance.reactorMenu.gameObject.transform.parent.gameObject;
                 var reactController = parent.GetComponentInParent<ReactorUIController>();
                 if (reactController && moduleRef && moduleRef.stats) reactController.Bind(moduleRef.stats);

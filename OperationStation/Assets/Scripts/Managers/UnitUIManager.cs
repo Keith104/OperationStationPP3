@@ -11,6 +11,7 @@ public class UnitUIManager : MonoBehaviour
     public GameObject costMenu;
     public GameObject reactorMenu;
     public GameObject smelterMenu;
+    public GameObject nullSpaceMenu;
     public TextMeshProUGUI tmpUnitName;
     public TextMeshProUGUI tmpUnitDesc;
     public TextMeshProUGUI tmpUnitCost;
@@ -30,6 +31,7 @@ public class UnitUIManager : MonoBehaviour
         if (reactorMenu) reactorMenu.SetActive(false);
         if (smelterMenu) smelterMenu.SetActive(false);
         if (unitMenu) unitMenu.SetActive(false);
+        if(nullSpaceMenu) nullSpaceMenu.SetActive(false);
     }
 
     public void OnSpendClick(int num)

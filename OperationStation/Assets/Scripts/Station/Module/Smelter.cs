@@ -15,7 +15,6 @@ public class Smelter : MonoBehaviour, ISelectable, IModule
         ui.smelterMenu.SetActive(true);
 
         ui.tmpUnitName.text = module ? module.name : "Smelter";
-        ((ISelectable)module).TakeControl();
         ui.currUnit = gameObject;
     }
 

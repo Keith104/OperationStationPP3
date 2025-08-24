@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -33,12 +34,13 @@ public class PlayerCamera : MonoBehaviour
 
     PlayerInput controls;
 
-    void Awake()
-    {
-        UI = GameObject.FindWithTag("UI").GetComponent<RectTransform>();
-        selectionBox = UI.Find("SelectionBox").GetComponent<RectTransform>();
-        controls = new PlayerInput();
-    }
+void Awake()
+{
+    UI = GameObject.FindWithTag("UI").GetComponent<RectTransform>();
+    selectionBox = UI.Find("SelectionBox").GetComponent<RectTransform>();
+    controls = new PlayerInput();
+    clickableLayers = LayerMask.GetMask("Object", "Ship");
+}
 
     void OnEnable()
     {
@@ -243,24 +245,20 @@ public class PlayerCamera : MonoBehaviour
 
     void TrySelect(GameObject go)
     {
-        var selectables = new List<ISelectable>(go.GetComponents<ISelectable>());
+        var ui = UnitUIManager.instance;
+        //if (ui != null) ui.DisableAllMenus();
 
-        // Prefer Smelter if present
-        foreach (var sel in selectables)
-        {
-            if (sel is Smelter)
-            {
-                sel.TakeControl();
-                return;
-            }
-        }
+        var selectables = go.GetComponents<ISelectable>();
 
-        // Otherwise call the first one
-        if (selectables.Count > 0)
-        {
-            selectables[0].TakeControl();
-        }
+        ISelectable chosen =
+            selectables.FirstOrDefault(s => s is Smelter)
+            ?? selectables.FirstOrDefault(s => s.GetType().Name != "Module")
+            ?? selectables.FirstOrDefault();
+
+        if (chosen != null)
+            chosen.TakeControl();
     }
+
 
     Vector2 GetPointerPosOrCenter()
     {
