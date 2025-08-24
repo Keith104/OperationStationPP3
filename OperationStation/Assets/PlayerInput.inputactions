@@ -398,7 +398,7 @@
                 {
                     "name": "",
                     "id": "dc377a9a-746f-4ec1-a0b0-5bcf8ee1f963",
-                    "path": "<Gamepad>/leftTrigger",
+                    "path": "<Gamepad>/leftStickPress",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -440,15 +440,37 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "",
-                    "id": "139a68bc-0953-49d8-9118-eafc9836d252",
-                    "path": "<Gamepad>/rightStick/y",
+                    "name": "1D Axis",
+                    "id": "ee2c2620-dfd0-4b81-acc4-a21605eb6093",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Zoom",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "b75f7ef0-60b8-4d97-9009-986c8399f88f",
+                    "path": "<Gamepad>/leftTrigger",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Zoom",
                     "isComposite": false,
-                    "isPartOfComposite": false
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "1f597540-cf50-4fc8-9e07-e401662adadd",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Zoom",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 },
                 {
                     "name": "",
