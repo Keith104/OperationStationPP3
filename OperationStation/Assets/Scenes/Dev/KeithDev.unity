@@ -412,6 +412,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1690661975}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+--- !u!224 &792599459 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 4218505285473786460, guid: 378dfb21a7053fa45af7872900090337, type: 3}
+  m_PrefabInstance: {fileID: 5480888344069224232}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &828718338
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1056,6 +1061,18 @@ PrefabInstance:
       propertyPath: quitConfirmPopup
       value: 
       objectReference: {fileID: 861358206085676273}
+    - target: {fileID: 4548547011631870380, guid: 393777a042064c34d9aaa63624bd7535, type: 3}
+      propertyPath: neverLockRoots.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4548547011631870380, guid: 393777a042064c34d9aaa63624bd7535, type: 3}
+      propertyPath: 'neverLockRoots.Array.data[0]'
+      value: 
+      objectReference: {fileID: 861358206085676277}
+    - target: {fileID: 4548547011631870380, guid: 393777a042064c34d9aaa63624bd7535, type: 3}
+      propertyPath: 'neverLockRoots.Array.data[1]'
+      value: 
+      objectReference: {fileID: 792599459}
     - target: {fileID: 8426310208367440074, guid: 393777a042064c34d9aaa63624bd7535, type: 3}
       propertyPath: m_LocalPosition.x
       value: 773.7556
@@ -1109,6 +1126,11 @@ GameObject:
 --- !u!1 &861358206085676273 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8355447883607867194, guid: 378dfb21a7053fa45af7872900090337, type: 3}
+  m_PrefabInstance: {fileID: 5480888344069224232}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &861358206085676277 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 2130260867330401269, guid: 378dfb21a7053fa45af7872900090337, type: 3}
   m_PrefabInstance: {fileID: 5480888344069224232}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2400955868446671492
