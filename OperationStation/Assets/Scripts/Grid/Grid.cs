@@ -5,6 +5,10 @@ public class GridSystem : MonoBehaviour
     [SerializeField] Module module;
     [SerializeField] Tile _tilePrefab;
 
+    [SerializeField] Renderer modelOne;
+    [SerializeField] Renderer modelTwo;
+
+    public Material highlight;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -61,5 +65,26 @@ public class GridSystem : MonoBehaviour
         {
             module.isDownAvailable = false;
         }
+    }
+
+    void OnMouseEnter()
+    {
+        Renderer objectRenderer = GetComponent<Renderer>();
+        bool placementActive = ObjectSpawner.awaitingPlacement;
+        bool isDefence = ObjectSpawner.isDefence;
+        if (objectRenderer != null && placementActive == false && isDefence == false)
+        {
+            modelOne.material = highlight;
+            modelTwo.material = highlight;
+
+        }
+    }
+
+    void OnMouseExit()
+    {
+        Renderer objectRenderer = GetComponent<Renderer>();
+
+        modelOne.material = objectRenderer.material;
+        modelTwo.material = objectRenderer.material;
     }
 }
