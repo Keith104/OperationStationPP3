@@ -1,5 +1,5 @@
 using UnityEngine;
-using TMPro; // Make sure TextMeshPro is imported
+using TMPro;
 
 public class ResourceUI : MonoBehaviour
 {
@@ -20,17 +20,14 @@ public class ResourceUI : MonoBehaviour
     {
         if (ResourceManager.instance == null) return;
 
-        // Basic
-        tritiumText.text = $"Tritium: {ResourceManager.instance.GetResource(ResourceSO.ResourceType.Tritium)}";
-        silverText.text = $"Silver: {ResourceManager.instance.GetResource(ResourceSO.ResourceType.Silver)}";
-        poloniumText.text = $"Polonium: {ResourceManager.instance.GetResource(ResourceSO.ResourceType.Polonium)}";
+        tritiumText.text = ResourceManager.instance.GetResource(ResourceSO.ResourceType.Tritium).ToString();
+        silverText.text = ResourceManager.instance.GetResource(ResourceSO.ResourceType.Silver).ToString();
+        poloniumText.text = ResourceManager.instance.GetResource(ResourceSO.ResourceType.Polonium).ToString();
 
-        // Smelted
-        tritiumIngotText.text = $"Tritium Ingot: {ResourceManager.instance.GetResource(ResourceSO.ResourceType.TritiumIngot)}";
-        silverCoinsText.text = $"Silver Coins: {ResourceManager.instance.GetResource(ResourceSO.ResourceType.SilverCoin)}";
-        poloniumCrystalText.text = $"Polonium Crystal: {ResourceManager.instance.GetResource(ResourceSO.ResourceType.PoloniumCrystal)}";
+        tritiumIngotText.text = ResourceManager.instance.GetResource(ResourceSO.ResourceType.TritiumIngot).ToString();
+        silverCoinsText.text = ResourceManager.instance.GetResource(ResourceSO.ResourceType.SilverCoin).ToString();
+        poloniumCrystalText.text = ResourceManager.instance.GetResource(ResourceSO.ResourceType.PoloniumCrystal).ToString();
 
-        // Special
-        energyText.text = $"Energy: {ResourceManager.instance.GetResource(ResourceSO.ResourceType.Energy)}";
+        energyText.text = ResourceManager.instance.GetResource(ResourceSO.ResourceType.Energy).ToString();
     }
 }

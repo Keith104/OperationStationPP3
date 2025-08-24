@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Reflection;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,7 +10,7 @@ public class ReactorUIController : MonoBehaviour
     [SerializeField] Button btn10;
     [SerializeField] Button btn25;
     [SerializeField] Button btn50;
-    [SerializeField] Button btnStart;             // Start/Stop toggle
+    [SerializeField] Button btnStart;
     [SerializeField] TextMeshProUGUI txtUnitsHeld;
     [SerializeField] TextMeshProUGUI txtProjected;
     [SerializeField] TextMeshProUGUI txtEvery;
@@ -24,12 +23,11 @@ public class ReactorUIController : MonoBehaviour
     int energyPerPolonium;
     bool running;
     float countdown;
-    int unitsHeld;                      // reactor-internal fuel reserve
+    int unitsHeld;
     Coroutine loop;
     Coroutine initWait;
 
     int lastStoragePolonium = int.MinValue;
-    static FieldInfo poloniumField;
 
     public void Bind(UnitSO unitSo)
     {
@@ -49,10 +47,6 @@ public class ReactorUIController : MonoBehaviour
             RefreshProjected();
             UpdateLoadInteractivity();
         });
-
-        if (poloniumField == null)
-            poloniumField = typeof(ResourceManager).GetField("polonium",
-                BindingFlags.NonPublic | BindingFlags.Instance);
 
         if (initWait != null) StopCoroutine(initWait);
         initWait = StartCoroutine(WaitForResourceManagerThenInit());
@@ -135,7 +129,7 @@ public class ReactorUIController : MonoBehaviour
         if (loop != null) StopCoroutine(loop);
         loop = StartCoroutine(BurnLoop());
         SetStartButtonText("Stop");
-        btnStart.interactable = true; // always enabled to stop
+        btnStart.interactable = true;
     }
 
     void StopBurn()
@@ -144,7 +138,7 @@ public class ReactorUIController : MonoBehaviour
         if (loop != null) StopCoroutine(loop);
         loop = null;
 
-        fuelSlider.value = 0; // keep unitsHeld, reset load intent
+        fuelSlider.value = 0;
         LockLoadInputs(false);
         RefreshProjected();
         UpdateLoadInteractivity();
@@ -152,7 +146,7 @@ public class ReactorUIController : MonoBehaviour
         if (cooldownFill) cooldownFill.fillAmount = 0f;
         if (txtCountdown) txtCountdown.text = $"00:{Mathf.RoundToInt(cooldownSeconds):00}";
         SetStartButtonText("Start Burn");
-        btnStart.interactable = true; // can start again with existing unitsHeld
+        btnStart.interactable = true;
     }
 
     IEnumerator BurnLoop()
@@ -200,7 +194,7 @@ public class ReactorUIController : MonoBehaviour
         if (cooldownFill) cooldownFill.fillAmount = 0f;
 
         SetStartButtonText(running ? "Stop" : "Start Burn");
-        btnStart.interactable = running || (unitsHeld > 0); // safe default before first onValueChanged
+        btnStart.interactable = running || (unitsHeld > 0);
     }
 
     void RefreshUnitsHeld()
@@ -237,9 +231,6 @@ public class ReactorUIController : MonoBehaviour
             RefreshProjected();
         }
 
-        // Start/Stop button rule:
-        // - Running: always enabled (acts as Stop).
-        // - Stopped: enabled only if (unitsHeld > 0) OR (desired > 0 && desired <= storage).
         btnStart.interactable = running || (unitsHeld > 0) || (desired > 0 && desired <= storage);
     }
 
@@ -249,7 +240,6 @@ public class ReactorUIController : MonoBehaviour
         btn10.interactable = !on ? btn10.interactable : false;
         btn25.interactable = !on ? btn25.interactable : false;
         btn50.interactable = !on ? btn50.interactable : false;
-        // btnStart remains enabled per UpdateLoadInteractivity
     }
 
     void SetStartButtonText(string s)
@@ -261,18 +251,8 @@ public class ReactorUIController : MonoBehaviour
     int GetStoragePolonium()
     {
         var rm = ResourceManager.instance;
-        if (rm == null)
-            return 0;
-
-        if (poloniumField == null)
-            poloniumField = typeof(ResourceManager).GetField("polonium",
-                BindingFlags.NonPublic | BindingFlags.Instance);
-
-        if (poloniumField == null)
-            return 0;
-
-        object val = poloniumField.GetValue(rm);
-        return val is int i ? i : 0;
+        if (rm == null) return 0;
+        return rm.GetResource(ResourceSO.ResourceType.Polonium);
     }
 
     static string Format(float s)

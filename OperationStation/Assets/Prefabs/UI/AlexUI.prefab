@@ -6631,13 +6631,35 @@ MonoBehaviour:
   smelter: {fileID: 5181112579491600659, guid: 8110eec864f71ff4a99e7a36a3716b2b, type: 3}
   solarPanelArray: {fileID: 5181112579491600659, guid: 075e225452f63ce42943d3fac77bc975, type: 3}
   deathCatCosts: []
-  basicTurretCosts: []
+  basicTurretCosts:
+  - type: 0
+    amount: 20
+  - type: 0
+    amount: 20
   nullSpaceFabricatorCosts: []
   wallCosts: []
   grapeJamCosts: []
-  poloniumReactorCosts: []
-  smelterCosts: []
-  solarPanelArrayCosts: []
+  poloniumReactorCosts:
+  - type: 2
+    amount: 100
+  - type: 0
+    amount: 50
+  - type: 5
+    amount: 25
+  - type: 6
+    amount: 150
+  smelterCosts:
+  - type: 0
+    amount: 50
+  - type: 1
+    amount: 25
+  - type: 6
+    amount: 100
+  solarPanelArrayCosts:
+  - type: 3
+    amount: 25
+  - type: 1
+    amount: 50
 --- !u!1 &4166876707929551227
 GameObject:
   m_ObjectHideFlags: 0

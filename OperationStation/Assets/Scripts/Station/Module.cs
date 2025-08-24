@@ -46,25 +46,25 @@ public class Module : MonoBehaviour, ISelectable, IDamage
 
 
 
-        UnitUIManager.instance.tmpUnitName.text = stats.unitName;
-        UnitUIManager.instance.tmpUnitDesc.text = stats.unitDescription;
+        //UnitUIManager.instance.tmpUnitName.text = stats.unitName;
+        //UnitUIManager.instance.tmpUnitDesc.text = stats.unitDescription;
         SetCost();
 
     }
 
     void SetCost()
     {
-        UnitUIManager.instance.tmpUnitCost.text = "";
-        int costIndex = 0;
-        foreach (ResourceCost resourceCost in resourceCosts)
-        {
-            ResourceSO resourceSO = resourceCost.resource;
-            UnitUIManager.instance.tmpUnitCost.text +=
-                resourceSO.resourceType.ToString() + ": " +
-                costsLeft[costIndex] + "\n";
-            if (costIndex < costsLeft.Length)
-                costIndex++;
-        }
+        //UnitUIManager.instance.tmpUnitCost.text = "";
+        //int costIndex = 0;
+        //foreach (ResourceCost resourceCost in resourceCosts)
+        //{
+        //    ResourceSO resourceSO = resourceCost.resource;
+        //    UnitUIManager.instance.tmpUnitCost.text +=
+        //        resourceSO.resourceType.ToString() + ": " +
+        //        costsLeft[costIndex] + "\n";
+        //    if (costIndex < costsLeft.Length)
+        //        costIndex++;
+        //}
     }
 
     void ReduceCost()
