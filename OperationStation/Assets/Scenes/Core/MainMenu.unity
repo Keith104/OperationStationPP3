@@ -1039,6 +1039,59 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 886339802}
+    - target: {fileID: 3772140717440043700, guid: 8bbab4fe034508a479f493ce51e62e30, type: 3}
+      propertyPath: m_text
+      value: "<align=\"center\"><font=\"PressStart2P-Regular SDF\"><size=160%><b>Operation
+        Station</b></size>\r\n<size=110%>C R E D I T S</size></font></align>\r\n<line-height=110%>\r\n\r\n<align=\"center\"><font=\"PressStart2P-Regular
+        SDF\"><color=#A7FFD6><u>TEAM</u></color></font></align>\r\n\r\n<font=\"PixelifySans-Regular
+        SDF\"><b>Keith Janish</b></font>\r\n<size=85%>Game Design \u2022 Programming
+        \u2022 UI/UX</size>\r\n\r\n<font=\"PixelifySans-Regular SDF\"><b>Alexander
+        Swanson</b></font>\r\n<size=85%>Programming \u2022 Gameplay Systems \u2022
+        Models</size>\r\n\r\n<font=\"PixelifySans-Regular SDF\"><b>Erick Marin</b></font>\r\n<size=85%>Programming
+        \u2022 Animation</size>\r\n\r\n<font=\"PixelifySans-Regular SDF\"><b>Christian
+        Nelson</b></font>\r\n<size=85%>Game Design \u2022 Environment \u2022 Programming</size>\r\n\r\n<br><align=\"center\"><font=\"PressStart2P-Regular
+        SDF\"><color=#A7FFD6><u>PLAYTESTING & QA</u></color></font></align>\r\nTBD\r\n\r\n<br><align=\"center\"><font=\"PressStart2P-Regular
+        SDF\"><color=#A7FFD6><u>TOOLS & TECH</u></color></font></align>\r\nUnity
+        6 \u2022 TextMesh Pro \u2022 URP\r\n\r\n<br><align=\"center\"><font=\"PressStart2P-Regular
+        SDF\"><color=#A7FFD6><u>THIRD-PARTY ASSETS & LICENSES</u></color></font></align>\r\n<size=90%>\r\n<font=\"PixelifySans-Regular
+        SDF\"><b>Models</b></font>\r\nOiiaioooooiai Cat \u2014 Zhuier \u2014 License:
+        CC Attribution \u2014 https://sketchfab.com/\r\n\r\n<font=\"PixelifySans-Regular
+        SDF\"><b>Textures</b></font>\r\nDynamic Space Background Lite \u2014 DinV
+        Studio \u2014 License: Extension Asset \u2014 https://assetstore.unity.com/ 
+        \r\nEarth Textures \u2014 INOVE \u2014 License: CC0 \u2014 https://www.solarsystemscope.com/\r\n\r\n<font=\"PixelifySans-Regular
+        SDF\"><b>Fonts</b></font>\r\nPress Start 2P \u2014 CodeMan38 \u2014 License:
+        OFL \u2014 https://fonts.google.com/  \r\nPixelify Sans \u2014 Stefie Justprince
+        \u2014 License: OFL \u2014 https://fonts.google.com/\r\n\r\n<font=\"PixelifySans-Regular
+        SDF\"><b>Attack SFX</b></font>\r\nRock destroy \u2014 Bertsz \u2014 License:
+        CC0 \u2014 https://freesound.org/  \r\nRock Cinematic \u2014 LordSonny \u2014
+        License: CC0 \u2014 https://freesound.org/  \r\nDebris break \u2014 LordSonny_Two
+        \u2014 License: CC0 \u2014 https://freesound.org/  \r\nSci-Fi Explosion 09
+        \u2014 DavidDumaisAudio \u2014 License: CC0 \u2014 https://freesound.org/ 
+        \r\nGun, Laser, Single Shot, Sci Fi \u2014 Kinoton \u2014 License: CC0 \u2014
+        https://freesound.org/  \r\nLaunching Missile \u2014 SonixFXSounds \u2014
+        License: CC0 \u2014 https://freesound.org/\r\n\r\n<font=\"PixelifySans-Regular
+        SDF\"><b>Damage SFX</b></font>\r\nArmor Hit Soft 01, Armor Hit Soft 02, Hit
+        Armor 03 \u2014 U_xjrmmgxfru \u2014 License: CC0 \u2014 https://freesound.org/ 
+        \r\nGround Impact \u2014 Universfield \u2014 License: CC0 \u2014 https://freesound.org/ 
+        \r\ndamage \u2014 ash_rez \u2014 License: CC0 \u2014 https://freesound.org/\r\n\r\n<font=\"PixelifySans-Regular
+        SDF\"><b>Player SFX</b></font>\r\n90s Game UI 5, Classic Game Action Negative
+        7 \u2014 Floraphonic \u2014 License: CC0 \u2014 https://freesound.org/  \r\nImpact
+        Transition Impact Dramatic Boom \u2014 ALEXIS_GAMING_CAM \u2014 License:
+        CC0 \u2014 https://freesound.org/  \r\nClick Buttons - UI Menu Sounds Effects
+        - Button 3 \u2014 Skyscraper_seven \u2014 License: CC0 \u2014 https://freesound.org/ 
+        \r\nWalking through leaves - Button 3 \u2014 markbolden \u2014 License: CC0
+        \u2014 https://freesound.org/  \r\nMetal Creaking - Button 3 \u2014 Bricklover
+        \u2014 License: CC0 \u2014 https://freesound.org/\r\n\r\n<font=\"PixelifySans-Regular
+        SDF\"><b>Hover SFX</b></font>\r\nAstral / Creepy Dark Logo \u2014 SoulProdMusic
+        \u2014 License: CC0 \u2014 https://freesound.org/  \r\nSpace Ship Sound \u2014
+        Linkis20 \u2014 License: CC0 \u2014 https://freesound.org/  \r\nSci-Fi Weapon
+        - Futuristic Mechanical - Mechanism Metal \u2014 RescopicSound \u2014 License:
+        CC0 \u2014 https://freesound.org/\r\n</size>\r\n"
+      objectReference: {fileID: 0}
+    - target: {fileID: 4229021542805779197, guid: 8bbab4fe034508a479f493ce51e62e30, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4689788786705004875, guid: 8bbab4fe034508a479f493ce51e62e30, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1061,6 +1114,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4689788786705004875, guid: 8bbab4fe034508a479f493ce51e62e30, type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4979330005576554648, guid: 8bbab4fe034508a479f493ce51e62e30, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2707
+      objectReference: {fileID: 0}
+    - target: {fileID: 5052414407538478834, guid: 8bbab4fe034508a479f493ce51e62e30, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5052414407538478834, guid: 8bbab4fe034508a479f493ce51e62e30, type: 3}
+      propertyPath: m_ShowMaskGraphic
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5481583128935943283, guid: 8bbab4fe034508a479f493ce51e62e30, type: 3}
@@ -1146,6 +1211,18 @@ PrefabInstance:
     - target: {fileID: 5708199115987278158, guid: 8bbab4fe034508a479f493ce51e62e30, type: 3}
       propertyPath: m_Name
       value: MainMenuCanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 5709276333220834601, guid: 8bbab4fe034508a479f493ce51e62e30, type: 3}
+      propertyPath: m_Alpha
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5709276333220834601, guid: 8bbab4fe034508a479f493ce51e62e30, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6757094873407965062, guid: 8bbab4fe034508a479f493ce51e62e30, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6840470568580047416, guid: 8bbab4fe034508a479f493ce51e62e30, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
