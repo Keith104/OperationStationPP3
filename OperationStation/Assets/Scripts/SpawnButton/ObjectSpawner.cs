@@ -27,6 +27,7 @@ public class ObjectSpawner : MonoBehaviour
 
     private Vector3 spawnLocation;
     public static bool awaitingPlacement = false;
+    public static bool isDefence = false;
 
     public List<ResourceCostSpawner> deathCatCosts = new List<ResourceCostSpawner>();
     public List<ResourceCostSpawner> basicTurretCosts = new List<ResourceCostSpawner>();
@@ -36,6 +37,8 @@ public class ObjectSpawner : MonoBehaviour
     public List<ResourceCostSpawner> poloniumReactorCosts = new List<ResourceCostSpawner>();
     public List<ResourceCostSpawner> smelterCosts = new List<ResourceCostSpawner>();
     public List<ResourceCostSpawner> solarPanelArrayCosts = new List<ResourceCostSpawner>();
+
+    public DefencePreview viewing;
 
     public void DeathCatSpawn()
     {
@@ -84,7 +87,9 @@ public class ObjectSpawner : MonoBehaviour
         if (TrySpend(basicTurretCosts))
         {
             awaitingPlacement = true;
+            isDefence = true;
             objectToInstantiate = basicTurret;
+            viewing.PreviewDefence(basicTurret);
         }
     }
 
@@ -93,7 +98,9 @@ public class ObjectSpawner : MonoBehaviour
         if (TrySpend(wallCosts))
         {
             awaitingPlacement = true;
+            isDefence = true;
             objectToInstantiate = wall;
+            viewing.PreviewDefence(wall);
         }
     }
 
@@ -102,7 +109,9 @@ public class ObjectSpawner : MonoBehaviour
         if (TrySpend(grapeJamCosts))
         {
             awaitingPlacement = true;
+            isDefence = true;
             objectToInstantiate = grapeJam;
+            viewing.PreviewDefence(grapeJam);
         }
     }
 
@@ -110,7 +119,7 @@ public class ObjectSpawner : MonoBehaviour
     void Update()
     {
 
-        if (awaitingPlacement && Input.GetMouseButtonDown(0)) 
+        if (awaitingPlacement == true && Input.GetMouseButtonDown(0) && objectToInstantiate != null) 
         { 
         
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -148,6 +157,8 @@ public class ObjectSpawner : MonoBehaviour
                         {
                             Instantiate(objectToInstantiate, spawnLocation, Quaternion.identity, foundDeathCat.transform.parent);
                             awaitingPlacement = false;
+                            isDefence = false;
+                            viewing.isDefenceBuildActive = false;
                         }
 
                     }
