@@ -27,11 +27,11 @@ public class NullSpaceFabricator : MonoBehaviour, ISelectable, IModule
     // Update is called once per frame
     void Update()
     {
-        if(totalShips <= 14)
-        {
-            StartCoroutine(FlashRed());
+        //if(totalShips <= 14)
+        //{
+        //    StartCoroutine(FlashRed());
 
-        }
+        //}
     }
 
 
