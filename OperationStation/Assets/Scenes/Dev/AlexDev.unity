@@ -770,17 +770,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: PoloniumAsteroid
       objectReference: {fileID: 0}
+    - target: {fileID: 34360845235334891, guid: 33e0e3369b1b1114895e2cdfb2021df0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4985566587808348359, guid: 33e0e3369b1b1114895e2cdfb2021df0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 128.21025
       objectReference: {fileID: 0}
     - target: {fileID: 4985566587808348359, guid: 33e0e3369b1b1114895e2cdfb2021df0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -1.17
       objectReference: {fileID: 0}
     - target: {fileID: 4985566587808348359, guid: 33e0e3369b1b1114895e2cdfb2021df0, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 124.73502
+      value: 118.36
       objectReference: {fileID: 0}
     - target: {fileID: 4985566587808348359, guid: 33e0e3369b1b1114895e2cdfb2021df0, type: 3}
       propertyPath: m_LocalRotation.w
