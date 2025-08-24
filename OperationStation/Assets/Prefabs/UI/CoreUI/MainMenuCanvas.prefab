@@ -505,7 +505,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4229021542805779197}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -543,7 +543,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: -1677}
+  m_AnchoredPosition: {x: 0, y: 2707}
   m_SizeDelta: {x: 1782, y: 1615.69}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &178026422877911943
@@ -579,22 +579,46 @@ MonoBehaviour:
     SDF\"><color=#A7FFD6><u>TEAM</u></color></font></align>\r\n\r\n<font=\"PixelifySans-Regular
     SDF\"><b>Keith Janish</b></font>\r\n<size=85%>Game Design \u2022 Programming
     \u2022 UI/UX</size>\r\n\r\n<font=\"PixelifySans-Regular SDF\"><b>Alexander Swanson</b></font>\r\n<size=85%>Programming
-    \u2022 Gameplay Systems</size>\r\n\r\n<font=\"PixelifySans-Regular SDF\"><b>Erick
-    Marin</b></font>\r\n<size=85%>Programming \u2022 Animation</size>\r\n\r\n<font=\"PixelifySans-Regular
+    \u2022 Gameplay Systems \u2022 Models</size>\r\n\r\n<font=\"PixelifySans-Regular
+    SDF\"><b>Erick Marin</b></font>\r\n<size=85%>Programming \u2022 Animation</size>\r\n\r\n<font=\"PixelifySans-Regular
     SDF\"><b>Christian Nelson</b></font>\r\n<size=85%>Game Design \u2022 Environment
     \u2022 Programming</size>\r\n\r\n<br><align=\"center\"><font=\"PressStart2P-Regular
     SDF\"><color=#A7FFD6><u>PLAYTESTING & QA</u></color></font></align>\r\nTBD\r\n\r\n<br><align=\"center\"><font=\"PressStart2P-Regular
     SDF\"><color=#A7FFD6><u>TOOLS & TECH</u></color></font></align>\r\nUnity 6 \u2022
     TextMesh Pro \u2022 URP\r\n\r\n<br><align=\"center\"><font=\"PressStart2P-Regular
     SDF\"><color=#A7FFD6><u>THIRD-PARTY ASSETS & LICENSES</u></color></font></align>\r\n<size=90%>\r\n<font=\"PixelifySans-Regular
-    SDF\"><b>Models</b></font>\r\n[Asset] \u2014 [Publisher] \u2014 License: [EULA/CC-BY-4.0/CC0]
-    \u2014 [URL]\r\n\r\n<font=\"PixelifySans-Regular SDF\"><b>Textures</b></font>\r\n[Asset]
-    \u2014 [Publisher] \u2014 License: [License] \u2014 [URL]\r\n\r\n<font=\"PixelifySans-Regular
-    SDF\"><b>Shaders</b></font>\r\n[Asset] \u2014 [Publisher] \u2014 License: [License]
-    \u2014 [URL]\r\n\r\n<font=\"PixelifySans-Regular SDF\"><b>Music</b></font>\r\n[Track/Pack]
-    \u2014 [Composer] \u2014 License: [License] \u2014 [URL]\r\n\r\n<font=\"PixelifySans-Regular
-    SDF\"><b>Fonts</b></font>\r\n[Font] \u2014 [Foundry/Author] \u2014 License: [License]
-    \u2014 [URL]\r\n</size>\r\n"
+    SDF\"><b>Models</b></font>\r\nOiiaioooooiai Cat \u2014 Zhuier \u2014 License:
+    CC Attribution \u2014 https://sketchfab.com/\r\n\r\n<font=\"PixelifySans-Regular
+    SDF\"><b>Textures</b></font>\r\nDynamic Space Background Lite \u2014 DinV Studio
+    \u2014 License: Extension Asset \u2014 https://assetstore.unity.com/  \r\nEarth
+    Textures \u2014 INOVE \u2014 License: CC0 \u2014 https://www.solarsystemscope.com/\r\n\r\n<font=\"PixelifySans-Regular
+    SDF\"><b>Fonts</b></font>\r\nPress Start 2P \u2014 CodeMan38 \u2014 License:
+    OFL \u2014 https://fonts.google.com/  \r\nPixelify Sans \u2014 Stefie Justprince
+    \u2014 License: OFL \u2014 https://fonts.google.com/\r\n\r\n<font=\"PixelifySans-Regular
+    SDF\"><b>Attack SFX</b></font>\r\nRock destroy \u2014 Bertsz \u2014 License:
+    CC0 \u2014 https://freesound.org/  \r\nRock Cinematic \u2014 LordSonny \u2014
+    License: CC0 \u2014 https://freesound.org/  \r\nDebris break \u2014 LordSonny_Two
+    \u2014 License: CC0 \u2014 https://freesound.org/  \r\nSci-Fi Explosion 09 \u2014
+    DavidDumaisAudio \u2014 License: CC0 \u2014 https://freesound.org/  \r\nGun,
+    Laser, Single Shot, Sci Fi \u2014 Kinoton \u2014 License: CC0 \u2014 https://freesound.org/ 
+    \r\nLaunching Missile \u2014 SonixFXSounds \u2014 License: CC0 \u2014 https://freesound.org/\r\n\r\n<font=\"PixelifySans-Regular
+    SDF\"><b>Damage SFX</b></font>\r\nArmor Hit Soft 01, Armor Hit Soft 02, Hit Armor
+    03 \u2014 U_xjrmmgxfru \u2014 License: CC0 \u2014 https://freesound.org/  \r\nGround
+    Impact \u2014 Universfield \u2014 License: CC0 \u2014 https://freesound.org/ 
+    \r\ndamage \u2014 ash_rez \u2014 License: CC0 \u2014 https://freesound.org/\r\n\r\n<font=\"PixelifySans-Regular
+    SDF\"><b>Player SFX</b></font>\r\n90s Game UI 5, Classic Game Action Negative
+    7 \u2014 Floraphonic \u2014 License: CC0 \u2014 https://freesound.org/  \r\nImpact
+    Transition Impact Dramatic Boom \u2014 ALEXIS_GAMING_CAM \u2014 License: CC0
+    \u2014 https://freesound.org/  \r\nClick Buttons - UI Menu Sounds Effects - Button
+    3 \u2014 Skyscraper_seven \u2014 License: CC0 \u2014 https://freesound.org/ 
+    \r\nWalking through leaves - Button 3 \u2014 markbolden \u2014 License: CC0 \u2014
+    https://freesound.org/  \r\nMetal Creaking - Button 3 \u2014 Bricklover \u2014
+    License: CC0 \u2014 https://freesound.org/\r\n\r\n<font=\"PixelifySans-Regular
+    SDF\"><b>Hover SFX</b></font>\r\nAstral / Creepy Dark Logo \u2014 SoulProdMusic
+    \u2014 License: CC0 \u2014 https://freesound.org/  \r\nSpace Ship Sound \u2014
+    Linkis20 \u2014 License: CC0 \u2014 https://freesound.org/  \r\nSci-Fi Weapon
+    - Futuristic Mechanical - Mechanism Metal \u2014 RescopicSound \u2014 License:
+    CC0 \u2014 https://freesound.org/\r\n</size>\r\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1571,7 +1595,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2300550581493957325, guid: 716b356f4680d7944b3f48986f70d08b, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_StringArgument
-      value: TestLevel
+      value: KeithDev
       objectReference: {fileID: 0}
     - target: {fileID: 2300550581493957325, guid: 716b356f4680d7944b3f48986f70d08b, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
