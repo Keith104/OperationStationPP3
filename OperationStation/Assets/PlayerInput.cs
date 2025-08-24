@@ -216,6 +216,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""BuildMode"",
+                    ""type"": ""Button"",
+                    ""id"": ""93db90cd-fbb0-4f07-a191-7ec05b574d5d"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -603,6 +612,28 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""MultiSelectModifer"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a979526d-8589-4631-88e8-50315590d9d6"",
+                    ""path"": ""<Keyboard>/b"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""BuildMode"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""69b02968-8ea3-4a5e-bee2-daf4520d2752"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""BuildMode"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -625,6 +656,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_Player_Select = m_Player.FindAction("Select", throwIfNotFound: true);
         m_Player_Point = m_Player.FindAction("Point", throwIfNotFound: true);
         m_Player_MultiSelectModifer = m_Player.FindAction("MultiSelectModifer", throwIfNotFound: true);
+        m_Player_BuildMode = m_Player.FindAction("BuildMode", throwIfNotFound: true);
     }
 
     ~@PlayerInput()
@@ -719,6 +751,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Select;
     private readonly InputAction m_Player_Point;
     private readonly InputAction m_Player_MultiSelectModifer;
+    private readonly InputAction m_Player_BuildMode;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -787,6 +820,10 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @MultiSelectModifer => m_Wrapper.m_Player_MultiSelectModifer;
         /// <summary>
+        /// Provides access to the underlying input action "Player/BuildMode".
+        /// </summary>
+        public InputAction @BuildMode => m_Wrapper.m_Player_BuildMode;
+        /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
         public InputActionMap Get() { return m_Wrapper.m_Player; }
@@ -854,6 +891,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @MultiSelectModifer.started += instance.OnMultiSelectModifer;
             @MultiSelectModifer.performed += instance.OnMultiSelectModifer;
             @MultiSelectModifer.canceled += instance.OnMultiSelectModifer;
+            @BuildMode.started += instance.OnBuildMode;
+            @BuildMode.performed += instance.OnBuildMode;
+            @BuildMode.canceled += instance.OnBuildMode;
         }
 
         /// <summary>
@@ -907,6 +947,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @MultiSelectModifer.started -= instance.OnMultiSelectModifer;
             @MultiSelectModifer.performed -= instance.OnMultiSelectModifer;
             @MultiSelectModifer.canceled -= instance.OnMultiSelectModifer;
+            @BuildMode.started -= instance.OnBuildMode;
+            @BuildMode.performed -= instance.OnBuildMode;
+            @BuildMode.canceled -= instance.OnBuildMode;
         }
 
         /// <summary>
@@ -1045,5 +1088,12 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnMultiSelectModifer(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "BuildMode" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnBuildMode(InputAction.CallbackContext context);
     }
 }

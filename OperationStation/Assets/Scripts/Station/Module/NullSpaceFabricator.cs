@@ -9,6 +9,7 @@ public class NullSpaceFabricator : MonoBehaviour, ISelectable, IModule
     [SerializeField] GameObject miningPrefab;
 
     public int totalShips;
+    public int capacity = 15;
 
     public enum MiningDesignations
     {

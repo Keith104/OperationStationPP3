@@ -1,8 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [Serializable]
 public struct ResourceCostSpawner
@@ -23,9 +23,11 @@ public class ObjectSpawner : MonoBehaviour
     public GameObject smelter;
     public GameObject solarPanelArray;
 
-    private GameObject objectToInstantiate;
+    public GameObject buildMenu;
 
+    private GameObject objectToInstantiate;
     private Vector3 spawnLocation;
+
     public static bool awaitingPlacement = false;
     public static bool isDefence = false;
 
@@ -40,6 +42,30 @@ public class ObjectSpawner : MonoBehaviour
 
     public DefencePreview viewing;
 
+    PlayerInput controls;
+
+    void Awake()
+    {
+        controls = new PlayerInput();
+    }
+
+    void OnEnable()
+    {
+        controls.Player.BuildMode.performed += OnBuildMode;
+        controls.Enable();
+    }
+
+    void OnDisable()
+    {
+        controls.Player.BuildMode.performed -= OnBuildMode;
+        controls.Disable();
+    }
+
+    void OnBuildMode(InputAction.CallbackContext _)
+    {
+        LevelUIManager.instance.SetActiveMenu(buildMenu);
+    }
+
     public void DeathCatSpawn()
     {
         if (TrySpend(deathCatCosts))
@@ -48,6 +74,7 @@ public class ObjectSpawner : MonoBehaviour
             objectToInstantiate = deathCat;
         }
     }
+
     public void NullSpaceFabricatorSpawn()
     {
         if (TrySpend(nullSpaceFabricatorCosts))
@@ -74,6 +101,7 @@ public class ObjectSpawner : MonoBehaviour
             objectToInstantiate = smelter;
         }
     }
+
     public void SolarPanelArraySpawn()
     {
         if (TrySpend(solarPanelArrayCosts))
@@ -82,6 +110,7 @@ public class ObjectSpawner : MonoBehaviour
             objectToInstantiate = solarPanelArray;
         }
     }
+
     public void BasicTurretSpawn()
     {
         if (TrySpend(basicTurretCosts))
@@ -115,25 +144,21 @@ public class ObjectSpawner : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
-
-        if (awaitingPlacement == true && Input.GetMouseButtonDown(0) && objectToInstantiate != null) 
-        { 
-        
+        if (awaitingPlacement == true && Input.GetMouseButtonDown(0) && objectToInstantiate != null)
+        {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            Physics.Raycast(ray, out hit);
+            Physics.Raycast(ray, out RaycastHit hit);
             GameObject hitObject = hit.collider.gameObject;
             Tile tile = hitObject.GetComponent<Tile>();
             Defence defence = hitObject.GetComponent<Defence>();
 
             if (hitObject != null)
             {
-                if(objectToInstantiate == deathCat || objectToInstantiate == nullSpaceFabricator ||
-                    objectToInstantiate == poloniumReactor || objectToInstantiate == smelter ||
-                    objectToInstantiate == solarPanelArray)
+                if (objectToInstantiate == deathCat || objectToInstantiate == nullSpaceFabricator ||
+                   objectToInstantiate == poloniumReactor || objectToInstantiate == smelter ||
+                   objectToInstantiate == solarPanelArray)
                 {
                     if (tile != null)
                     {
@@ -144,12 +169,11 @@ public class ObjectSpawner : MonoBehaviour
                         Instantiate(objectToInstantiate, spawnLocation, Quaternion.identity, hitObject.transform.parent);
                         awaitingPlacement = false;
                         Destroy(hitObject);
-
                     }
-
-                }else
-                { 
-                    if(defence == null && tile == null)
+                }
+                else
+                {
+                    if (defence == null && tile == null)
                     {
                         GameObject foundDeathCat = GameObject.Find("DeathCat");
                         spawnLocation = hit.point + hit.normal * 0.5f;
@@ -160,43 +184,33 @@ public class ObjectSpawner : MonoBehaviour
                             isDefence = false;
                             viewing.isDefenceBuildActive = false;
                         }
-
                     }
                 }
             }
-        
         }
-
     }
 
-    // Helpers
-    private bool TrySpend(List<ResourceCostSpawner> costs)
+    bool TrySpend(List<ResourceCostSpawner> costs)
     {
         if (!CanAfford(costs)) return false;
-
-        // Spend all costs atomically
-        foreach(var c in costs)
-        {
+        foreach (var c in costs)
             ResourceManager.instance.RemoveResource(c.type, c.amount);
-        }
         return true;
     }
 
-    private bool CanAfford(List<ResourceCostSpawner> costs)
+    bool CanAfford(List<ResourceCostSpawner> costs)
     {
         if (costs == null) return true;
-
-        foreach(var c in costs)
+        foreach (var c in costs)
         {
             if (GetAmount(c.type) < c.amount) return false;
         }
         return true;
     }
 
-    private int GetAmount(ResourceSO.ResourceType type)
+    int GetAmount(ResourceSO.ResourceType type)
     {
         var rm = ResourceManager.instance;
-
         switch (type)
         {
             case ResourceSO.ResourceType.Tritium: return rm.tritium;
@@ -207,7 +221,6 @@ public class ObjectSpawner : MonoBehaviour
             case ResourceSO.ResourceType.PoloniumCrystal: return rm.poloniumCrystal;
             case ResourceSO.ResourceType.Energy: return rm.energy;
             default: return 0;
-
         }
     }
 }

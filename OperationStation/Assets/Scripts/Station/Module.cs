@@ -6,7 +6,7 @@ using Color = UnityEngine.Color;
 public class Module : MonoBehaviour, ISelectable, IDamage
 {
     public UnitSO stats;
-    [SerializeField] Renderer model;
+    //[SerializeField] Renderer model;
     [SerializeField] GameObject fragmentModel;
     [SerializeField] ResourceCost[] resourceCosts;
     public int[] costsLeft;
@@ -26,7 +26,7 @@ public class Module : MonoBehaviour, ISelectable, IDamage
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        origColor = model.material.color;
+        //origColor = model.material.color;
         localHealth = stats.unitHealth;
         resourceCosts = stats.cost;
         for (int i = 0; i < resourceCosts.Length; i++)
@@ -128,8 +128,8 @@ public class Module : MonoBehaviour, ISelectable, IDamage
     }
     private IEnumerator FlashRed()
     {
-        model.material.color = Color.red;
+        //model.material.color = Color.red;
         yield return new WaitForSeconds(0.3f);
-        model.material.color = origColor;
+        //model.material.color = origColor;
     }
 }

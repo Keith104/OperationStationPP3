@@ -4,7 +4,7 @@ using UnityEngine.AI;
 
 public class MiningShip : MonoBehaviour, ISelectable, IDamage
 {
-    [SerializeField] Renderer model;
+    //[SerializeField] Renderer model;
     [SerializeField] GameObject fragmentModel;
     [SerializeField] UnitSO stats;
 
@@ -33,7 +33,7 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
     {
         //this.name = nullScript.DesignatedName();
         health = stats.unitHealth;
-        colorOG = model.material.color;
+        //colorOG = model.material.color;
         idlePos = transform.position;
         goHereFallback = goHere;
         playerControlled = false;
@@ -156,9 +156,9 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
 
     private IEnumerator FlashRed()
     {
-        model.material.color = Color.red;
+        //model.material.color = Color.red;
         yield return new WaitForSeconds(0.3f);
-        model.material.color = colorOG;
+        //model.material.color = colorOG;
     }
 
     private IEnumerator Mine(Collider asteroid)
