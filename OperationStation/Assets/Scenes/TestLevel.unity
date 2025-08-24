@@ -665,7 +665,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &404031474
 Transform:
   m_ObjectHideFlags: 0
@@ -858,6 +858,10 @@ PlayableDirector:
     value: {fileID: 1005949925}
   - key: {fileID: -8779547503051275334, guid: a568e81704bff5440b57ab251781f03c, type: 2}
     value: {fileID: 590750027}
+  - key: {fileID: -4465433704859788923, guid: a568e81704bff5440b57ab251781f03c, type: 2}
+    value: {fileID: 590750027}
+  - key: {fileID: -3514436504093166645, guid: a568e81704bff5440b57ab251781f03c, type: 2}
+    value: {fileID: 1481879974}
   m_ExposedReferences:
     m_References: []
 --- !u!4 &548372996
@@ -947,6 +951,9 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1826742274521941465, guid: 79625718a0588914fab3fbb9e64337af, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1481879974}
     - targetCorrespondingSourceObject: {fileID: 2529523515778367033, guid: 79625718a0588914fab3fbb9e64337af, type: 3}
       insertIndex: -1
       addedObject: {fileID: 590750027}
@@ -984,7 +991,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: -2029294958850170093, guid: 78950690dd40a7141a7d499ea454f64e, type: 2}
   m_audioClip: {fileID: 8300000, guid: 6c20cc4bcab5a3c45b97fedd8d428344, type: 3}
   m_Resource: {fileID: 8300000, guid: 6c20cc4bcab5a3c45b97fedd8d428344, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -1870,6 +1877,52 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1481879965 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1826742274521941465, guid: 79625718a0588914fab3fbb9e64337af, type: 3}
+  m_PrefabInstance: {fileID: 590750019}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1481879973 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7573420944328670618, guid: 79625718a0588914fab3fbb9e64337af, type: 3}
+  m_PrefabInstance: {fileID: 590750019}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1481879965}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a3f1d7f63466f049a76fefebdbf286a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1481879974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1481879965}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e52de21a22b6dd44c9cc19f810c65059, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Events:
+    m_Signals:
+    - {fileID: 11400000, guid: 8d6efa2f154fe704a9a0699e795b2cba, type: 2}
+    m_Events:
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1481879973}
+          m_TargetAssemblyTypeName: DeathCat, Assembly-CSharp
+          m_MethodName: FireDeathCat
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &1519435862
 GameObject:
   m_ObjectHideFlags: 0
