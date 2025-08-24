@@ -12,9 +12,6 @@ public class UnitUIManager : MonoBehaviour
     public GameObject reactorMenu;
     public GameObject smelterMenu;
     public GameObject nullSpaceMenu;
-    public TextMeshProUGUI tmpUnitName;
-    public TextMeshProUGUI tmpUnitDesc;
-    public TextMeshProUGUI tmpUnitCost;
     public int buttonNum;
 
     [SerializeField] ButtonFunctions buttonFunctions;

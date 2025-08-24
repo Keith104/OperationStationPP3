@@ -82,12 +82,12 @@ public class NullSpaceFabricator : MonoBehaviour, ISelectable, IModule
     {
         var ui = UnitUIManager.instance;
         ui.DisableAllMenus();
+        ui.currUnit = gameObject;
         ui.unitMenu.SetActive(true);
         ui.nullSpaceMenu.SetActive(true);
-
-        var controller = ui.nullSpaceMenu.GetComponentInChildren<NullSpaceFabricatorUIController>(true);
-        if (controller) controller.Bind(this);
     }
+
+
 
 
     public void ModuleDie()

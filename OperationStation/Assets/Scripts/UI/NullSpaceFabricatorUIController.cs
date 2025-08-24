@@ -19,6 +19,7 @@ public class NullSpaceFabricatorUIController : MonoBehaviour
     [SerializeField] int maxPerFabricator = 15;
     [SerializeField] int costPerShip = 100;
     [SerializeField] float cooldownSeconds = 10f;
+    [SerializeField] ResourceSO.ResourceType costResource = ResourceSO.ResourceType.Energy;
 
     NullSpaceFabricator target;
     int toMake;
@@ -28,10 +29,9 @@ public class NullSpaceFabricatorUIController : MonoBehaviour
 
     void OnEnable()
     {
-        if (btnLeft) btnLeft.onClick.AddListener(() => Adjust(-1));
-        if (btnRight) btnRight.onClick.AddListener(() => Adjust(1));
-        if (btnStart) btnStart.onClick.AddListener(Toggle);
-
+        btnLeft.onClick.AddListener(() => Adjust(-1));
+        btnRight.onClick.AddListener(() => Adjust(1));
+        btnStart.onClick.AddListener(Toggle);
         if (txtEvery) txtEvery.text = $"Every {Mathf.RoundToInt(cooldownSeconds)}s";
         if (txtCost) txtCost.text = costPerShip.ToString();
         ResetUI();
@@ -39,20 +39,23 @@ public class NullSpaceFabricatorUIController : MonoBehaviour
 
     void OnDisable()
     {
-        if (btnLeft) btnLeft.onClick.RemoveAllListeners();
-        if (btnRight) btnRight.onClick.RemoveAllListeners();
-        if (btnStart) btnStart.onClick.RemoveAllListeners();
+        btnLeft.onClick.RemoveAllListeners();
+        btnRight.onClick.RemoveAllListeners();
+        btnStart.onClick.RemoveAllListeners();
         running = false;
         target = null;
     }
 
     void Update()
     {
+        AutoBindFromSelection();
         if (!target) return;
 
-        RefreshShipsHeld();
-        ClampToMakeToCapacity();
-        UpdateStartInteractivity();
+        if (txtShipsHeld) txtShipsHeld.text = target.totalShips.ToString();
+
+        int cap = Mathf.Clamp(maxPerFabricator - target.totalShips, 0, maxPerFabricator);
+        if (toMake > cap) { toMake = cap; UpdateToMakeText(); }
+        UpdateStartButtonState();
 
         if (!running) return;
 
@@ -68,16 +71,17 @@ public class NullSpaceFabricatorUIController : MonoBehaviour
                 target.SpawnMiningShip();
                 batchLeft--;
             }
-
-            if (batchLeft <= 0 || target.totalShips >= maxPerFabricator)
-            {
-                StopRun();
-            }
-            else
-            {
-                countdown = cooldownSeconds;
-            }
+            if (batchLeft <= 0 || target.totalShips >= maxPerFabricator) StopRun();
+            else countdown = cooldownSeconds;
         }
+    }
+
+    void AutoBindFromSelection()
+    {
+        var ui = UnitUIManager.instance;
+        if (!ui) return;
+        var cu = ui.currUnit ? ui.currUnit.GetComponentInParent<NullSpaceFabricator>() : null;
+        if (cu && cu != target) Bind(cu);
     }
 
     public void Bind(NullSpaceFabricator fab)
@@ -86,22 +90,21 @@ public class NullSpaceFabricatorUIController : MonoBehaviour
         running = false;
         toMake = 0;
         batchLeft = 0;
-
+        if (txtShipsHeld) txtShipsHeld.text = target ? target.totalShips.ToString() : "0";
         if (txtCountdown) txtCountdown.text = $"00:{Mathf.RoundToInt(cooldownSeconds):00}";
         if (cooldownFill) cooldownFill.fillAmount = 0f;
-
-        RefreshShipsHeld();
         UpdateToMakeText();
-        UpdateStartInteractivity();
+        UpdateStartButtonState();
         SetStartText("Start Fabricate");
     }
 
     void Adjust(int delta)
     {
         if (!target) return;
-        toMake = Mathf.Clamp(toMake + delta, 0, maxPerFabricator - target.totalShips);
+        int cap = Mathf.Clamp(maxPerFabricator - target.totalShips, 0, maxPerFabricator);
+        toMake = Mathf.Clamp(toMake + delta, 0, cap);
         UpdateToMakeText();
-        UpdateStartInteractivity();
+        UpdateStartButtonState();
     }
 
     void Toggle()
@@ -113,19 +116,14 @@ public class NullSpaceFabricatorUIController : MonoBehaviour
 
     void StartRun()
     {
-        if (!target || toMake <= 0) return;
-
+        if (!target || toMake <= 0 || ResourceManager.instance == null) return;
         int need = toMake * costPerShip;
-        if (ResourceManager.instance == null) return;
-        int energy = ResourceManager.instance.GetResource(ResourceSO.ResourceType.Energy);
-        if (energy < need) return;
-
-        ResourceManager.instance.RemoveResource(ResourceSO.ResourceType.Energy, need);
-
+        int have = ResourceManager.instance.GetResource(costResource);
+        if (have < need) return;
+        ResourceManager.instance.RemoveResource(costResource, need);
         batchLeft = toMake;
         running = true;
         countdown = cooldownSeconds;
-
         SetStartText("Stop");
         ToggleInputs(false);
     }
@@ -135,14 +133,12 @@ public class NullSpaceFabricatorUIController : MonoBehaviour
         running = false;
         SetStartText("Start Fabricate");
         ToggleInputs(true);
-
         countdown = cooldownSeconds;
         if (txtCountdown) txtCountdown.text = $"00:{Mathf.RoundToInt(cooldownSeconds):00}";
         if (cooldownFill) cooldownFill.fillAmount = 0f;
-
         toMake = 0;
         UpdateToMakeText();
-        UpdateStartInteractivity();
+        UpdateStartButtonState();
     }
 
     void ResetUI()
@@ -152,20 +148,9 @@ public class NullSpaceFabricatorUIController : MonoBehaviour
         running = false;
         if (txtCountdown) txtCountdown.text = $"00:{Mathf.RoundToInt(cooldownSeconds):00}";
         if (cooldownFill) cooldownFill.fillAmount = 0f;
+        if (txtShipsHeld) txtShipsHeld.text = "0";
         UpdateToMakeText();
-        UpdateStartInteractivity();
-    }
-
-    void RefreshShipsHeld()
-    {
-        if (txtShipsHeld) txtShipsHeld.text = target ? target.totalShips.ToString() : "0";
-    }
-
-    void ClampToMakeToCapacity()
-    {
-        if (!target) return;
-        int cap = Mathf.Clamp(maxPerFabricator - target.totalShips, 0, maxPerFabricator);
-        if (toMake > cap) { toMake = cap; UpdateToMakeText(); }
+        UpdateStartButtonState();
     }
 
     void UpdateToMakeText()
@@ -173,14 +158,14 @@ public class NullSpaceFabricatorUIController : MonoBehaviour
         if (txtToMake) txtToMake.text = toMake.ToString();
     }
 
-    void UpdateStartInteractivity()
+    void UpdateStartButtonState()
     {
-        bool can = target && toMake > 0;
-        if (can && ResourceManager.instance)
+        bool can = target && toMake > 0 && ResourceManager.instance != null;
+        if (can)
         {
             int need = toMake * costPerShip;
-            can = ResourceManager.instance.GetResource(ResourceSO.ResourceType.Energy) >= need
-                  && target.totalShips < maxPerFabricator;
+            int have = ResourceManager.instance.GetResource(costResource);
+            can = have >= need && target.totalShips < maxPerFabricator;
         }
         if (btnStart) btnStart.interactable = can;
     }

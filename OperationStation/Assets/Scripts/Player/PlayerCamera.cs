@@ -246,18 +246,16 @@ void Awake()
     void TrySelect(GameObject go)
     {
         var ui = UnitUIManager.instance;
-        //if (ui != null) ui.DisableAllMenus();
-
         var selectables = go.GetComponents<ISelectable>();
-
         ISelectable chosen =
             selectables.FirstOrDefault(s => s is Smelter)
             ?? selectables.FirstOrDefault(s => s.GetType().Name != "Module")
             ?? selectables.FirstOrDefault();
 
-        if (chosen != null)
-            chosen.TakeControl();
+        if (ui) ui.currUnit = go;
+        if (chosen != null) chosen.TakeControl();
     }
+
 
 
     Vector2 GetPointerPosOrCenter()
