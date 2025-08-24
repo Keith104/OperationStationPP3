@@ -4,7 +4,6 @@ using UnityEngine.AI;
 
 public class MiningShip : MonoBehaviour, ISelectable, IDamage
 {
-    [SerializeField] private float hp; //Note to self DELETE THIS AFTER TEST
     [SerializeField] Renderer model;
     [SerializeField] GameObject fragmentModel;
     [SerializeField] UnitSO stats;
@@ -23,7 +22,6 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
     private Color colorOG;
     private Vector3 idlePos;
     private bool noControl;
-    private bool getHurt;
     private bool foundAsteroid;
     private GameObject curAsteroid;
     private Transform goHereFallback;
@@ -43,9 +41,9 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
         foundAsteroid = false;
         goHere.gameObject.SetActive(false);
         curAsteroid = null;
-        getHurt = true;
 
-        hp = health;
+        if(playerCam == null)
+            playerCam = FindAnyObjectByType<Camera>();
     }
 
     void Update()
@@ -75,8 +73,6 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
 
     public void TakeDamage(float damage)
     {
-        if (getHurt)
-        {
             soundModulation.ModulateSound(Random.Range(0.8f, 1.2f));
             damageSource.Play();
 
@@ -91,7 +87,8 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
                 else
                     Debug.Log("fragmentModel missing");
 
-                //Destroy(gameObject)
+                Destroy(gameObject);
+
                 //if(nullScript.totalShips > 0)
                 //{
 
@@ -99,9 +96,6 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
 
                 //}
             }
-        }
-        else
-            getHurt = true;
     }
 
     public void OnTriggerEnter(Collider other)
@@ -132,9 +126,11 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
 
     private void ShipMove()
     {
+        if (curAsteroid != null)
+            return;
+
         if (Input.GetMouseButtonDown(0))
         {
-            getHurt = false;
             goHere.gameObject.SetActive(true);
 
             Ray ray = playerCam.ScreenPointToRay(Input.mousePosition);
@@ -172,15 +168,10 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
         do
         {
             yield return new WaitForSeconds(1);
+
             if (dmg != null)
-            {
                 dmg.TakeDamage(stats.miningDamage);
 
-                //if (asteroid.GetComponentInChildren<Asteroid>() != null && asteroid.GetComponentInChildren<Asteroid>().health <= 10)
-                //{
-                //    asteroid.transform.parent.transform.SetParent(null);
-                //}
-            }
         } while (asteroid.GetComponentInChildren<Asteroid>().health > 0);
 
         agent.isStopped = false;

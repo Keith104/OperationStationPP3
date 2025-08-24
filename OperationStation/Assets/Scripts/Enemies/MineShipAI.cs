@@ -56,7 +56,7 @@ public class MineShipAI : EnemyAI
     {
         agent.SetDestination(station.transform.position);
         yield return new WaitForSeconds(time);
-        Destroy(gameObject, time);
+        Destroy(gameObject);
         Instantiate(enemy.bullet, shootPos.position, shootPos.rotation);
     }
 
