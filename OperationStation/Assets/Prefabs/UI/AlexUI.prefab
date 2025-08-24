@@ -3959,7 +3959,7 @@ GameObject:
   - component: {fileID: 3884074991587504697}
   - component: {fileID: 1268663967558218526}
   m_Layer: 5
-  m_Name: DeathCatPurchase
+  m_Name: NullSpacePurchase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4361,7 +4361,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: DeathCat
+  m_text: Null Space Fabricator
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -5532,7 +5532,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 4294387896813794488}
         m_TargetAssemblyTypeName: ObjectSpawner, Assembly-CSharp
-        m_MethodName: DeathCatSpawn
+        m_MethodName: NullSpaceFabricatorSpawn
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6584,6 +6584,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3172946173823121863}
   - component: {fileID: 4294387896813794488}
+  - component: {fileID: 6262169415224278021}
   m_Layer: 5
   m_Name: SpawnManager
   m_TagString: Untagged
@@ -6624,42 +6625,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   deathCat: {fileID: 1826742274521941465, guid: 79625718a0588914fab3fbb9e64337af, type: 3}
   basicTurret: {fileID: 9109297272713609667, guid: 1db07d84c7772e14ab3328a0a89b54b3, type: 3}
-  nullSpaceFabricator: {fileID: 0}
+  nullSpaceFabricator: {fileID: 9155549624207777793, guid: 44b8f37db1fc56643a257f2796e13937, type: 3}
   wall: {fileID: 1826742274521941465, guid: 79625718a0588914fab3fbb9e64337af, type: 3}
   grapeJam: {fileID: 1826742274521941465, guid: 79625718a0588914fab3fbb9e64337af, type: 3}
   poloniumReactor: {fileID: 2773928973720823125, guid: 8d0b58627e7f6af4e89b51b86434a803, type: 3}
   smelter: {fileID: 5181112579491600659, guid: 8110eec864f71ff4a99e7a36a3716b2b, type: 3}
   solarPanelArray: {fileID: 5181112579491600659, guid: 075e225452f63ce42943d3fac77bc975, type: 3}
   deathCatCosts: []
-  basicTurretCosts:
-  - type: 0
-    amount: 20
-  - type: 0
-    amount: 20
+  basicTurretCosts: []
   nullSpaceFabricatorCosts: []
   wallCosts: []
   grapeJamCosts: []
-  poloniumReactorCosts:
-  - type: 2
-    amount: 100
-  - type: 0
-    amount: 50
-  - type: 5
-    amount: 25
-  - type: 6
-    amount: 150
-  smelterCosts:
-  - type: 0
-    amount: 50
-  - type: 1
-    amount: 25
-  - type: 6
-    amount: 100
-  solarPanelArrayCosts:
-  - type: 3
-    amount: 25
-  - type: 1
-    amount: 50
+  poloniumReactorCosts: []
+  smelterCosts: []
+  solarPanelArrayCosts: []
+  viewing: {fileID: 6262169415224278021}
+--- !u!114 &6262169415224278021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4106617878571769013}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7523338c6aca8b84a841947ed6878050, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isDefenceBuildActive: 0
 --- !u!1 &4166876707929551227
 GameObject:
   m_ObjectHideFlags: 0
