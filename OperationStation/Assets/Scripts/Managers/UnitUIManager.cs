@@ -12,6 +12,7 @@ public class UnitUIManager : MonoBehaviour
     public GameObject reactorMenu;
     public GameObject smelterMenu;
     public GameObject nullSpaceMenu;
+    public GameObject solarPanelMenu;
     public int buttonNum;
 
     [SerializeField] ButtonFunctions buttonFunctions;
@@ -29,6 +30,7 @@ public class UnitUIManager : MonoBehaviour
         if (smelterMenu) smelterMenu.SetActive(false);
         if (unitMenu) unitMenu.SetActive(false);
         if(nullSpaceMenu) nullSpaceMenu.SetActive(false);
+        if(solarPanelMenu) solarPanelMenu.SetActive(false);
     }
 
     public void OnSpendClick(int num)

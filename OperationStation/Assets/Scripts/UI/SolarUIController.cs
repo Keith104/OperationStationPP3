@@ -1,88 +1,81 @@
-using System.Collections;
+using System.Reflection;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class SolarUIController : MonoBehaviour
 {
-    [Header("UI")]
-    [SerializeField] TextMeshProUGUI txtProjected;   // energy per tick
-    [SerializeField] TextMeshProUGUI txtEvery;       // "Every 10s"
-    [SerializeField] TextMeshProUGUI txtCountdown;   // "00:08"
-    [SerializeField] Image cooldownFill;             // optional radial fill
+    [SerializeField] TextMeshProUGUI txtEvery;
+    [SerializeField] TextMeshProUGUI txtCountdown;
+    [SerializeField] Image cooldownFill;
 
-    [Header("Timing")]
-    [SerializeField] float cooldownSeconds = 10f;
-
-    [Header("Behavior")]
-    public bool generateEnergy = true;     // turn OFF if something else already generates (e.g., EnergyBuilding.autoGenerate)
-
-    int energyPerTick;        // from UnitSO
+    EnergyBuilding target;
+    Module targetModule;
+    float interval = 10f;
+    int energyPerTick = 0;
     float countdown;
-    Coroutine loop;
-
-    public void Bind(UnitSO unitSo)
-    {
-        energyPerTick = Mathf.Max(0, unitSo.energyProductionAmount);
-        InitUI();
-        StartLoop();
-    }
 
     void OnEnable()
     {
-        if (loop == null && energyPerTick > 0)
-        {
-            InitUI();
-            StartLoop();
-        }
+        AutoBindFromSelection();
+        SetupUI();
     }
 
     void OnDisable()
     {
-        if (loop != null)
-        {
-            StopCoroutine(loop);
-            loop = null;
-        }
+        target = null;
+        targetModule = null;
     }
 
-    void InitUI()
+    void Update()
     {
-        if (txtProjected) txtProjected.text = energyPerTick.ToString("N0");
-        if (txtEvery) txtEvery.text = $"Every {Mathf.RoundToInt(cooldownSeconds)}s";
-        if (txtCountdown) txtCountdown.text = $"00:{Mathf.RoundToInt(cooldownSeconds):00}";
+        AutoBindFromSelection();
+        if (!target) return;
+
+        countdown -= Time.unscaledDeltaTime;
+        if (countdown < 0f) countdown = 0f;
+
+        if (txtCountdown) txtCountdown.text = Format(countdown);
+        if (cooldownFill) cooldownFill.fillAmount = 1f - (countdown / Mathf.Max(0.01f, interval));
+
+        if (countdown <= 0f) countdown = interval;
+    }
+
+    void AutoBindFromSelection()
+    {
+        var ui = UnitUIManager.instance;
+        if (!ui) return;
+        var eb = ui.currUnit ? ui.currUnit.GetComponentInParent<EnergyBuilding>() : null;
+        if (eb && eb != target) Bind(eb);
+    }
+
+    public void Bind(EnergyBuilding eb)
+    {
+        target = eb;
+        targetModule = eb ? eb.GetComponent<Module>() : null;
+        interval = ReadIntervalSeconds(eb);
+        energyPerTick = (targetModule && targetModule.stats) ? Mathf.Max(0, targetModule.stats.energyProductionAmount) : 0;
+        countdown = interval;
+        SetupUI();
+    }
+
+    void SetupUI()
+    {
+        if (txtEvery) txtEvery.text = $"Every {Mathf.RoundToInt(interval)}s";
+        if (txtCountdown) txtCountdown.text = $"00:{Mathf.RoundToInt(interval):00}";
         if (cooldownFill) cooldownFill.fillAmount = 0f;
-        countdown = cooldownSeconds;
     }
 
-    void StartLoop()
+    float ReadIntervalSeconds(EnergyBuilding eb)
     {
-        if (loop != null) StopCoroutine(loop);
-        loop = StartCoroutine(TickLoop());
-    }
-
-    IEnumerator TickLoop()
-    {
-        while (true)
+        if (!eb) return 10f;
+        var f = typeof(EnergyBuilding).GetField("autoIntervalSeconds", BindingFlags.Instance | BindingFlags.NonPublic);
+        if (f != null)
         {
-            // per-frame countdown + UI
-            while (countdown > 0f)
-            {
-                countdown -= Time.unscaledDeltaTime;
-                if (countdown < 0f) countdown = 0f;
-
-                if (txtCountdown) txtCountdown.text = Format(countdown);
-                if (cooldownFill) cooldownFill.fillAmount = 1f - (countdown / cooldownSeconds);
-                yield return null;
-            }
-
-            // tick
-            if (generateEnergy && ResourceManager.instance != null)
-                ResourceManager.instance.AddResource(ResourceSO.ResourceType.Energy, energyPerTick);
-
-            countdown = cooldownSeconds;
-            if (cooldownFill) cooldownFill.fillAmount = 0f;
+            object v = f.GetValue(eb);
+            if (v is float s) return Mathf.Max(0.01f, s);
         }
+        return 10f;
     }
 
     static string Format(float s)

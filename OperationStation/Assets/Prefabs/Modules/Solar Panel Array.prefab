@@ -56,7 +56,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stats: {fileID: 11400000, guid: 3b8e51a8b7ae64b4d9f9f83ad653b27a, type: 2}
-  model: {fileID: 7625927308510609161}
   fragmentModel: {fileID: 8011813783589391204}
   resourceCosts: []
   costsLeft: 0000000000000000
@@ -272,7 +271,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caef045895a0ec3499158708cd6609e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  menuToActivate: 
+  menuToActivate: SolarMenu
   autoGenerate: 1
   autoIntervalSeconds: 3
 --- !u!1 &9028139176612203957

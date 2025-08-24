@@ -60,6 +60,13 @@ public class EnergyBuilding : MonoBehaviour, ISelectable, IModule
                 var reactController = parent.GetComponentInParent<ReactorUIController>();
                 if (reactController && moduleRef && moduleRef.stats) reactController.Bind(moduleRef.stats);
                 break;
+            case "SolarMenu":
+                UnitUIManager.instance.DisableAllMenus();
+                UnitUIManager.instance.unitMenu.SetActive(true);
+                UnitUIManager.instance.solarPanelMenu.SetActive(true);
+                parent = UnitUIManager.instance.solarPanelMenu.gameObject.transform.parent.gameObject;
+                break;
+
         }
         UnitUIManager.instance.currUnit = gameObject;
     }
