@@ -53,4 +53,4 @@ MonoBehaviour:
   energy: 100
   debug: 0
   amountToDebug: 0
-  resourceType: 0
+  resourceType: 2
