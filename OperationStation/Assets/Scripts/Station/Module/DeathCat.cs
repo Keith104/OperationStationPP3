@@ -34,7 +34,7 @@ public class DeathCat : MonoBehaviour, ISelectable, IModule, IDamage
         }
     }
 
-    void FireDeathCat()
+    public void FireDeathCat()
     {
         Debug.Log("Cat The Death Cat has been fired");
         UnlockNextDiff();
