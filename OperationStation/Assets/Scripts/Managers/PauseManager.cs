@@ -1,8 +1,11 @@
 using System.Collections.Generic;
 using Unity.VisualScripting;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class PauseManager : MonoBehaviour
@@ -11,7 +14,14 @@ public class PauseManager : MonoBehaviour
     [SerializeField] GameObject pauseMenu;
     [SerializeField] GameObject quitConfirmPopup;
 
-    [SerializeField] List<GameObject> activeMenus;
+    [Tooltip("Menus that should remain interactive even while paused (eg. debug HUD, streaming chat, watermark buttons). Add their root Transforms here.")]
+    [SerializeField] List<Transform> neverLockRoots = new();
+
+    [SerializeField] List<GameObject> activeMenus = new();
+
+    [Header("Input (Optional)")]
+    [Tooltip("Reference to an Input Actions asset 'Pause' action. Bind whatever you like; this script filters to allowed controls per platform. If empty, a runtime action is created.")]
+    [SerializeField] InputActionReference pauseActionRef;
 
     readonly Dictionary<GraphicRaycaster, bool> raycasterCache = new();
     readonly Dictionary<Selectable, bool> selectableCache = new();
@@ -19,13 +29,97 @@ public class PauseManager : MonoBehaviour
 
     bool paused;
 
-    private void Update()
+    // Input System
+    InputAction pauseAction;
+    bool createdRuntimeAction;
+
+    void OnEnable()
     {
+        BuildPauseAction();
+        pauseAction.performed += OnPausePerformed;
+        pauseAction.Enable();
+    }
+
+    void OnDisable()
+    {
+        if (pauseAction != null)
+        {
+            pauseAction.performed -= OnPausePerformed;
+            pauseAction.Disable();
+            if (createdRuntimeAction)
+            {
+                pauseAction.Dispose();
+                pauseAction = null;
+                createdRuntimeAction = false;
+            }
+        }
+    }
+
+    // Build an action that only contains the allowed bindings for the current platform.
+    void BuildPauseAction()
+    {
+        bool AllowedPath(string controlPath)
+        {
+            if (string.IsNullOrEmpty(controlPath)) return false;
+            if (controlPath.Contains("<Gamepad>/start")) return true; // Always allow Start
+
 #if UNITY_WEBGL
-        if (Input.GetKeyDown(KeyCode.P)) Pause();
+            // WebGL: allow P; block Escape
+            if (controlPath.Contains("<Keyboard>/p")) return true;
+            if (controlPath.Contains("<Keyboard>/escape")) return false;
 #else
-        if (Input.GetKeyDown(KeyCode.Escape)) Pause();
+            // Desktop (non-WebGL): allow Escape; block P
+            if (controlPath.Contains("<Keyboard>/escape")) return true;
+            if (controlPath.Contains("<Keyboard>/p")) return false;
 #endif
+            return false;
+        }
+
+        if (pauseActionRef != null && pauseActionRef.action != null)
+        {
+            var src = pauseActionRef.action;
+            var ia = new InputAction(name: "Pause (Filtered)", type: InputActionType.Button);
+
+            bool addedAny = false;
+            foreach (var b in src.bindings)
+            {
+                if (!b.isComposite && !b.isPartOfComposite && AllowedPath(b.effectivePath))
+                {
+                    ia.AddBinding(b.effectivePath);
+                    addedAny = true;
+                }
+            }
+
+            if (!addedAny)
+            {
+#if UNITY_WEBGL
+                ia.AddBinding("<Gamepad>/start");
+                ia.AddBinding("<Keyboard>/p");
+#else
+                ia.AddBinding("<Gamepad>/start");
+                ia.AddBinding("<Keyboard>/escape");
+#endif
+            }
+
+            pauseAction = ia;
+            createdRuntimeAction = true;
+            return;
+        }
+
+        var runtime = new InputAction(name: "Pause", type: InputActionType.Button);
+        runtime.AddBinding("<Gamepad>/start");
+#if UNITY_WEBGL
+        runtime.AddBinding("<Keyboard>/p");
+#else
+        runtime.AddBinding("<Keyboard>/escape");
+#endif
+        pauseAction = runtime;
+        createdRuntimeAction = true;
+    }
+
+    void OnPausePerformed(InputAction.CallbackContext _)
+    {
+        Pause();
     }
 
     void Pause()
@@ -35,19 +129,24 @@ public class PauseManager : MonoBehaviour
         if (paused)
         {
             Time.timeScale = 0f;
-            pauseMenu.SetActive(true);
-            AddToActiveMenus(pauseMenu);
-            LockOtherUI(pauseMenu.transform);
+            if (pauseMenu != null)
+            {
+                pauseMenu.SetActive(true);
+                AddToActiveMenus(pauseMenu);
+                LockOtherUI(pauseMenu.transform);
+
+                var firstSel = pauseMenu.GetComponentInChildren<Selectable>();
+                EventSystem.current?.SetSelectedGameObject(firstSel ? firstSel.gameObject : pauseMenu);
+            }
         }
         else
         {
             Time.timeScale = 1f;
-            foreach (GameObject m in activeMenus) m.SetActive(false);
+            foreach (GameObject m in activeMenus) if (m) m.SetActive(false);
             activeMenus.Clear();
             UnlockOtherUI();
+            EventSystem.current?.SetSelectedGameObject(null);
         }
-
-        EventSystem.current?.SetSelectedGameObject(paused ? pauseMenu : null);
     }
 
     public void ResumeButton() => Pause();
@@ -60,11 +159,13 @@ public class PauseManager : MonoBehaviour
         if (quitConfirmPopup != null)
         {
             quitConfirmPopup.SetActive(true);
-            foreach (GameObject m in activeMenus) m.SetActive(false);
+            foreach (GameObject m in activeMenus) if (m) m.SetActive(false);
             activeMenus.Clear();
             AddToActiveMenus(quitConfirmPopup);
             LockOtherUI(quitConfirmPopup.transform);
-            EventSystem.current?.SetSelectedGameObject(quitConfirmPopup);
+
+            var firstSel = quitConfirmPopup.GetComponentInChildren<Selectable>();
+            EventSystem.current?.SetSelectedGameObject(firstSel ? firstSel.gameObject : quitConfirmPopup);
         }
         else
         {
@@ -85,8 +186,19 @@ public class PauseManager : MonoBehaviour
     public void ToMainMenuButton(string sceneName) =>
         SceneTransition.RunNoHints(sceneName);
 
-    public void AddToActiveMenus(GameObject menuToAdd) => activeMenus.Add(menuToAdd);
-    public void RemoveFromActiveMenus(GameObject menuToRemove) => activeMenus.Remove(menuToRemove);
+    public void AddToActiveMenus(GameObject menuToAdd)
+    {
+        if (menuToAdd && !activeMenus.Contains(menuToAdd))
+            activeMenus.Add(menuToAdd);
+    }
+
+    public void RemoveFromActiveMenus(GameObject menuToRemove)
+    {
+        if (menuToRemove)
+            activeMenus.Remove(menuToRemove);
+    }
+
+    // ---------- Locking logic with exceptions ----------
 
     void LockOtherUI(Transform keepRoot)
     {
@@ -97,8 +209,8 @@ public class PauseManager : MonoBehaviour
         var allRaycasters = Object.FindObjectsByType<GraphicRaycaster>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         foreach (var gr in allRaycasters)
         {
-            if (gr == null) continue;
-            if (keepRoot != null && gr.transform.IsChildOf(keepRoot)) continue;
+            if (!gr) continue;
+            if (IsKept(gr.transform, keepRoot)) continue;
             raycasterCache[gr] = gr.enabled;
             gr.enabled = false;
         }
@@ -106,8 +218,8 @@ public class PauseManager : MonoBehaviour
         var allSelectables = Object.FindObjectsByType<Selectable>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         foreach (var sel in allSelectables)
         {
-            if (sel == null) continue;
-            if (keepRoot != null && sel.transform.IsChildOf(keepRoot)) continue;
+            if (!sel) continue;
+            if (IsKept(sel.transform, keepRoot)) continue;
             selectableCache[sel] = sel.interactable;
             sel.interactable = false;
         }
@@ -115,8 +227,8 @@ public class PauseManager : MonoBehaviour
         var allNavs = Object.FindObjectsByType<SimpleMenuNavigator>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         foreach (var nav in allNavs)
         {
-            if (nav == null) continue;
-            if (keepRoot != null && nav.transform.IsChildOf(keepRoot)) continue;
+            if (!nav) continue;
+            if (IsKept(nav.transform, keepRoot)) continue;
             if (nav.enabled)
             {
                 disabledNavigators.Add(nav);
@@ -138,5 +250,23 @@ public class PauseManager : MonoBehaviour
         foreach (var nav in disabledNavigators)
             if (nav) nav.enabled = true;
         disabledNavigators.Clear();
+    }
+
+    // Returns true if 't' is under the active menu OR under any 'neverLockRoots'
+    bool IsKept(Transform t, Transform keepRoot)
+    {
+        if (!t) return false;
+
+        if (keepRoot && t.IsChildOf(keepRoot))
+            return true;
+
+        // Skip anything under any "never lock" root
+        for (int i = 0; i < neverLockRoots.Count; i++)
+        {
+            var r = neverLockRoots[i];
+            if (r && t.IsChildOf(r))
+                return true;
+        }
+        return false;
     }
 }

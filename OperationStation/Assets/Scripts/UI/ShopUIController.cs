@@ -12,7 +12,8 @@ public class ShopUIController : MonoBehaviour
         GrapeJam,
         PoloniumReactor,
         Smelter,
-        SolarPanelArray
+        SolarPanelArray,
+        LaserTurret
     }
 
     [System.Serializable]
@@ -91,6 +92,7 @@ public class ShopUIController : MonoBehaviour
             case ItemKey.PoloniumReactor: return spawner.poloniumReactorCosts;
             case ItemKey.Smelter: return spawner.smelterCosts;
             case ItemKey.SolarPanelArray: return spawner.solarPanelArrayCosts;
+            case ItemKey.LaserTurret: return spawner.laserTurretCosts;
             default: return null;
         }
     }
