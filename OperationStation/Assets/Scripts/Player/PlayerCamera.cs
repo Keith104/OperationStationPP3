@@ -3,32 +3,26 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.LowLevel; // for InputState.Change
 
 public class PlayerCamera : MonoBehaviour
 {
     [Header("Camera Speed")]
-    [SerializeField] int moveSpeed = 30;
-    [SerializeField] int rotateSpeed = 120;
-    [SerializeField] int scrollSpeed = 50;
-    [SerializeField] Vector2 limit = new Vector2(60, 80);
+    [SerializeField] int moveSpeed;
+    [SerializeField] int rotateSpeed;
+    [SerializeField] int scrollSpeed;
+    [SerializeField] Vector2 limit;
 
     [Header("Camera Limits")]
-    [SerializeField] int moveMin = -500;
-    [SerializeField] int moveMax = 500;
-    [SerializeField] int zoomMin = 10;
-    [SerializeField] int zoomMax = 200;
+    [SerializeField] int moveMin;
+    [SerializeField] int moveMax;
+    [SerializeField] int zoomMin;
+    [SerializeField] int zoomMax;
 
     [Header("Selection")]
     [SerializeField] RectTransform UI;
     [SerializeField] RectTransform selectionBox;
     [SerializeField] Vector2 startMousePos;
     [SerializeField] LayerMask clickableLayers;
-
-    [Header("Virtual Cursor (Gamepad)")]
-    [SerializeField] RectTransform cursorUI;           // <- assign your cursor graphic here
-    [SerializeField] float cursorSpeed = 1100f;        // pixels/sec from right stick
-    [SerializeField] float gamepadDeadzone = 0.15f;
 
     [Header("Misc.")]
     [SerializeField] List<GameObject> selected = new List<GameObject>();
@@ -38,24 +32,15 @@ public class PlayerCamera : MonoBehaviour
     Vector3 focusPosition;
     bool isFocused;
 
-    // NOTE: this "PlayerInput" is your generated input-actions C# class.
     PlayerInput controls;
 
-    // virtual cursor state
-    Vector2 virtualCursor;          // screen-space pixels
-    bool useGamepadCursor;
-    float lastMouseActivity;
-    float lastGamepadActivity;
-
-    void Awake()
-    {
-        UI = GameObject.FindWithTag("UI").GetComponent<RectTransform>();
-        selectionBox = UI.Find("SelectionBox").GetComponent<RectTransform>();
-        controls = new PlayerInput();
-        clickableLayers = LayerMask.GetMask("Object", "Ship");
-
-        virtualCursor = new Vector2(Screen.width * 0.5f, Screen.height * 0.5f);
-    }
+void Awake()
+{
+    UI = GameObject.FindWithTag("UI").GetComponent<RectTransform>();
+    selectionBox = UI.Find("SelectionBox").GetComponent<RectTransform>();
+    controls = new PlayerInput();
+    clickableLayers = LayerMask.GetMask("Object", "Ship");
+}
 
     void OnEnable()
     {
@@ -63,9 +48,6 @@ public class PlayerCamera : MonoBehaviour
         controls.Player.Select.started += OnSelectStarted;
         controls.Player.Select.canceled += OnSelectCanceled;
         controls.Enable();
-
-        // start with hardware mouse visible; virtual cursor hidden
-        SetCursorMode(false, true);
     }
 
     void OnDisable()
@@ -74,18 +56,10 @@ public class PlayerCamera : MonoBehaviour
         controls.Player.Select.started -= OnSelectStarted;
         controls.Player.Select.canceled -= OnSelectCanceled;
         controls.Disable();
-
-        SetCursorMode(false, true);
     }
 
     void Update()
     {
-        UpdateInputMode();
-        if (useGamepadCursor)
-            UpdateVirtualCursor();
-
-        SyncCursorGraphic();
-
         Move();
         RotateKeys();
         OrbitWhileHeld();
@@ -94,88 +68,6 @@ public class PlayerCamera : MonoBehaviour
         HoverObject();
         HandleDragSelection();
     }
-
-    // -------------------- Input Mode & Virtual Cursor --------------------
-
-    void UpdateInputMode()
-    {
-        // detect mouse motion
-        if (Mouse.current != null)
-        {
-            Vector2 delta = Mouse.current.delta.ReadValue();
-            if (delta.sqrMagnitude > 0.0001f)
-                lastMouseActivity = Time.unscaledTime;
-        }
-
-        // detect gamepad activity (right stick / triggers / buttons)
-        if (Gamepad.current != null)
-        {
-            Vector2 rs = Gamepad.current.rightStick.ReadValue();
-            Vector2 ls = Gamepad.current.leftStick.ReadValue();
-            bool any =
-                rs.sqrMagnitude > gamepadDeadzone * gamepadDeadzone ||
-                ls.sqrMagnitude > gamepadDeadzone * gamepadDeadzone ||
-                Gamepad.current.rightTrigger.ReadValue() > 0.01f ||
-                Gamepad.current.leftTrigger.ReadValue() > 0.01f ||
-                controls.Player.Select.IsPressed();
-            if (any) lastGamepadActivity = Time.unscaledTime;
-        }
-
-        // prefer the device that moved most recently
-        bool preferGamepad = Gamepad.current != null && lastGamepadActivity > lastMouseActivity;
-        if (preferGamepad != useGamepadCursor)
-        {
-            useGamepadCursor = preferGamepad;
-            SetCursorMode(useGamepadCursor, !useGamepadCursor);
-        }
-    }
-
-    void SetCursorMode(bool useVirtual, bool showHardwareMouse)
-    {
-        Cursor.visible = showHardwareMouse;
-        if (cursorUI) cursorUI.gameObject.SetActive(useVirtual);
-
-        // keep UI & physics using the correct pointer position
-        Vector2 pos = useVirtual ? virtualCursor : (Mouse.current?.position.ReadValue() ?? virtualCursor);
-        if (Mouse.current != null)
-        {
-            Mouse.current.WarpCursorPosition(pos);
-            InputState.Change(Mouse.current.position, pos);
-        }
-    }
-
-    void UpdateVirtualCursor()
-    {
-        // Use your "Look" action (mapped to Right Stick) to move the cursor
-        Vector2 input = controls.Player.Look.ReadValue<Vector2>();
-
-        if (input.sqrMagnitude < gamepadDeadzone * gamepadDeadzone)
-            input = Vector2.zero;
-
-        if (input != Vector2.zero)
-        {
-            virtualCursor += input * cursorSpeed * Time.unscaledDeltaTime;
-
-            virtualCursor.x = Mathf.Clamp(virtualCursor.x, 0f, Screen.width);
-            virtualCursor.y = Mathf.Clamp(virtualCursor.y, 0f, Screen.height);
-
-            if (Mouse.current != null)
-            {
-                Mouse.current.WarpCursorPosition(virtualCursor);
-                InputState.Change(Mouse.current.position, virtualCursor);
-            }
-        }
-    }
-
-    void SyncCursorGraphic()
-    {
-        if (!cursorUI) return;
-
-        // Canvas assumed Screen Space - Overlay
-        cursorUI.anchoredPosition = virtualCursor;
-    }
-
-    // -------------------- Camera --------------------
 
     void Move()
     {
@@ -232,8 +124,6 @@ public class PlayerCamera : MonoBehaviour
         if (transform.position.y < zoomMin) transform.position -= transform.forward;
         if (transform.position.y > zoomMax) transform.position += transform.forward;
     }
-
-    // -------------------- Selection & Focus --------------------
 
     void OnFocus(InputAction.CallbackContext _)
     {
@@ -366,11 +256,10 @@ public class PlayerCamera : MonoBehaviour
         if (chosen != null) chosen.TakeControl();
     }
 
+
+
     Vector2 GetPointerPosOrCenter()
     {
-        if (useGamepadCursor)
-            return virtualCursor;
-
         Vector2 pos = controls.Player.Point.ReadValue<Vector2>();
         if (pos == Vector2.zero && Gamepad.current != null)
             return new Vector2(Screen.width / 2f, Screen.height / 2f);
