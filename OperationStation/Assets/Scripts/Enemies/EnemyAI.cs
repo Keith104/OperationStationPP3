@@ -12,6 +12,7 @@ public class EnemyAI : MonoBehaviour, IDamage
     [SerializeField] protected EnemiesSO enemy;
     [SerializeField] protected NavMeshAgent agent;
     [SerializeField] protected GameObject enemyToSpawn;
+    public bool isSlowed = false;
 
     [Header("Damage Data")]
     [SerializeField] protected Transform shootPos;

@@ -113,6 +113,9 @@ MonoBehaviour:
   projectilePrefab: {fileID: 7396409408485287275, guid: 7df9b6faafd1c3c40aac8025213c8011, type: 3}
   firePoint: {fileID: 7089344556675058946}
   stats: {fileID: 11400000, guid: 5a33aa828215e824d8ad3d3b7b662198, type: 2}
+  upgradeLevels:
+  - {fileID: 0}
+  - {fileID: 0}
   model: {fileID: 7866484478317199886}
   fragmentModel: {fileID: 2698999036419633703}
   health: 0

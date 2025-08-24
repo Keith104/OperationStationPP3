@@ -6625,14 +6625,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   deathCat: {fileID: 1826742274521941465, guid: 79625718a0588914fab3fbb9e64337af, type: 3}
   basicTurret: {fileID: 9109297272713609667, guid: 1db07d84c7772e14ab3328a0a89b54b3, type: 3}
+  laserTurret: {fileID: 7521965396716934447, guid: e2cee4584f43562409b92fc4b77cd282, type: 3}
   nullSpaceFabricator: {fileID: 9155549624207777793, guid: 44b8f37db1fc56643a257f2796e13937, type: 3}
   wall: {fileID: 1826742274521941465, guid: 79625718a0588914fab3fbb9e64337af, type: 3}
-  grapeJam: {fileID: 1826742274521941465, guid: 79625718a0588914fab3fbb9e64337af, type: 3}
+  grapeJam: {fileID: 3915609122235813436, guid: d62cb26a7e95db84eba788ada735ff02, type: 3}
   poloniumReactor: {fileID: 2773928973720823125, guid: 8d0b58627e7f6af4e89b51b86434a803, type: 3}
   smelter: {fileID: 5181112579491600659, guid: 8110eec864f71ff4a99e7a36a3716b2b, type: 3}
   solarPanelArray: {fileID: 5181112579491600659, guid: 075e225452f63ce42943d3fac77bc975, type: 3}
+  buildMenu: {fileID: 0}
   deathCatCosts: []
   basicTurretCosts: []
+  laserTurretCosts: []
   nullSpaceFabricatorCosts: []
   wallCosts: []
   grapeJamCosts: []
@@ -10619,9 +10622,8 @@ MonoBehaviour:
   costMenu: {fileID: 1394502349423958327}
   reactorMenu: {fileID: 5120676791276019081}
   smelterMenu: {fileID: 495010375309531401}
-  tmpUnitName: {fileID: 1954423352264304780}
-  tmpUnitDesc: {fileID: 974846799153968820}
-  tmpUnitCost: {fileID: 7915151121921661986}
+  nullSpaceMenu: {fileID: 0}
+  solarPanelMenu: {fileID: 0}
   buttonNum: -1
   buttonFunctions: {fileID: 4413211416663752983}
 --- !u!1 &7363797773823031136

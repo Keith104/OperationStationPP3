@@ -11,6 +11,11 @@ public class Turret : MonoBehaviour, IDamage
     private GameObject currentTarget;
     private float nextFireTime;
     public UnitSO stats;
+
+    public UnitSO[] upgradeLevels;
+    private UnitSO upgradeStats;
+    private int upgradeIndex = 0;
+
     [SerializeField] Renderer model;
     [SerializeField] GameObject fragmentModel;
 
@@ -85,5 +90,18 @@ public class Turret : MonoBehaviour, IDamage
         model.material.color = Color.red;
         yield return new WaitForSeconds(0.1f);
         model.material.color = origColor;
+    }
+
+    public void Upgrade()
+    {
+        // Add pricing to the if chech as well before going through
+        if (upgradeLevels.Length > upgradeIndex)
+        {
+            
+            health = upgradeLevels[upgradeIndex].unitHealth;
+            Damage damage = projectilePrefab.GetComponent<Damage>();
+            damage.damageAmount = upgradeLevels[upgradeIndex].attackDamage;
+            upgradeIndex++;
+        }
     }
 }

@@ -6,6 +6,11 @@ using Color = UnityEngine.Color;
 public class Module : MonoBehaviour, ISelectable, IDamage
 {
     public UnitSO stats;
+
+    public UnitSO[] upgradeLevels;
+    private UnitSO upgradeStats;
+    private int upgradeIndex = 0;
+
     //[SerializeField] Renderer model;
     [SerializeField] GameObject fragmentModel;
     [SerializeField] ResourceCost[] resourceCosts;
@@ -131,5 +136,16 @@ public class Module : MonoBehaviour, ISelectable, IDamage
         //model.material.color = Color.red;
         yield return new WaitForSeconds(0.3f);
         //model.material.color = origColor;
+    }
+
+    public void Upgrade()
+    {
+        // Add pricing to the if chech as well before going through
+        if(upgradeLevels.Length > upgradeIndex )
+        {
+            localHealth = upgradeLevels[upgradeIndex].unitHealth;
+            upgradeIndex++;
+        }
+
     }
 }

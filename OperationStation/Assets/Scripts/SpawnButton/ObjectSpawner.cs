@@ -15,6 +15,7 @@ public class ObjectSpawner : MonoBehaviour
 {
     public GameObject deathCat;
     public GameObject basicTurret;
+    public GameObject laserTurret;
     public GameObject nullSpaceFabricator;
     public GameObject wall;
     public GameObject grapeJam;
@@ -33,6 +34,7 @@ public class ObjectSpawner : MonoBehaviour
 
     public List<ResourceCostSpawner> deathCatCosts = new List<ResourceCostSpawner>();
     public List<ResourceCostSpawner> basicTurretCosts = new List<ResourceCostSpawner>();
+    public List<ResourceCostSpawner> laserTurretCosts = new List<ResourceCostSpawner>();
     public List<ResourceCostSpawner> nullSpaceFabricatorCosts = new List<ResourceCostSpawner>();
     public List<ResourceCostSpawner> wallCosts = new List<ResourceCostSpawner>();
     public List<ResourceCostSpawner> grapeJamCosts = new List<ResourceCostSpawner>();
@@ -119,6 +121,17 @@ public class ObjectSpawner : MonoBehaviour
             isDefence = true;
             objectToInstantiate = basicTurret;
             viewing.PreviewDefence(basicTurret);
+        }
+    }
+
+    public void LaserTurretSpawn()
+    {
+        if (TrySpend(laserTurretCosts))
+        {
+            awaitingPlacement = true;
+            isDefence = true;
+            objectToInstantiate = laserTurret;
+            viewing.PreviewDefence(laserTurret);
         }
     }
 

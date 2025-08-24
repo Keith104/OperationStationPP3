@@ -56,6 +56,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stats: {fileID: 11400000, guid: 23d389fe2fdadf7469388697a7c5fd47, type: 2}
+  upgradeLevels:
+  - {fileID: 0}
+  - {fileID: 0}
   fragmentModel: {fileID: 55900097559310186}
   resourceCosts: []
   costsLeft: 0000000000000000
