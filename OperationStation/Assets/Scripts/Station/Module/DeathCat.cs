@@ -1,10 +1,6 @@
-using System;
-using System.Linq;
-using Unity.VisualScripting;
-using UnityEditor.Timeline.Actions;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Playables;
-using UnityEngine.Timeline;
 using UnityEngine.UI;
 
 public class DeathCat : MonoBehaviour, ISelectable, IModule, IDamage
@@ -77,8 +73,7 @@ public class DeathCat : MonoBehaviour, ISelectable, IModule, IDamage
 
     public void ModuleDie()
     {
-        LevelUIManager.instance.menuLose.SetActive(true);
-        LevelUIManager.instance.StatePause();
+        StartCoroutine(DelayDeath());
     }
 
     public void TakeDamage(float damage)
@@ -103,5 +98,13 @@ public class DeathCat : MonoBehaviour, ISelectable, IModule, IDamage
         UnitUIManager.instance.unitMenu.SetActive(true);
         UnitUIManager.instance.costMenu.SetActive(true);
         ((ISelectable)module).TakeControl();
+    }
+
+    private IEnumerator DelayDeath()
+    {
+        //Destroy(gameObject);
+        yield return new WaitForSeconds(1);
+        LevelUIManager.instance.menuLose.SetActive(true);
+        LevelUIManager.instance.StatePause();
     }
 }

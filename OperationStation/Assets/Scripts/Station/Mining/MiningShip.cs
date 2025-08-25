@@ -7,6 +7,7 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
     //[SerializeField] Renderer model;
     [SerializeField] GameObject fragmentModel;
     [SerializeField] UnitSO stats;
+    [SerializeField] float firstHealth;
 
     [Header("Movement")]
     [SerializeField] NavMeshAgent agent;
@@ -44,6 +45,8 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
 
         if(playerCam == null)
             playerCam = FindAnyObjectByType<Camera>();
+
+        health += firstHealth;
     }
 
     void Update()
@@ -62,6 +65,13 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
             {
                 ShipMove();
             }
+        }
+
+        if (!playerControlled && !noControl && curAsteroid == null)
+        {
+                agent.isStopped = false;
+                agent.ResetPath();
+                agent.SetDestination(idlePos);
         }
     }
 
@@ -119,8 +129,6 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
             //Debug.Log(other);
 
             StartCoroutine(Mine(other));
-
-            noControl = false;
         }
     }
 
@@ -161,28 +169,44 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
         //model.material.color = colorOG;
     }
 
-    private IEnumerator Mine(Collider asteroid)
+    private IEnumerator Mine(Collider asteroidCol)
     {
-        IDamage dmg = asteroid.GetComponentInChildren<Asteroid>().gameObject.GetComponent<IDamage>();
+        // Block other control while mining
+        noControl = true;
 
-        do
+        Asteroid ast = null;
+        if (asteroidCol)
+            ast = asteroidCol.GetComponentInChildren<Asteroid>();
+
+        while (ast != null && ast.health > 0f)
         {
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(1f);
 
+            var dmg = ast.GetComponent<IDamage>();
             if (dmg != null)
                 dmg.TakeDamage(stats.miningDamage);
 
-        } while (asteroid.GetComponentInChildren<Asteroid>().health > 0);
+            // If the asteroid object/component was destroyed by TakeDamage, break out
+            if (ast == null) break;
+        }
 
+        // --- Clean up targeting state ---
+        foundAsteroid = false;
+        curAsteroid = null;
+        goHere = goHereFallback;
+
+        // --- Send the ship home cleanly ---
         agent.isStopped = false;
+        agent.ResetPath();
         agent.SetDestination(idlePos);
+
+        noControl = false;
     }
+
 
     private void GetThatAsteroid(GameObject asteroid)
     {
-        goHere = asteroid.transform;
-        agent.SetDestination(goHere.position);
-
-        return;
+        // Don’t rebind goHere; just steer there
+        agent.SetDestination(asteroid.transform.position);
     }
 }
