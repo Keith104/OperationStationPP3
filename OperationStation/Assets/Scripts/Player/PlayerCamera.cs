@@ -108,7 +108,7 @@ void Awake()
     void Zoom()
     {
         float scroll = controls.Player.Zoom.ReadValue<float>();
-        if (Mathf.Abs(scroll) > 0.0001f && transform.position.y > zoomMin && transform.position.y < zoomMax)
+        if (Mathf.Abs(scroll) > 0.0001f)
         {
             transform.position += scroll * scrollSpeed * transform.forward;
 
@@ -121,8 +121,10 @@ void Awake()
             }
         }
 
-        if (transform.position.y < zoomMin) transform.position -= transform.forward;
-        if (transform.position.y > zoomMax) transform.position += transform.forward;
+        // Clamp
+        Vector3 clampedPos = transform.position;
+        clampedPos.y = Mathf.Clamp(clampedPos.y, zoomMin, zoomMax);
+        transform.position = clampedPos;
     }
 
     void OnFocus(InputAction.CallbackContext _)
