@@ -2208,34 +2208,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2864387738640098489, guid: d0ebaa8b88692814f900f151a1ce0b04, type: 3}
-      propertyPath: energy
-      value: 999
-      objectReference: {fileID: 0}
-    - target: {fileID: 2864387738640098489, guid: d0ebaa8b88692814f900f151a1ce0b04, type: 3}
-      propertyPath: silver
-      value: 999
-      objectReference: {fileID: 0}
-    - target: {fileID: 2864387738640098489, guid: d0ebaa8b88692814f900f151a1ce0b04, type: 3}
-      propertyPath: tritium
-      value: 999
-      objectReference: {fileID: 0}
-    - target: {fileID: 2864387738640098489, guid: d0ebaa8b88692814f900f151a1ce0b04, type: 3}
-      propertyPath: polonium
-      value: 999
-      objectReference: {fileID: 0}
-    - target: {fileID: 2864387738640098489, guid: d0ebaa8b88692814f900f151a1ce0b04, type: 3}
-      propertyPath: silverCoins
-      value: 999
-      objectReference: {fileID: 0}
-    - target: {fileID: 2864387738640098489, guid: d0ebaa8b88692814f900f151a1ce0b04, type: 3}
-      propertyPath: tritiumIngot
-      value: 999
-      objectReference: {fileID: 0}
-    - target: {fileID: 2864387738640098489, guid: d0ebaa8b88692814f900f151a1ce0b04, type: 3}
-      propertyPath: poloniumCrystal
-      value: 999
-      objectReference: {fileID: 0}
     - target: {fileID: 5317987858511298610, guid: d0ebaa8b88692814f900f151a1ce0b04, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

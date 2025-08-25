@@ -220,10 +220,11 @@ MonoBehaviour:
   hints:
   - This is a really good hint. Yup such a good game changing hint that will change
     your entire life in the span of seconds!!!
-  - 'Test2
-
-'
-  - Test3
+  - Use resources to build buildings and defenses.
+  - Don't forget to build defenses to defend against the enemies.
+  - Use the structures around the space station to progress the game.
+  - Use your resources wisely to build up the death cat.
+  - Use resources to build modules around your space station to progress the game.
   hintsAutoSize: 1
   hintsFontSizeMin: 10
   hintsFontSizeMax: 20
