@@ -42388,9 +42388,10 @@ MonoBehaviour:
   solarPanelArray: {fileID: 5181112579491600659, guid: 075e225452f63ce42943d3fac77bc975, type: 3}
   buildLayer:
     serializedVersion: 2
-    m_Bits: 2112
+    m_Bits: 4294967295
   buildMenu: {fileID: 4282290852086697411}
   enableBuilding: {fileID: 6955234167214840071}
+  worldBuildParent: {fileID: 0}
   deathCatCosts: []
   basicTurretCosts:
   - type: 0

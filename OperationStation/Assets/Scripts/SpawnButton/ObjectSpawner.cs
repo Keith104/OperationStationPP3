@@ -29,8 +29,11 @@ public class ObjectSpawner : MonoBehaviour
     public GameObject buildMenu;
     public GameObject enableBuilding;
 
+    [SerializeField] Transform worldBuildParent;
+
     private GameObject objectToInstantiate;
     private Vector3 spawnLocation;
+    private List<ResourceCostSpawner> pendingCosts;
 
     public static bool awaitingPlacement = false;
     public static bool isDefence = false;
@@ -66,193 +69,113 @@ public class ObjectSpawner : MonoBehaviour
         controls.Disable();
     }
 
-    // Toggle the build menu on/off with the same action
     void OnBuildMode(InputAction.CallbackContext _)
     {
         if (buildMenu == null) return;
-
-        if (buildMenu.activeSelf)
-        {
-            CloseBuildMenu();
-        }
-        else
-        {
-            LevelUIManager.instance.SetActiveMenu(buildMenu);
-        }
+        if (buildMenu.activeSelf) CloseBuildMenu();
+        else LevelUIManager.instance.SetActiveMenu(buildMenu);
     }
 
-    // Helper to close the menu and cancel any placement/preview
     void CloseBuildMenu()
     {
         LevelUIManager.instance.SetActiveMenu(enableBuilding);
-
-        // Also cancel any in-progress placement to avoid stray ghosts
         awaitingPlacement = false;
         isDefence = false;
         objectToInstantiate = null;
+        pendingCosts = null;
         if (viewing != null) viewing.isDefenceBuildActive = false;
     }
 
-    public void DeathCatSpawn()
-    {
-        if (TrySpend(deathCatCosts))
-        {
-            awaitingPlacement = true;
-            objectToInstantiate = deathCat;
-        }
-    }
+    public void DeathCatSpawn() { BeginPlacementIfAffordable(deathCat, deathCatCosts, false, null); }
+    public void NullSpaceFabricatorSpawn() { BeginPlacementIfAffordable(nullSpaceFabricator, nullSpaceFabricatorCosts, false, null); }
+    public void PoloniumReactorSpawn() { BeginPlacementIfAffordable(poloniumReactor, poloniumReactorCosts, false, null); }
+    public void SmelterSpawn() { BeginPlacementIfAffordable(smelter, smelterCosts, false, null); }
+    public void SolarPanelArraySpawn() { BeginPlacementIfAffordable(solarPanelArray, solarPanelArrayCosts, false, null); }
+    public void BasicTurretSpawn() { BeginPlacementIfAffordable(basicTurret, basicTurretCosts, true, () => viewing?.PreviewDefence(basicTurret)); }
+    public void LaserTurretSpawn() { BeginPlacementIfAffordable(laserTurret, laserTurretCosts, true, () => viewing?.PreviewDefence(laserTurret)); }
+    public void WallSpawn() { BeginPlacementIfAffordable(wall, wallCosts, true, () => viewing?.PreviewDefence(wall)); }
+    public void GrapeJamSpawn() { BeginPlacementIfAffordable(grapeJam, grapeJamCosts, true, () => viewing?.PreviewDefence(grapeJam)); }
 
-    public void NullSpaceFabricatorSpawn()
+    void BeginPlacementIfAffordable(GameObject prefab, List<ResourceCostSpawner> costs, bool defence, Action afterBegin)
     {
-        if (TrySpend(nullSpaceFabricatorCosts))
-        {
-            awaitingPlacement = true;
-            objectToInstantiate = nullSpaceFabricator;
-        }
-    }
-
-    public void PoloniumReactorSpawn()
-    {
-        if (TrySpend(poloniumReactorCosts))
-        {
-            awaitingPlacement = true;
-            objectToInstantiate = poloniumReactor;
-        }
-    }
-
-    public void SmelterSpawn()
-    {
-        if (TrySpend(smelterCosts))
-        {
-            awaitingPlacement = true;
-            objectToInstantiate = smelter;
-        }
-    }
-
-    public void SolarPanelArraySpawn()
-    {
-        if (TrySpend(solarPanelArrayCosts))
-        {
-            awaitingPlacement = true;
-            objectToInstantiate = solarPanelArray;
-        }
-    }
-
-    public void BasicTurretSpawn()
-    {
-        if (TrySpend(basicTurretCosts))
-        {
-            awaitingPlacement = true;
-            isDefence = true;
-            objectToInstantiate = basicTurret;
-            if (viewing != null) viewing.PreviewDefence(basicTurret);
-        }
-    }
-
-    public void LaserTurretSpawn()
-    {
-        if (TrySpend(laserTurretCosts))
-        {
-            awaitingPlacement = true;
-            isDefence = true;
-            objectToInstantiate = laserTurret;
-            if (viewing != null) viewing.PreviewDefence(laserTurret);
-        }
-    }
-
-    public void WallSpawn()
-    {
-        if (TrySpend(wallCosts))
-        {
-            awaitingPlacement = true;
-            isDefence = true;
-            objectToInstantiate = wall;
-            if (viewing != null) viewing.PreviewDefence(wall);
-        }
-    }
-
-    public void GrapeJamSpawn()
-    {
-        if (TrySpend(grapeJamCosts))
-        {
-            awaitingPlacement = true;
-            isDefence = true;
-            objectToInstantiate = grapeJam;
-            if (viewing != null) viewing.PreviewDefence(grapeJam);
-        }
+        if (!CanAfford(costs)) return;
+        awaitingPlacement = true;
+        isDefence = defence;
+        objectToInstantiate = prefab;
+        pendingCosts = (costs != null) ? new List<ResourceCostSpawner>(costs) : null;
+        afterBegin?.Invoke();
     }
 
     void Update()
     {
-        if (awaitingPlacement == true && Input.GetMouseButtonDown(0) && objectToInstantiate != null)
+        if (!(awaitingPlacement && Input.GetMouseButtonDown(0) && objectToInstantiate != null)) return;
+
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        bool gotHit = Physics.Raycast(ray, out hit, Mathf.Infinity, buildLayer);
+        if (!gotHit) gotHit = Physics.Raycast(ray, out hit, Mathf.Infinity);
+        if (!gotHit) return;
+
+        var hitObject = hit.collider.gameObject;
+        var tile = hitObject.GetComponent<Tile>();
+        var defence = hitObject.GetComponent<Defence>();
+
+        bool isFactory = objectToInstantiate == deathCat
+                      || objectToInstantiate == nullSpaceFabricator
+                      || objectToInstantiate == poloniumReactor
+                      || objectToInstantiate == smelter
+                      || objectToInstantiate == solarPanelArray;
+
+        if (isFactory)
         {
-            GameObject hitObject = null;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (tile == null) return;
+            if (!TrySpend(pendingCosts)) return;
 
-            // Fixed overload: use maxDistance + layerMask
-            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, buildLayer))
+            var grid = tile.GetComponentInParent<GridSystem>();
+            Vector3 location = hitObject.transform.position;
+            if (grid != null) grid.spawnAvailableSpaces();
+            spawnLocation = location;
+
+            Instantiate(objectToInstantiate, spawnLocation, Quaternion.identity, hitObject.transform.parent);
+            awaitingPlacement = false;
+            pendingCosts = null;
+            Destroy(hitObject);
+        }
+        else
+        {
+            if (defence != null || tile != null) return;
+            if (!TrySpend(pendingCosts)) return;
+
+            spawnLocation = hit.point + hit.normal * 0.5f;
+
+            Transform parent = worldBuildParent;
+            if (parent == null)
             {
-                hitObject = hit.collider.gameObject;
-            }
-            else
-            {
-                return;
+                GameObject foundDeathCat = GameObject.Find("DeathCat");
+                parent = foundDeathCat != null ? foundDeathCat.transform.parent : null;
             }
 
-            Tile tile = hitObject.GetComponent<Tile>();
-            Defence defence = hitObject.GetComponent<Defence>();
-
-            if (hitObject != null)
-            {
-                if (objectToInstantiate == deathCat || objectToInstantiate == nullSpaceFabricator ||
-                    objectToInstantiate == poloniumReactor || objectToInstantiate == smelter ||
-                    objectToInstantiate == solarPanelArray)
-                {
-                    if (tile != null)
-                    {
-                        GridSystem grid = tile.GetComponentInParent<GridSystem>();
-                        Vector3 Location = hitObject.transform.position;
-                        grid.spawnAvailableSpaces();
-                        spawnLocation = Location;
-                        Instantiate(objectToInstantiate, spawnLocation, Quaternion.identity, hitObject.transform.parent);
-                        awaitingPlacement = false;
-                        Destroy(hitObject);
-                    }
-                }
-                else
-                {
-                    if (defence == null && tile == null)
-                    {
-                        GameObject foundDeathCat = GameObject.Find("DeathCat");
-                        spawnLocation = hit.point + hit.normal * 0.5f;
-                        if (foundDeathCat != null)
-                        {
-                            Instantiate(objectToInstantiate, spawnLocation, Quaternion.identity, foundDeathCat.transform.parent);
-                            awaitingPlacement = false;
-                            isDefence = false;
-                            if (viewing != null) viewing.isDefenceBuildActive = false;
-                        }
-                    }
-                }
-            }
+            Instantiate(objectToInstantiate, spawnLocation, Quaternion.identity, parent);
+            awaitingPlacement = false;
+            isDefence = false;
+            pendingCosts = null;
+            if (viewing != null) viewing.isDefenceBuildActive = false;
         }
     }
 
     bool TrySpend(List<ResourceCostSpawner> costs)
     {
         if (!CanAfford(costs)) return false;
-        foreach (var c in costs)
-            ResourceManager.instance.RemoveResource(c.type, c.amount);
+        if (costs == null) return true;
+        foreach (var c in costs) ResourceManager.instance.RemoveResource(c.type, c.amount);
         return true;
     }
 
     bool CanAfford(List<ResourceCostSpawner> costs)
     {
         if (costs == null) return true;
-        foreach (var c in costs)
-        {
-            if (GetAmount(c.type) < c.amount) return false;
-        }
+        foreach (var c in costs) if (GetAmount(c.type) < c.amount) return false;
         return true;
     }
 
