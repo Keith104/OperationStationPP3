@@ -100,9 +100,18 @@ void Awake()
             Vector2 look = controls.Player.Look.ReadValue<Vector2>();
             transform.Rotate(Vector3.up, look.x * rotateSpeed * Time.deltaTime, Space.World);
             transform.Rotate(Vector3.right, -look.y * rotateSpeed * Time.deltaTime, Space.Self);
-            Vector3 e = transform.eulerAngles;
-            transform.eulerAngles = new Vector3(e.x, e.y, 0f);
+            Vector3 rot = transform.eulerAngles;
+            transform.eulerAngles = new Vector3(rot.x, rot.y, 0f);
+
+            // Clamp
+            float currentRotX = transform.eulerAngles.x;
+            if (currentRotX > 180f) currentRotX -= 360f;
+
+            Vector3 clampedRot = transform.eulerAngles;
+            clampedRot.x = Mathf.Clamp(currentRotX, -45f, 45f);
+            transform.eulerAngles = clampedRot;
         }
+
     }
 
     void Zoom()
