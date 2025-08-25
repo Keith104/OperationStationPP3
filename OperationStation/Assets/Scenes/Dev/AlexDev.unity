@@ -655,6 +655,14 @@ PrefabInstance:
       propertyPath: solarPanelArrayCosts.Array.data[1].amount
       value: 50
       objectReference: {fileID: 0}
+    - target: {fileID: 5230486820992445310, guid: e808d0785ed6bf64f881dc6f1751e991, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5460663326098639600, guid: e808d0785ed6bf64f881dc6f1751e991, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6795622734064256597, guid: e808d0785ed6bf64f881dc6f1751e991, type: 3}
       propertyPath: m_IsActive
       value: 1

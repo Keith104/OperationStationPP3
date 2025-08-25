@@ -185,6 +185,7 @@ void Awake()
             selected.Clear();
         else if (!EventSystem.current.IsPointerOverGameObject())
         {
+            Debug.Log("Has cleared!");
             selected.Clear();
             UnitUIManager.instance.unitMenu.SetActive(false);
         }
