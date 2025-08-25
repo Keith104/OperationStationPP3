@@ -19,19 +19,17 @@ public class PauseManager : MonoBehaviour
 
     [SerializeField] List<GameObject> activeMenus = new();
 
-    [Header("Input (Optional)")]
-    [Tooltip("Reference to an Input Actions asset 'Pause' action. Bind whatever you like; this script filters to allowed controls per platform. If empty, a runtime action is created.")]
-    [SerializeField] InputActionReference pauseActionRef;
-
     readonly Dictionary<GraphicRaycaster, bool> raycasterCache = new();
     readonly Dictionary<Selectable, bool> selectableCache = new();
     readonly List<SimpleMenuNavigator> disabledNavigators = new();
 
     bool paused;
 
-    // Input System
     InputAction pauseAction;
     bool createdRuntimeAction;
+
+    CursorLockMode prevLockState = CursorLockMode.None;
+    bool prevCursorVisible = true;
 
     void OnEnable()
     {
@@ -53,67 +51,23 @@ public class PauseManager : MonoBehaviour
                 createdRuntimeAction = false;
             }
         }
+
+        if (paused)
+        {
+            UnlockOtherUI();
+        }
     }
 
-    // Build an action that only contains the allowed bindings for the current platform.
     void BuildPauseAction()
     {
-        bool AllowedPath(string controlPath)
-        {
-            if (string.IsNullOrEmpty(controlPath)) return false;
-            if (controlPath.Contains("<Gamepad>/start")) return true; // Always allow Start
-
+        var ia = new InputAction(name: "Pause", type: InputActionType.Button);
+        ia.AddBinding("<Gamepad>/start");
 #if UNITY_WEBGL
-            // WebGL: allow P; block Escape
-            if (controlPath.Contains("<Keyboard>/p")) return true;
-            if (controlPath.Contains("<Keyboard>/escape")) return false;
+        ia.AddBinding("<Keyboard>/p");
 #else
-            // Desktop (non-WebGL): allow Escape; block P
-            if (controlPath.Contains("<Keyboard>/escape")) return true;
-            if (controlPath.Contains("<Keyboard>/p")) return false;
+        ia.AddBinding("<Keyboard>/escape");
 #endif
-            return false;
-        }
-
-        if (pauseActionRef != null && pauseActionRef.action != null)
-        {
-            var src = pauseActionRef.action;
-            var ia = new InputAction(name: "Pause (Filtered)", type: InputActionType.Button);
-
-            bool addedAny = false;
-            foreach (var b in src.bindings)
-            {
-                if (!b.isComposite && !b.isPartOfComposite && AllowedPath(b.effectivePath))
-                {
-                    ia.AddBinding(b.effectivePath);
-                    addedAny = true;
-                }
-            }
-
-            if (!addedAny)
-            {
-#if UNITY_WEBGL
-                ia.AddBinding("<Gamepad>/start");
-                ia.AddBinding("<Keyboard>/p");
-#else
-                ia.AddBinding("<Gamepad>/start");
-                ia.AddBinding("<Keyboard>/escape");
-#endif
-            }
-
-            pauseAction = ia;
-            createdRuntimeAction = true;
-            return;
-        }
-
-        var runtime = new InputAction(name: "Pause", type: InputActionType.Button);
-        runtime.AddBinding("<Gamepad>/start");
-#if UNITY_WEBGL
-        runtime.AddBinding("<Keyboard>/p");
-#else
-        runtime.AddBinding("<Keyboard>/escape");
-#endif
-        pauseAction = runtime;
+        pauseAction = ia;
         createdRuntimeAction = true;
     }
 
@@ -128,20 +82,30 @@ public class PauseManager : MonoBehaviour
 
         if (paused)
         {
+            prevLockState = Cursor.lockState;
+            prevCursorVisible = Cursor.visible;
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+
             Time.timeScale = 0f;
+
             if (pauseMenu != null)
             {
                 pauseMenu.SetActive(true);
                 AddToActiveMenus(pauseMenu);
                 LockOtherUI(pauseMenu.transform);
 
-                var firstSel = pauseMenu.GetComponentInChildren<Selectable>();
+                var firstSel = pauseMenu.GetComponentInChildren<Selectable>(true);
                 EventSystem.current?.SetSelectedGameObject(firstSel ? firstSel.gameObject : pauseMenu);
             }
         }
         else
         {
             Time.timeScale = 1f;
+
+            Cursor.lockState = prevLockState;
+            Cursor.visible = prevCursorVisible;
+
             foreach (GameObject m in activeMenus) if (m) m.SetActive(false);
             activeMenus.Clear();
             UnlockOtherUI();
@@ -164,7 +128,7 @@ public class PauseManager : MonoBehaviour
             AddToActiveMenus(quitConfirmPopup);
             LockOtherUI(quitConfirmPopup.transform);
 
-            var firstSel = quitConfirmPopup.GetComponentInChildren<Selectable>();
+            var firstSel = quitConfirmPopup.GetComponentInChildren<Selectable>(true);
             EventSystem.current?.SetSelectedGameObject(firstSel ? firstSel.gameObject : quitConfirmPopup);
         }
         else
@@ -198,8 +162,6 @@ public class PauseManager : MonoBehaviour
             activeMenus.Remove(menuToRemove);
     }
 
-    // ---------- Locking logic with exceptions ----------
-
     void LockOtherUI(Transform keepRoot)
     {
         raycasterCache.Clear();
@@ -210,7 +172,7 @@ public class PauseManager : MonoBehaviour
         foreach (var gr in allRaycasters)
         {
             if (!gr) continue;
-            if (IsKept(gr.transform, keepRoot)) continue;
+            if (IsKeptForRaycaster(gr.transform, keepRoot)) continue;
             raycasterCache[gr] = gr.enabled;
             gr.enabled = false;
         }
@@ -219,7 +181,7 @@ public class PauseManager : MonoBehaviour
         foreach (var sel in allSelectables)
         {
             if (!sel) continue;
-            if (IsKept(sel.transform, keepRoot)) continue;
+            if (IsKeptForInteractable(sel.transform, keepRoot)) continue;
             selectableCache[sel] = sel.interactable;
             sel.interactable = false;
         }
@@ -228,7 +190,7 @@ public class PauseManager : MonoBehaviour
         foreach (var nav in allNavs)
         {
             if (!nav) continue;
-            if (IsKept(nav.transform, keepRoot)) continue;
+            if (IsKeptForInteractable(nav.transform, keepRoot)) continue;
             if (nav.enabled)
             {
                 disabledNavigators.Add(nav);
@@ -252,19 +214,30 @@ public class PauseManager : MonoBehaviour
         disabledNavigators.Clear();
     }
 
-    // Returns true if 't' is under the active menu OR under any 'neverLockRoots'
-    bool IsKept(Transform t, Transform keepRoot)
+    bool IsKeptForRaycaster(Transform t, Transform keepRoot)
     {
-        if (!t) return false;
-
-        if (keepRoot && t.IsChildOf(keepRoot))
+        if (!t || !keepRoot) return false;
+        if (t == keepRoot || t.IsChildOf(keepRoot) || keepRoot.IsChildOf(t))
             return true;
-
-        // Skip anything under any "never lock" root
         for (int i = 0; i < neverLockRoots.Count; i++)
         {
             var r = neverLockRoots[i];
-            if (r && t.IsChildOf(r))
+            if (!r) continue;
+            if (t == r || t.IsChildOf(r) || r.IsChildOf(t))
+                return true;
+        }
+        return false;
+    }
+
+    bool IsKeptForInteractable(Transform t, Transform keepRoot)
+    {
+        if (!t) return false;
+        if (keepRoot && (t == keepRoot || t.IsChildOf(keepRoot)))
+            return true;
+        for (int i = 0; i < neverLockRoots.Count; i++)
+        {
+            var r = neverLockRoots[i];
+            if (r && (t == r || t.IsChildOf(r)))
                 return true;
         }
         return false;

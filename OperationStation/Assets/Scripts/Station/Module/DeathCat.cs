@@ -1,14 +1,18 @@
-using System;
-using System.Linq;
-using Unity.VisualScripting;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.Playables;
 using UnityEngine.UI;
 
 public class DeathCat : MonoBehaviour, ISelectable, IModule, IDamage
 {
-    [SerializeField] Module module;
+    public Module module;
     [SerializeField] int totalCostsLeft;
     [SerializeField] Image lowHealthIndicator;
+
+    [Header("Win Sequence Settings")]
+    [SerializeField] GameObject[] objectsToDeactivate;
+    [SerializeField] GameObject[] objectsToActivate;
+    [SerializeField] PlayableDirector timeline;
 
     public bool invincible;
     private bool deathCatFired = false;
@@ -27,18 +31,32 @@ public class DeathCat : MonoBehaviour, ISelectable, IModule, IDamage
             totalCostsLeft += cost;
         }
 
-        if(totalCostsLeft <= 0 && deathCatFired == false)
+        //if(totalCostsLeft <= 0 && deathCatFired == false)
+        //{
+        //    StartWinSequence();
+        //    deathCatFired = true;
+        //}
+    }
+
+    public void StartWinSequence()
+    {
+        foreach (var obj in objectsToDeactivate)
         {
-            FireDeathCat();
-            deathCatFired = true;
+            obj.SetActive(false);
         }
+        foreach(var obj in objectsToActivate)
+        {
+            obj.SetActive(true);
+        }
+
+        timeline.Play();
     }
 
     public void FireDeathCat()
     {
         Debug.Log("Cat The Death Cat has been fired");
         UnlockNextDiff();
-        LevelUIManager.instance.menuWin.SetActive(true);
+        LevelUIManager.instance.SetActiveMenu(LevelUIManager.instance.menuWin);
     }
 
     void UnlockNextDiff()
@@ -55,8 +73,7 @@ public class DeathCat : MonoBehaviour, ISelectable, IModule, IDamage
 
     public void ModuleDie()
     {
-        LevelUIManager.instance.menuLose.SetActive(true);
-        LevelUIManager.instance.StatePause();
+        StartCoroutine(DelayDeath());
     }
 
     public void TakeDamage(float damage)
@@ -81,5 +98,13 @@ public class DeathCat : MonoBehaviour, ISelectable, IModule, IDamage
         UnitUIManager.instance.unitMenu.SetActive(true);
         UnitUIManager.instance.costMenu.SetActive(true);
         ((ISelectable)module).TakeControl();
+    }
+
+    private IEnumerator DelayDeath()
+    {
+        //Destroy(gameObject);
+        yield return new WaitForSeconds(1);
+        LevelUIManager.instance.menuLose.SetActive(true);
+        LevelUIManager.instance.StatePause();
     }
 }

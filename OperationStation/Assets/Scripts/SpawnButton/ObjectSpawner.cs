@@ -24,6 +24,8 @@ public class ObjectSpawner : MonoBehaviour
     public GameObject smelter;
     public GameObject solarPanelArray;
 
+    public LayerMask buildLayer;
+
     public GameObject buildMenu;
 
     private GameObject objectToInstantiate;
@@ -161,11 +163,19 @@ public class ObjectSpawner : MonoBehaviour
     {
         if (awaitingPlacement == true && Input.GetMouseButtonDown(0) && objectToInstantiate != null)
         {
+            GameObject hitObject = null;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            Physics.Raycast(ray, out RaycastHit hit);
-            GameObject hitObject = hit.collider.gameObject;
+            if(Physics.Raycast(ray, out RaycastHit hit, buildLayer))
+            {
+                hitObject = hit.collider.gameObject;
+            }
+            else
+            {
+                return;
+            }
             Tile tile = hitObject.GetComponent<Tile>();
             Defence defence = hitObject.GetComponent<Defence>();
+
 
             if (hitObject != null)
             {

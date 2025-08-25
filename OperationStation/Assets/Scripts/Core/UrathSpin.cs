@@ -3,15 +3,17 @@ using UnityEngine;
 [DisallowMultipleComponent]
 public class UrathSpin : MonoBehaviour
 {
-    [SerializeField] Material material;          // Optional override
+    [SerializeField] Material material;
+    [SerializeField] bool skybox;
     [SerializeField] float scrollSpeedX = 0.1f;
     [SerializeField] bool ignoreTimeScale = true;
 
     static readonly int BaseMapId = Shader.PropertyToID("_BaseMap");
     static readonly int MainTexId = Shader.PropertyToID("_MainTex");
+    static readonly int RotationId = Shader.PropertyToID("_Rotation");
 
     int propId = -1;
-    float startY, startXNorm, startClock;
+    float startY, startXNorm, startClock, startRotationDeg;
     Renderer _renderer;
 
     void Start()
@@ -28,25 +30,52 @@ public class UrathSpin : MonoBehaviour
 
     void Update()
     {
+        if (skybox)
+        {
+            if (!material) { RebindNow(); startClock = CurrentClock(); if (!material) return; }
+            float t = CurrentClock() - startClock;
+            float rot = Mathf.Repeat(startRotationDeg + t * scrollSpeedX, 360f);
+            material.SetFloat(RotationId, rot);
+            return;
+        }
+
         if (!material || propId == -1)
-        {   // material changed at runtime? rebind
+        {
             RebindNow();
             startClock = CurrentClock();
             if (propId == -1) return;
         }
 
-        float t = CurrentClock() - startClock;
-        float x = Mathf.Repeat(startXNorm + t * scrollSpeedX, 1f);
+        float tt = CurrentClock() - startClock;
+        float x = Mathf.Repeat(startXNorm + tt * scrollSpeedX, 1f);
         material.SetTextureOffset(propId, new Vector2(x, startY));
     }
 
     public void RebindNow()
     {
-        if (_renderer)
+        if (skybox)
         {
-            // Always prefer the renderer’s current instance material
-            material = _renderer.material;  // creates/uses instance for safe property edits
+            if (!material) material = RenderSettings.skybox;
+            if (!material) { enabled = false; return; }
+
+            if (ReferenceEquals(material, RenderSettings.skybox))
+            {
+                material = new Material(RenderSettings.skybox);
+                RenderSettings.skybox = material;
+            }
+
+            if (!material.HasProperty(RotationId))
+            {
+                Debug.LogWarning($"UrathSpin: Skybox material '{material.name}' has no _Rotation property.");
+                enabled = false; return;
+            }
+
+            startRotationDeg = material.GetFloat(RotationId);
+            propId = -1;
+            return;
         }
+
+        if (_renderer) material = _renderer.material;
         if (!material) { enabled = false; return; }
 
         propId = material.HasProperty(BaseMapId) ? BaseMapId
