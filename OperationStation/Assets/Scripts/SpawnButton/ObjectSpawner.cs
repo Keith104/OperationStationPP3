@@ -27,6 +27,7 @@ public class ObjectSpawner : MonoBehaviour
     public LayerMask buildLayer;
 
     public GameObject buildMenu;
+    public GameObject enableBuilding;
 
     private GameObject objectToInstantiate;
     private Vector3 spawnLocation;
@@ -65,9 +66,31 @@ public class ObjectSpawner : MonoBehaviour
         controls.Disable();
     }
 
+    // Toggle the build menu on/off with the same action
     void OnBuildMode(InputAction.CallbackContext _)
     {
-        LevelUIManager.instance.SetActiveMenu(buildMenu);
+        if (buildMenu == null) return;
+
+        if (buildMenu.activeSelf)
+        {
+            CloseBuildMenu();
+        }
+        else
+        {
+            LevelUIManager.instance.SetActiveMenu(buildMenu);
+        }
+    }
+
+    // Helper to close the menu and cancel any placement/preview
+    void CloseBuildMenu()
+    {
+        LevelUIManager.instance.SetActiveMenu(enableBuilding);
+
+        // Also cancel any in-progress placement to avoid stray ghosts
+        awaitingPlacement = false;
+        isDefence = false;
+        objectToInstantiate = null;
+        if (viewing != null) viewing.isDefenceBuildActive = false;
     }
 
     public void DeathCatSpawn()
@@ -122,7 +145,7 @@ public class ObjectSpawner : MonoBehaviour
             awaitingPlacement = true;
             isDefence = true;
             objectToInstantiate = basicTurret;
-            viewing.PreviewDefence(basicTurret);
+            if (viewing != null) viewing.PreviewDefence(basicTurret);
         }
     }
 
@@ -133,7 +156,7 @@ public class ObjectSpawner : MonoBehaviour
             awaitingPlacement = true;
             isDefence = true;
             objectToInstantiate = laserTurret;
-            viewing.PreviewDefence(laserTurret);
+            if (viewing != null) viewing.PreviewDefence(laserTurret);
         }
     }
 
@@ -144,7 +167,7 @@ public class ObjectSpawner : MonoBehaviour
             awaitingPlacement = true;
             isDefence = true;
             objectToInstantiate = wall;
-            viewing.PreviewDefence(wall);
+            if (viewing != null) viewing.PreviewDefence(wall);
         }
     }
 
@@ -155,7 +178,7 @@ public class ObjectSpawner : MonoBehaviour
             awaitingPlacement = true;
             isDefence = true;
             objectToInstantiate = grapeJam;
-            viewing.PreviewDefence(grapeJam);
+            if (viewing != null) viewing.PreviewDefence(grapeJam);
         }
     }
 
@@ -165,7 +188,9 @@ public class ObjectSpawner : MonoBehaviour
         {
             GameObject hitObject = null;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if(Physics.Raycast(ray, out RaycastHit hit, buildLayer))
+
+            // Fixed overload: use maxDistance + layerMask
+            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, buildLayer))
             {
                 hitObject = hit.collider.gameObject;
             }
@@ -173,15 +198,15 @@ public class ObjectSpawner : MonoBehaviour
             {
                 return;
             }
+
             Tile tile = hitObject.GetComponent<Tile>();
             Defence defence = hitObject.GetComponent<Defence>();
-
 
             if (hitObject != null)
             {
                 if (objectToInstantiate == deathCat || objectToInstantiate == nullSpaceFabricator ||
-                   objectToInstantiate == poloniumReactor || objectToInstantiate == smelter ||
-                   objectToInstantiate == solarPanelArray)
+                    objectToInstantiate == poloniumReactor || objectToInstantiate == smelter ||
+                    objectToInstantiate == solarPanelArray)
                 {
                     if (tile != null)
                     {
@@ -205,7 +230,7 @@ public class ObjectSpawner : MonoBehaviour
                             Instantiate(objectToInstantiate, spawnLocation, Quaternion.identity, foundDeathCat.transform.parent);
                             awaitingPlacement = false;
                             isDefence = false;
-                            viewing.isDefenceBuildActive = false;
+                            if (viewing != null) viewing.isDefenceBuildActive = false;
                         }
                     }
                 }
