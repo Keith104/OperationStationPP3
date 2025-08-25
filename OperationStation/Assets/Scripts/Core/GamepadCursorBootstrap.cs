@@ -5,28 +5,25 @@ using UnityEngine.InputSystem.LowLevel;
 [DefaultExecutionOrder(-10)]
 public class GamepadCursorController : MonoBehaviour
 {
-    enum Owner { Mouse, Gamepad }
-
     [Header("Gamepad")]
-    [SerializeField] float gamepadSpeed = 1400f; // px/sec driven by stick
-    [SerializeField] float deadzone = 0.05f; // stick deadzone
+    [SerializeField] float gamepadSpeed = 1400f;   // px/sec when using stick
+    [SerializeField] float deadzone = 0.05f;   // stick deadzone
 
-    [Header("Ownership (Mouse first)")]
-    [SerializeField] float mouseLeadTime = 0.25f; // mouse keeps control this long after any movement
-    [SerializeField] float mouseMoveEpsilon = 0.75f; // pixels; raise if tiny jitter steals ownership
+    [Header("Mouse Priority")]
+    [SerializeField] float mouseMoveEpsilon = 0.001f; // tiny threshold to detect real mouse movement
+    [SerializeField] float mouseLeadTime = 0.25f;  // seconds mouse keeps control after moving
 
     PlayerInput controls;
     bool clickRequested;
     bool clickDownSent;
 
-    Owner owner = Owner.Mouse;
     float lastMouseMoveTime = -999f;
 
     void Awake()
     {
         controls = new PlayerInput();
-        Cursor.lockState = CursorLockMode.None; // system cursor
-        Cursor.visible = true;                // system cursor
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     void OnEnable()
@@ -46,43 +43,38 @@ public class GamepadCursorController : MonoBehaviour
         var mouse = Mouse.current;
         if (mouse == null) return;
 
-        // Always keep the real OS cursor (no virtual visuals)
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-
         // Inputs
         bool orbitHeld = controls.Player.OrbitHold.IsPressed();
         Vector2 mDelta = mouse.delta.ReadValue();
         Vector2 stick = controls.Player.Look.ReadValue<Vector2>();
 
-        bool mouseMoved = !orbitHeld && (mDelta.sqrMagnitude > mouseMoveEpsilon * mouseMoveEpsilon);
-        bool stickMoved = !orbitHeld && (stick.sqrMagnitude >= deadzone * deadzone);
-
-        // Mouse gets priority; after mouseLeadTime with no mouse, gamepad can take over
-        if (mouseMoved)
-        {
+        // Detect real mouse motion and remember the time
+        if (!orbitHeld && mDelta.sqrMagnitude > mouseMoveEpsilon * mouseMoveEpsilon)
             lastMouseMoveTime = Time.unscaledTime;
-            owner = Owner.Mouse;
-        }
-        else if (stickMoved && (Time.unscaledTime - lastMouseMoveTime) > mouseLeadTime)
-        {
-            owner = Owner.Gamepad;
-        }
 
-        // Move the OS cursor only when the gamepad owns it
-        if (owner == Owner.Gamepad && stickMoved)
+        // Mouse wins for a short grace window after movement
+        bool mouseActive = !orbitHeld && (Time.unscaledTime - lastMouseMoveTime) <= mouseLeadTime;
+        bool stickActive = !orbitHeld && stick.sqrMagnitude >= deadzone * deadzone;
+
+        if (mouseActive)
         {
+            // DO NOT ADJUST MOUSE POSITION.
+            // Let the OS handle the cursor so it can leave the game window/monitor.
+        }
+        else if (stickActive)
+        {
+            // Drive cursor with gamepad (and clamp to game view)
             Vector2 pos = mouse.position.ReadValue() + stick * gamepadSpeed * Time.unscaledDeltaTime;
             pos.x = Mathf.Clamp(pos.x, 0, Screen.width - 1);
             pos.y = Mathf.Clamp(pos.y, 0, Screen.height - 1);
-            mouse.WarpCursorPosition(pos); // <-- OS/system cursor; never used when Mouse owns it
+            mouse.WarpCursorPosition(pos);
         }
-        // If owner == Mouse: DO NOT warp or modify position at all (user can leave the window, hover UI, etc.)
 
-        // Synthetic click mapped from gamepad "Select"
+        // Handle a one-tap click (press then release over two frames)
         if (clickRequested)
         {
-            Vector2 pos = mouse.position.ReadValue(); // use the real OS cursor position
+            Vector2 pos = mouse.position.ReadValue(); // current OS cursor position
+
             if (!clickDownSent)
             {
                 var press = new MouseState { position = pos, buttons = 1 };

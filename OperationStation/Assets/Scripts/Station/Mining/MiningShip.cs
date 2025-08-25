@@ -8,6 +8,7 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
     [SerializeField] GameObject fragmentModel;
     [SerializeField] UnitSO stats;
     [SerializeField] float firstHealth;
+    [SerializeField] bool doesntDie;
 
     [Header("Movement")]
     [SerializeField] NavMeshAgent agent;
@@ -83,6 +84,8 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
 
     public void TakeDamage(float damage)
     {
+        if (doesntDie) return;
+
             soundModulation.ModulateSound(Random.Range(0.8f, 1.2f));
             damageSource.Play();
 

@@ -672,6 +672,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7508416065779783093, guid: fd11cc162510a6a49aa349fbb64393d6, type: 3}
+      propertyPath: doesntDie
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7508416065779783093, guid: fd11cc162510a6a49aa349fbb64393d6, type: 3}
       propertyPath: playerCam
       value: 
       objectReference: {fileID: 1817681517}
@@ -1831,6 +1835,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 407044232399590319, guid: 378dfb21a7053fa45af7872900090337, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 773878212}
+    - target: {fileID: 407044232399590319, guid: 378dfb21a7053fa45af7872900090337, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: QuitButton
+      objectReference: {fileID: 0}
     - target: {fileID: 696664918294572944, guid: 378dfb21a7053fa45af7872900090337, type: 3}
       propertyPath: cat
       value: 
@@ -1871,6 +1883,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6798411567293066469, guid: 378dfb21a7053fa45af7872900090337, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 773878212}
+    - target: {fileID: 6798411567293066469, guid: 378dfb21a7053fa45af7872900090337, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ToDesktopButton
+      objectReference: {fileID: 0}
     - target: {fileID: 6991151789820460063, guid: 378dfb21a7053fa45af7872900090337, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -1886,6 +1906,22 @@ PrefabInstance:
     - target: {fileID: 8252857972297732351, guid: 378dfb21a7053fa45af7872900090337, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: QuitButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 8657814938364500037, guid: 378dfb21a7053fa45af7872900090337, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      value: 
+      objectReference: {fileID: 773878212}
+    - target: {fileID: 8657814938364500037, guid: 378dfb21a7053fa45af7872900090337, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Target
+      value: 
+      objectReference: {fileID: 773878212}
+    - target: {fileID: 8657814938364500037, guid: 378dfb21a7053fa45af7872900090337, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
+      value: AddToActiveMenus
+      objectReference: {fileID: 0}
+    - target: {fileID: 8657814938364500037, guid: 378dfb21a7053fa45af7872900090337, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_MethodName
+      value: RemoveFromActiveMenus
       objectReference: {fileID: 0}
     - target: {fileID: 8740749723654143647, guid: 378dfb21a7053fa45af7872900090337, type: 3}
       propertyPath: menuPause
@@ -2690,8 +2726,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gamepadSpeed: 1400
   deadzone: 0.5
-  mouseLeadTime: 0.25
   mouseMoveEpsilon: 0.001
+  mouseLeadTime: 0.25
 --- !u!1 &1979463281 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4955736739581248893, guid: 378dfb21a7053fa45af7872900090337, type: 3}
