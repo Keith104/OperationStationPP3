@@ -1091,6 +1091,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4889473534404159919, guid: 378dfb21a7053fa45af7872900090337, type: 3}
   m_PrefabInstance: {fileID: 1406415260}
   m_PrefabAsset: {fileID: 0}
+--- !u!224 &616037779 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5956769042583128922, guid: 378dfb21a7053fa45af7872900090337, type: 3}
+  m_PrefabInstance: {fileID: 1406415260}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &625455642 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2075285025545372427, guid: 378dfb21a7053fa45af7872900090337, type: 3}
@@ -1538,7 +1543,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4548547011631870380, guid: 393777a042064c34d9aaa63624bd7535, type: 3}
       propertyPath: neverLockRoots.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4548547011631870380, guid: 393777a042064c34d9aaa63624bd7535, type: 3}
       propertyPath: 'neverLockRoots.Array.data[0]'
@@ -1548,6 +1553,10 @@ PrefabInstance:
       propertyPath: 'neverLockRoots.Array.data[1]'
       value: 
       objectReference: {fileID: 143484276}
+    - target: {fileID: 4548547011631870380, guid: 393777a042064c34d9aaa63624bd7535, type: 3}
+      propertyPath: 'neverLockRoots.Array.data[2]'
+      value: 
+      objectReference: {fileID: 616037779}
     - target: {fileID: 8426310208367440074, guid: 393777a042064c34d9aaa63624bd7535, type: 3}
       propertyPath: m_LocalPosition.x
       value: 773.7556
