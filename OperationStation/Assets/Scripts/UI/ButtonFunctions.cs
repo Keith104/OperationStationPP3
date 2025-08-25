@@ -64,14 +64,14 @@ public class ButtonFunctions : MonoBehaviour
     IEnumerator RestartWaitForSourceToFinish(AudioSource playingSource)
     {
         yield return new WaitForSecondsRealtime(playingSource.clip.length);
-        SceneTransition.RunNoHints(SceneManager.GetActiveScene().name);
         LevelUIManager.instance.StateUnpause();
+        SceneTransition.RunNoHints(SceneManager.GetActiveScene().name);
     }
     IEnumerator LoadSceneWaitForSourceToFinish(AudioSource playingSource, int scene)
     {
         yield return new WaitForSecondsRealtime(playingSource.clip.length);
-        SceneTransition.RunNoHints(scene);
         LevelUIManager.instance.StateUnpause();
+        SceneTransition.RunNoHints(scene);
     }
     IEnumerator QuitGameWaitForSourceToFinish(AudioSource playingSource)
     {
