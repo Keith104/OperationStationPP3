@@ -54,7 +54,15 @@ public class PauseManager : MonoBehaviour
 
         if (paused)
         {
-            UnlockOtherUI();
+            // If we’re unloading the scene, don’t try to restore destroyed objects
+            if (gameObject.scene.isLoaded)
+                UnlockOtherUI();
+            else
+            {
+                raycasterCache.Clear();
+                selectableCache.Clear();
+                disabledNavigators.Clear();
+            }
         }
     }
 
@@ -118,6 +126,21 @@ public class PauseManager : MonoBehaviour
     public void QuitButton(string sceneName)
     {
 #if UNITY_WEBGL
+        // Ensure we leave paused state before switching scenes
+        if (paused)
+        {
+            paused = false;
+            Time.timeScale = 1f;
+            Cursor.lockState = prevLockState;
+            Cursor.visible = prevCursorVisible;
+
+            foreach (GameObject m in activeMenus) if (m) m.SetActive(false);
+            activeMenus.Clear();
+            UnlockOtherUI();
+            EventSystem.current?.SetSelectedGameObject(null);
+        }
+
+        Debug.Log("Loading Main Menu");
         SceneTransition.RunNoHints(sceneName);
 #else
         if (quitConfirmPopup != null)
@@ -206,7 +229,12 @@ public class PauseManager : MonoBehaviour
         raycasterCache.Clear();
 
         foreach (var kv in selectableCache)
-            if (kv.Key) kv.Key.interactable = kv.Value;
+        {
+            var sel = kv.Key;
+            if (sel == null) continue;
+            try { sel.interactable = kv.Value; }
+            catch { /* ignore destroyed objects */ }
+        }
         selectableCache.Clear();
 
         foreach (var nav in disabledNavigators)
