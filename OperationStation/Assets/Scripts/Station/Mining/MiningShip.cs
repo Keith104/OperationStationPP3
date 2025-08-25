@@ -44,12 +44,10 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
         goHere.gameObject.SetActive(false);
         curAsteroid = null;
 
-        if(playerCam == null)
-            playerCam = FindAnyObjectByType<Camera>();
-
-        health += firstHealth;
         if (playerCam == null)
             playerCam = Camera.main;
+
+        health += firstHealth;
     }
 
     void Update()
