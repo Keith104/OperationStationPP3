@@ -89,4 +89,9 @@ public class ButtonFunctions : MonoBehaviour
     {
         LevelUIManager.instance.SetActiveMenu(menuActive);
     }
+
+    public void RemoveActiveMenu()
+    {
+        LevelUIManager.instance.RemoveActiveMenu();
+    }
 }

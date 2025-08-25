@@ -60,4 +60,10 @@ public class LevelUIManager : MonoBehaviour
         menuActive = activeMenu;
         menuActive.SetActive(true);
     }
+
+    public void RemoveActiveMenu()
+    {
+        menuActive.SetActive(false);
+        menuActive = null;
+    }
 }
