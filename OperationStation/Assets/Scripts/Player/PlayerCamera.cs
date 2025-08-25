@@ -196,15 +196,35 @@ void Awake()
         if (Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, clickableLayers))
         {
             GameObject go = hit.collider.gameObject;
-            if (!selected.Contains(go))
+            if (go.layer == LayerMask.NameToLayer("Ship"))
             {
-                selectedSource?.Play();
-                selected.Add(go);
-                TrySelect(go);
+                if (!selected.Contains(go))
+                {
+                    selectedSource?.Play();
+                    selected.Add(go);
+                    TrySelect(go);
+                }
+                else
+                {
+                    selected.Remove(go);
+                    if (selected.Count == 0)
+                        UnitUIManager.instance.unitMenu.SetActive(false);
+                }
             }
-            else selected.Remove(go);
+            else
+            {
+                selected.Clear();
+                UnitUIManager.instance.unitMenu.SetActive(false);
+            }
+        }
+        else
+        {
+            selected.Clear();
+            UnitUIManager.instance.unitMenu.SetActive(false);
         }
     }
+
+
     void TrySelect(GameObject go)
     {
         var ui = UnitUIManager.instance;

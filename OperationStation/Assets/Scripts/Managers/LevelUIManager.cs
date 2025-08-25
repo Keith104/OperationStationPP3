@@ -49,7 +49,7 @@ public class LevelUIManager : MonoBehaviour
     public void StateUnpause()
     {
         isPaused = !isPaused;
-        Time.timeScale = timescaleOrig;
+        Time.timeScale = 1;
         menuActive.SetActive(false);
         menuActive = null;
     }
