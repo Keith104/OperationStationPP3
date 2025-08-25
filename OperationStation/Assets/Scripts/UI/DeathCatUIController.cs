@@ -15,8 +15,7 @@ public class DeathCatUIController : MonoBehaviour
         [HideInInspector] public int lastPlayerHas = int.MinValue;
         [HideInInspector] public int lastRemaining = int.MinValue;
     }
-
-    [SerializeField] Module module;
+    [SerializeField] DeathCat cat;
     [SerializeField] ResourceRow[] rows;
     [SerializeField] Button spendButton;
 
@@ -76,7 +75,7 @@ public class DeathCatUIController : MonoBehaviour
 
     public void Bind(Module m)
     {
-        module = m;
+        cat.module = m;
         EnsureRuntimeCosts();
         CacheInitialTotalCost();
         FullRefresh();
@@ -85,30 +84,30 @@ public class DeathCatUIController : MonoBehaviour
 
     void EnsureRuntimeCosts()
     {
-        if (module == null || module.stats == null || module.stats.cost == null) return;
-        int n = module.stats.cost.Length;
-        if (module.costsLeft == null || module.costsLeft.Length != n)
+        if (cat.module == null || cat.module.stats == null || cat.module.stats.cost == null) return;
+        int n = cat.module.stats.cost.Length;
+        if (cat.module.costsLeft == null || cat.module.costsLeft.Length != n)
         {
-            module.costsLeft = new int[n];
-            for (int i = 0; i < n; i++) module.costsLeft[i] = Mathf.Max(0, module.stats.cost[i].cost);
+            cat.module.costsLeft = new int[n];
+            for (int i = 0; i < n; i++) cat.module.costsLeft[i] = Mathf.Max(0, cat.module.stats.cost[i].cost);
         }
     }
 
     void CacheInitialTotalCost()
     {
         initialTotalCost = 0;
-        if (module != null && module.stats != null && module.stats.cost != null)
+        if (cat.module != null && cat.module.stats != null && cat.module.stats.cost != null)
         {
-            for (int i = 0; i < module.stats.cost.Length; i++)
-                initialTotalCost += Mathf.Max(0, module.stats.cost[i].cost);
+            for (int i = 0; i < cat.module.stats.cost.Length; i++)
+                initialTotalCost += Mathf.Max(0, cat.module.stats.cost[i].cost);
         }
     }
 
     int CurrentRemainingTotal()
     {
-        if (module == null || module.costsLeft == null) return 0;
+        if (cat.module == null || cat.module.costsLeft == null) return 0;
         int s = 0;
-        for (int i = 0; i < module.costsLeft.Length; i++) s += Mathf.Max(0, module.costsLeft[i]);
+        for (int i = 0; i < cat.module.costsLeft.Length; i++) s += Mathf.Max(0, cat.module.costsLeft[i]);
         return s;
     }
 
@@ -171,7 +170,7 @@ public class DeathCatUIController : MonoBehaviour
 
     void Spend()
     {
-        if (ResourceManager.instance == null || module == null || module.costsLeft == null || module.stats == null) return;
+        if (ResourceManager.instance == null || cat.module == null || cat.module.costsLeft == null || cat.module.stats == null) return;
 
         foreach (var r in rows)
         {
@@ -183,12 +182,12 @@ public class DeathCatUIController : MonoBehaviour
             if (idx < 0) continue;
 
             int playerHas = SafeGetPlayerHas(r.resourceType);
-            int remaining = module.costsLeft[idx];
+            int remaining = cat.module.costsLeft[idx];
             int spend = Mathf.Clamp(want, 0, Mathf.Min(playerHas, remaining));
             if (spend <= 0) continue;
 
             ResourceManager.instance.RemoveResource(r.resourceType, spend);
-            module.costsLeft[idx] = Mathf.Max(0, remaining - spend);
+            cat.module.costsLeft[idx] = Mathf.Max(0, remaining - spend);
 
             r.slider.SetValueWithoutNotify(0);
             if (r.sliderValueText) r.sliderValueText.text = "0";
@@ -196,15 +195,20 @@ public class DeathCatUIController : MonoBehaviour
 
         FullRefresh();
         UpdateCenterScale();
+
+        if(CurrentRemainingTotal() <= 0)
+        {
+            OnCostCompleted();
+        }
     }
 
     int FindCostIndex(ResourceSO.ResourceType type)
     {
-        if (module == null || module.stats == null || module.stats.cost == null) return -1;
-        for (int i = 0; i < module.stats.cost.Length; i++)
+        if (cat.module == null || cat.module.stats == null || cat.module.stats.cost == null) return -1;
+        for (int i = 0; i < cat.module.stats.cost.Length; i++)
         {
-            if (module.stats.cost[i] != null && module.stats.cost[i].resource != null &&
-                module.stats.cost[i].resource.resourceType == type) return i;
+            if (cat.module.stats.cost[i] != null && cat.module.stats.cost[i].resource != null &&
+                cat.module.stats.cost[i].resource.resourceType == type) return i;
         }
         return -1;
     }
@@ -217,7 +221,12 @@ public class DeathCatUIController : MonoBehaviour
     int SafeGetRemaining(ResourceSO.ResourceType type)
     {
         int idx = FindCostIndex(type);
-        if (idx < 0 || module == null || module.costsLeft == null || idx >= module.costsLeft.Length) return 0;
-        return module.costsLeft[idx];
+        if (idx < 0 || cat.module == null || cat.module.costsLeft == null || idx >= cat.module.costsLeft.Length) return 0;
+        return cat.module.costsLeft[idx];
+    }
+
+    void OnCostCompleted()
+    {
+        cat.StartWinSequence();
     }
 }

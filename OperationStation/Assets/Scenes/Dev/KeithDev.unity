@@ -569,39 +569,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1690661975}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
---- !u!1 &1013841803 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 893269852699793294, guid: 378dfb21a7053fa45af7872900090337, type: 3}
-  m_PrefabInstance: {fileID: 5480888344069224232}
-  m_PrefabAsset: {fileID: 0}
---- !u!224 &1013841804 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 6818754939594002937, guid: 378dfb21a7053fa45af7872900090337, type: 3}
-  m_PrefabInstance: {fileID: 5480888344069224232}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1013841807
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1013841803}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96a7e7dea96b99344be2650c2e0b1fb2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  menuRoot: {fileID: 1013841804}
-  buildMode: 0
-  wrap: 1
-  autoHealSelection: 1
-  rescanOnEnable: 1
-  healDebounceMs: 50
-  firstSelected: {fileID: 0}
-  preferredNames:
-  - Continue
-  - Resume
-  mouseSuppressAfterKeyboard: 0.2
 --- !u!1001 &1268081473
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -785,39 +752,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5d227a6f3d3a2ef4eb8387eb9ac2119b, type: 3}
---- !u!1 &1414530397 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4282290852086697411, guid: 378dfb21a7053fa45af7872900090337, type: 3}
-  m_PrefabInstance: {fileID: 5480888344069224232}
-  m_PrefabAsset: {fileID: 0}
---- !u!224 &1414530400 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 8233832783925170299, guid: 378dfb21a7053fa45af7872900090337, type: 3}
-  m_PrefabInstance: {fileID: 5480888344069224232}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1414530401
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1414530397}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96a7e7dea96b99344be2650c2e0b1fb2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  menuRoot: {fileID: 1414530400}
-  buildMode: 0
-  wrap: 1
-  autoHealSelection: 1
-  rescanOnEnable: 1
-  healDebounceMs: 50
-  firstSelected: {fileID: 0}
-  preferredNames:
-  - Continue
-  - Resume
-  mouseSuppressAfterKeyboard: 0.2
 --- !u!1 &1491657686
 GameObject:
   m_ObjectHideFlags: 0
@@ -1464,34 +1398,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 1568499039}
-    - target: {fileID: 2944023782830416542, guid: 378dfb21a7053fa45af7872900090337, type: 3}
-      propertyPath: m_Colors.m_SelectedColor.b
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2944023782830416542, guid: 378dfb21a7053fa45af7872900090337, type: 3}
-      propertyPath: m_Colors.m_SelectedColor.g
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2944023782830416542, guid: 378dfb21a7053fa45af7872900090337, type: 3}
-      propertyPath: m_Colors.m_SelectedColor.r
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 3228275248786098820, guid: 378dfb21a7053fa45af7872900090337, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Target
       value: 
       objectReference: {fileID: 1568499039}
-    - target: {fileID: 5313144054498627599, guid: 378dfb21a7053fa45af7872900090337, type: 3}
-      propertyPath: m_Colors.m_SelectedColor.b
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5313144054498627599, guid: 378dfb21a7053fa45af7872900090337, type: 3}
-      propertyPath: m_Colors.m_SelectedColor.g
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5313144054498627599, guid: 378dfb21a7053fa45af7872900090337, type: 3}
-      propertyPath: m_Colors.m_SelectedColor.r
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6798411567293066469, guid: 378dfb21a7053fa45af7872900090337, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -1515,13 +1425,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4282290852086697411, guid: 378dfb21a7053fa45af7872900090337, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1414530401}
-    - targetCorrespondingSourceObject: {fileID: 893269852699793294, guid: 378dfb21a7053fa45af7872900090337, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1013841807}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 378dfb21a7053fa45af7872900090337, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
