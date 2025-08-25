@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class PlayerCamera : MonoBehaviour
 {
@@ -185,7 +186,6 @@ void Awake()
             selected.Clear();
         else if (!EventSystem.current.IsPointerOverGameObject())
         {
-            Debug.Log("Has cleared!");
             selected.Clear();
             UnitUIManager.instance.unitMenu.SetActive(false);
         }
@@ -205,6 +205,23 @@ void Awake()
             else selected.Remove(go);
         }
     }
+    void TrySelect(GameObject go)
+    {
+        var ui = UnitUIManager.instance;
+        var selectables = go.GetComponents<ISelectable>();
+        ISelectable chosen =
+            selectables.FirstOrDefault(s => s is Smelter)
+            ?? selectables.FirstOrDefault(s => s.GetType().Name != "Module")
+            ?? selectables.FirstOrDefault();
+
+        if (ui) ui.currUnit = go;
+        if (chosen != null) chosen.TakeControl();
+    }
+
+    void OnSelectCanceled(InputAction.CallbackContext _)
+    {
+        if (selectionBox) selectionBox.gameObject.SetActive(false);
+    }
 
     void HandleDragSelection()
     {
@@ -214,18 +231,28 @@ void Awake()
             selectionBox.gameObject.SetActive(true);
 
         Vector2 cur = GetPointerPosOrCenter();
-        float w = cur.x - startMousePos.x;
-        float h = cur.y - startMousePos.y;
 
-        selectionBox.sizeDelta = new Vector2(Mathf.Abs(w), Mathf.Abs(h));
-        selectionBox.anchoredPosition = startMousePos + new Vector2(w / 2f, h / 2f);
+        Canvas canvas = selectionBox.GetComponentInParent<Canvas>();
+        RectTransform canvasRect = canvas.GetComponent<RectTransform>();
+
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, startMousePos, 
+            canvas.worldCamera, out Vector2 localStart);
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, cur, 
+            canvas.worldCamera, out Vector2 localCur);
+
+        Vector2 diff = localCur - localStart;
+        selectionBox.sizeDelta = new Vector2(Mathf.Abs(diff.x), Mathf.Abs(diff.y));
+        selectionBox.anchoredPosition = localStart + new Vector2(diff.x / 2f, diff.y / 2f);
 
         DragDetect(cur);
     }
-
-    void OnSelectCanceled(InputAction.CallbackContext _)
+    Vector2 GetPointerPosOrCenter()
     {
-        if (selectionBox) selectionBox.gameObject.SetActive(false);
+        if (controls == null) return Vector2.zero;
+        Vector2 pos = controls.Player.Point.ReadValue<Vector2>();
+        if (pos == Vector2.zero && Gamepad.current != null)
+            return new Vector2(Screen.width / 2f, Screen.height / 2f);
+        return pos;
     }
 
     void DragDetect(Vector2 cur)
@@ -253,29 +280,5 @@ void Awake()
                 TrySelect(go);
             }
         }
-    }
-
-    void TrySelect(GameObject go)
-    {
-        var ui = UnitUIManager.instance;
-        var selectables = go.GetComponents<ISelectable>();
-        ISelectable chosen =
-            selectables.FirstOrDefault(s => s is Smelter)
-            ?? selectables.FirstOrDefault(s => s.GetType().Name != "Module")
-            ?? selectables.FirstOrDefault();
-
-        if (ui) ui.currUnit = go;
-        if (chosen != null) chosen.TakeControl();
-    }
-
-
-
-    Vector2 GetPointerPosOrCenter()
-    {
-        if (controls == null) return Vector2.zero;
-        Vector2 pos = controls.Player.Point.ReadValue<Vector2>();
-        if (pos == Vector2.zero && Gamepad.current != null)
-            return new Vector2(Screen.width / 2f, Screen.height / 2f);
-        return pos;
     }
 }
