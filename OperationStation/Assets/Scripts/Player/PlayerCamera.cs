@@ -71,19 +71,19 @@ void Awake()
 
     void Move()
     {
+        float yOrg = transform.position.y;
         Vector2 move = controls.Player.Move.ReadValue<Vector2>();
-        if (transform.position.x > moveMin && transform.position.x < moveMax
-            && transform.position.z > moveMin && transform.position.z < moveMax)
-        {
-            Vector3 dir = new Vector3(move.x, 0f, move.y);
-            float yOrg = transform.position.y;
-            transform.Translate(moveSpeed * Time.deltaTime * dir, Space.Self);
-            transform.position = new Vector3(transform.position.x, yOrg, transform.position.z);
-        }
-        if (transform.position.x < moveMin) transform.position += transform.right;
-        if (transform.position.x > moveMax) transform.position -= transform.right;
-        if (transform.position.z < moveMin) transform.position += transform.up;
-        if (transform.position.z > moveMax) transform.position -= transform.up;
+        Vector3 dir = new Vector3(move.x, 0f, move.y);
+
+        // Movement
+        transform.Translate(moveSpeed * Time.deltaTime * dir, Space.Self);
+
+        // Clamp
+        Vector3 clampedPos = transform.position;
+        clampedPos.x = Mathf.Clamp(clampedPos.x, moveMin, moveMax);
+        clampedPos.z = Mathf.Clamp(clampedPos.z, moveMin, moveMax);
+        clampedPos.y = yOrg;
+        transform.position = clampedPos;
     }
 
     void RotateKeys()
