@@ -260,6 +260,7 @@ void Awake()
 
     Vector2 GetPointerPosOrCenter()
     {
+        if (controls == null) return Vector2.zero;
         Vector2 pos = controls.Player.Point.ReadValue<Vector2>();
         if (pos == Vector2.zero && Gamepad.current != null)
             return new Vector2(Screen.width / 2f, Screen.height / 2f);

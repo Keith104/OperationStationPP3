@@ -2,17 +2,18 @@
 {
     Properties
     {
+        [PerRendererData] _MainTex("Sprite Texture", 2D) = "white" {} // required by UGUI
         _Color("Overlay Color", Color) = (0,0,0,1)
-        _Progress("Progress 0..1", Range(0,1)) = 0       // 0=open, 1=full black
+        _Progress("Progress 0..1", Range(0,1)) = 0
         _Edge("Edge Softness (0..0.1)", Range(0,0.1)) = 0.02
         _Clockwise("Clockwise (1=yes)", Float) = 1
         _Center("Center (UV)", Vector) = (0.5, 0.5, 0, 0)
-        _StartAngleDeg("Start Angle (deg)", Range(-180,180)) = 90 // 90° = top
+        _StartAngleDeg("Start Angle (deg)", Range(-180,180)) = 90
     }
 
     SubShader
     {
-        Tags { "Queue"="Transparent" "RenderType"="Transparent" "IgnoreProjector"="True" }
+        Tags { "Queue"="Transparent" "RenderType"="Transparent" "IgnoreProjector"="True" "CanUseSpriteAtlas"="True" }
         Pass
         {
             ZTest Always
@@ -24,14 +25,13 @@
             #pragma fragment frag
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
+            TEXTURE2D(_MainTex);
+            SAMPLER(sampler_MainTex);
+
             float4 _Color;
             float  _Progress, _Edge, _Clockwise, _StartAngleDeg;
             float4 _Center;
 
-            // URP's Core/Macros already define these; avoid redefinition warnings.
-            #ifndef PI
-            #   define PI 3.14159265359
-            #endif
             #ifndef TWO_PI
             #   define TWO_PI 6.28318530718
             #endif
@@ -56,7 +56,6 @@
 
             half4 frag(v2f i) : SV_Target
             {
-                // angle around center; 0 at TOP (start), range 0..2π
                 float2 c = _Center.xy;
                 float2 p = i.uv - c;
                 float aspect = _ScreenParams.x / _ScreenParams.y;
@@ -66,13 +65,11 @@
                 theta = wrap0_2pi(theta - radians(_StartAngleDeg));
                 if (_Clockwise > 0.5) theta = TWO_PI - theta;
 
-                float a01   = theta / TWO_PI;      // 0..1 around circle
+                float a01   = theta / TWO_PI;
                 float front = saturate(_Progress);
                 float e     = max(_Edge, 1e-5);
 
-                // At progress==0, alpha==0 everywhere.
                 float alpha = smoothstep(0.0, e, front - a01);
-                // Clamp near the end to remove any wrap-around sliver.
                 alpha = max(alpha, step(1.0 - (e * 0.5), front));
 
                 return float4(_Color.rgb, alpha * _Color.a);

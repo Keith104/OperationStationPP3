@@ -1036,6 +1036,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 796578016852280921, guid: 8bbab4fe034508a479f493ce51e62e30, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 2757602734984006788, guid: 8bbab4fe034508a479f493ce51e62e30, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 3549775936236168670, guid: 8bbab4fe034508a479f493ce51e62e30, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
@@ -1113,6 +1121,10 @@ PrefabInstance:
     - target: {fileID: 4689788786705004875, guid: 8bbab4fe034508a479f493ce51e62e30, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5325951616047795042, guid: 8bbab4fe034508a479f493ce51e62e30, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 5481583128935943283, guid: 8bbab4fe034508a479f493ce51e62e30, type: 3}
       propertyPath: m_Pivot.x
