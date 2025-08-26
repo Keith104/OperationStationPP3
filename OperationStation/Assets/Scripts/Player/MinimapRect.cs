@@ -10,23 +10,40 @@ public class MinimapRect : MonoBehaviour, IPointerClickHandler
     [SerializeField] RawImage minimapImage;
     [SerializeField] Vector3 worldPosition;
 
+    [SerializeField] float lerpSpeed;
+    private bool isLerping;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         minimapCamera = GameObject.FindWithTag("MinimapCamera").GetComponent<Camera>();
     }
+    void Update()
+    {
+        if (isLerping == true)
+        {
+            Vector3 camPosition = Camera.main.transform.position;
+            Camera.main.transform.position = Vector3.Lerp(camPosition, worldPosition, lerpSpeed * Time.deltaTime);
+
+            if (Vector3.Distance(camPosition, worldPosition) < 0.1f)
+            {
+                Camera.main.transform.position = worldPosition;
+                isLerping = false;
+            }
+        }
+    }
+
     public void OnPointerClick(PointerEventData eventData)
     {
         Debug.Log("Minimap Clicked");
         minimapSource.Play();
 
-        Vector2 localPoint;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            minimapRect, eventData.position, eventData.pressEventCamera, out localPoint);
+            minimapRect, eventData.position, eventData.pressEventCamera, out Vector2 localPoint);
 
         GetClickWorldPosition(localPoint);
 
-        Camera.main.transform.position = worldPosition;
+        isLerping = true;
     }
     void GetClickWorldPosition(Vector2 screenPosition)
     {
