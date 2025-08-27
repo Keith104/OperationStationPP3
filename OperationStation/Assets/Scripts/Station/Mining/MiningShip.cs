@@ -19,7 +19,7 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
     [SerializeField] SoundModulation soundModulation;
     [SerializeField] AudioSource damageSource;
 
-    private bool playerControlled;
+    public bool playerControlled;
     private float health;
     private Color colorOG;
     private Vector3 idlePos;
@@ -67,13 +67,6 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
                 ShipMove();
             }
         }
-
-        if (!playerControlled && !noControl && curAsteroid == null)
-        {
-                agent.isStopped = false;
-                agent.ResetPath();
-                agent.SetDestination(idlePos);
-        }
     }
 
     public void TakeControl()
@@ -118,7 +111,6 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
             agent.ResetPath();
             agent.isStopped = true;
 
-            playerControlled = false;
             noControl = true;
 
             //agent.SetDestination(transform.position);
@@ -199,6 +191,7 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
         goHere = goHereFallback;
 
         // --- Send the ship home cleanly ---
+        playerControlled = true;
         agent.isStopped = false;
         agent.ResetPath();
         agent.SetDestination(idlePos);
@@ -209,6 +202,13 @@ public class MiningShip : MonoBehaviour, ISelectable, IDamage
 
     private void GetThatAsteroid(GameObject asteroid)
     {
+        if (curAsteroid == null || curAsteroid.Equals(null))
+        {
+            agent.ResetPath();
+            agent.SetDestination(idlePos);
+            return;
+        }
+
         // Don’t rebind goHere; just steer there
         agent.SetDestination(asteroid.transform.position);
     }

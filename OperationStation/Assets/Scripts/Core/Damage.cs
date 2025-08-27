@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Damage : MonoBehaviour
@@ -23,6 +24,11 @@ public class Damage : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        MiningShip ship = other.GetComponent<MiningShip>();
+
+        if (ship != null && ship.playerControlled)
+            return;
+
         DealDamage(other);
         if (type != damageType.collision)
             Destroy(gameObject);
