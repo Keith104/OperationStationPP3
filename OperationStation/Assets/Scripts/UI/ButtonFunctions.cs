@@ -63,19 +63,19 @@ public class ButtonFunctions : MonoBehaviour
 
     IEnumerator RestartWaitForSourceToFinish(AudioSource playingSource)
     {
-        yield return new WaitForSeconds(playingSource.clip.length);
-        SceneTransition.RunNoHints(SceneManager.GetActiveScene().name);
+        yield return new WaitForSecondsRealtime(playingSource.clip.length);
         LevelUIManager.instance.StateUnpause();
+        SceneTransition.RunNoHints(SceneManager.GetActiveScene().name);
     }
     IEnumerator LoadSceneWaitForSourceToFinish(AudioSource playingSource, int scene)
     {
-        yield return new WaitForSeconds(playingSource.clip.length);
-        SceneTransition.RunNoHints(scene);
+        yield return new WaitForSecondsRealtime(playingSource.clip.length);
         LevelUIManager.instance.StateUnpause();
+        SceneTransition.RunNoHints(scene);
     }
     IEnumerator QuitGameWaitForSourceToFinish(AudioSource playingSource)
     {
-        yield return new WaitForSeconds(playingSource.clip.length);
+        yield return new WaitForSecondsRealtime(playingSource.clip.length);
 
 #if UNITY_EDITOR
         if (EditorApplication.isPlaying)
@@ -88,5 +88,10 @@ public class ButtonFunctions : MonoBehaviour
     public void SetActiveMenu(GameObject menuActive)
     {
         LevelUIManager.instance.SetActiveMenu(menuActive);
+    }
+
+    public void RemoveActiveMenu()
+    {
+        LevelUIManager.instance.RemoveActiveMenu();
     }
 }

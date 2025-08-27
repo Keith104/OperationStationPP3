@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class PlayerCamera : MonoBehaviour
 {
@@ -71,19 +72,19 @@ void Awake()
 
     void Move()
     {
+        float yOrg = transform.position.y;
         Vector2 move = controls.Player.Move.ReadValue<Vector2>();
-        if (transform.position.x > moveMin && transform.position.x < moveMax
-            && transform.position.z > moveMin && transform.position.z < moveMax)
-        {
-            Vector3 dir = new Vector3(move.x, 0f, move.y);
-            float yOrg = transform.position.y;
-            transform.Translate(moveSpeed * Time.deltaTime * dir, Space.Self);
-            transform.position = new Vector3(transform.position.x, yOrg, transform.position.z);
-        }
-        if (transform.position.x < moveMin) transform.position += transform.right;
-        if (transform.position.x > moveMax) transform.position -= transform.right;
-        if (transform.position.z < moveMin) transform.position += transform.up;
-        if (transform.position.z > moveMax) transform.position -= transform.up;
+        Vector3 dir = new Vector3(move.x, 0f, move.y);
+
+        // Movement
+        transform.Translate(moveSpeed * Time.deltaTime * dir, Space.Self);
+
+        // Clamp
+        Vector3 clampedPos = transform.position;
+        clampedPos.x = Mathf.Clamp(clampedPos.x, moveMin, moveMax);
+        clampedPos.z = Mathf.Clamp(clampedPos.z, moveMin, moveMax);
+        clampedPos.y = yOrg;
+        transform.position = clampedPos;
     }
 
     void RotateKeys()
@@ -100,15 +101,24 @@ void Awake()
             Vector2 look = controls.Player.Look.ReadValue<Vector2>();
             transform.Rotate(Vector3.up, look.x * rotateSpeed * Time.deltaTime, Space.World);
             transform.Rotate(Vector3.right, -look.y * rotateSpeed * Time.deltaTime, Space.Self);
-            Vector3 e = transform.eulerAngles;
-            transform.eulerAngles = new Vector3(e.x, e.y, 0f);
+            Vector3 rot = transform.eulerAngles;
+            transform.eulerAngles = new Vector3(rot.x, rot.y, 0f);
+
+            // Clamp
+            float currentRotX = transform.eulerAngles.x;
+            if (currentRotX > 180f) currentRotX -= 360f;
+
+            Vector3 clampedRot = transform.eulerAngles;
+            clampedRot.x = Mathf.Clamp(currentRotX, -45f, 45f);
+            transform.eulerAngles = clampedRot;
         }
+
     }
 
     void Zoom()
     {
         float scroll = controls.Player.Zoom.ReadValue<float>();
-        if (Mathf.Abs(scroll) > 0.0001f && transform.position.y > zoomMin && transform.position.y < zoomMax)
+        if (Mathf.Abs(scroll) > 0.0001f)
         {
             transform.position += scroll * scrollSpeed * transform.forward;
 
@@ -121,8 +131,10 @@ void Awake()
             }
         }
 
-        if (transform.position.y < zoomMin) transform.position -= transform.forward;
-        if (transform.position.y > zoomMax) transform.position += transform.forward;
+        // Clamp
+        Vector3 clampedPos = transform.position;
+        clampedPos.y = Mathf.Clamp(clampedPos.y, zoomMin, zoomMax);
+        transform.position = clampedPos;
     }
 
     void OnFocus(InputAction.CallbackContext _)
@@ -184,14 +196,51 @@ void Awake()
         if (Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, clickableLayers))
         {
             GameObject go = hit.collider.gameObject;
-            if (!selected.Contains(go))
+            if (go.layer == LayerMask.NameToLayer("Ship"))
             {
-                selectedSource?.Play();
-                selected.Add(go);
-                TrySelect(go);
+                if (!selected.Contains(go))
+                {
+                    selectedSource?.Play();
+                    selected.Add(go);
+                    TrySelect(go);
+                }
+                else
+                {
+                    selected.Remove(go);
+                    if (selected.Count == 0)
+                        UnitUIManager.instance.unitMenu.SetActive(false);
+                }
             }
-            else selected.Remove(go);
+            else
+            {
+                selected.Clear();
+                UnitUIManager.instance.unitMenu.SetActive(false);
+            }
         }
+        else
+        {
+            selected.Clear();
+            UnitUIManager.instance.unitMenu.SetActive(false);
+        }
+    }
+
+
+    void TrySelect(GameObject go)
+    {
+        var ui = UnitUIManager.instance;
+        var selectables = go.GetComponents<ISelectable>();
+        ISelectable chosen =
+            selectables.FirstOrDefault(s => s is Smelter)
+            ?? selectables.FirstOrDefault(s => s.GetType().Name != "Module")
+            ?? selectables.FirstOrDefault();
+
+        if (ui) ui.currUnit = go;
+        if (chosen != null) chosen.TakeControl();
+    }
+
+    void OnSelectCanceled(InputAction.CallbackContext _)
+    {
+        if (selectionBox) selectionBox.gameObject.SetActive(false);
     }
 
     void HandleDragSelection()
@@ -202,18 +251,28 @@ void Awake()
             selectionBox.gameObject.SetActive(true);
 
         Vector2 cur = GetPointerPosOrCenter();
-        float w = cur.x - startMousePos.x;
-        float h = cur.y - startMousePos.y;
 
-        selectionBox.sizeDelta = new Vector2(Mathf.Abs(w), Mathf.Abs(h));
-        selectionBox.anchoredPosition = startMousePos + new Vector2(w / 2f, h / 2f);
+        Canvas canvas = selectionBox.GetComponentInParent<Canvas>();
+        RectTransform canvasRect = canvas.GetComponent<RectTransform>();
+
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, startMousePos, 
+            canvas.worldCamera, out Vector2 localStart);
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, cur, 
+            canvas.worldCamera, out Vector2 localCur);
+
+        Vector2 diff = localCur - localStart;
+        selectionBox.sizeDelta = new Vector2(Mathf.Abs(diff.x), Mathf.Abs(diff.y));
+        selectionBox.anchoredPosition = localStart + new Vector2(diff.x / 2f, diff.y / 2f);
 
         DragDetect(cur);
     }
-
-    void OnSelectCanceled(InputAction.CallbackContext _)
+    Vector2 GetPointerPosOrCenter()
     {
-        if (selectionBox) selectionBox.gameObject.SetActive(false);
+        if (controls == null) return Vector2.zero;
+        Vector2 pos = controls.Player.Point.ReadValue<Vector2>();
+        if (pos == Vector2.zero && Gamepad.current != null)
+            return new Vector2(Screen.width / 2f, Screen.height / 2f);
+        return pos;
     }
 
     void DragDetect(Vector2 cur)
@@ -241,28 +300,5 @@ void Awake()
                 TrySelect(go);
             }
         }
-    }
-
-    void TrySelect(GameObject go)
-    {
-        var ui = UnitUIManager.instance;
-        var selectables = go.GetComponents<ISelectable>();
-        ISelectable chosen =
-            selectables.FirstOrDefault(s => s is Smelter)
-            ?? selectables.FirstOrDefault(s => s.GetType().Name != "Module")
-            ?? selectables.FirstOrDefault();
-
-        if (ui) ui.currUnit = go;
-        if (chosen != null) chosen.TakeControl();
-    }
-
-
-
-    Vector2 GetPointerPosOrCenter()
-    {
-        Vector2 pos = controls.Player.Point.ReadValue<Vector2>();
-        if (pos == Vector2.zero && Gamepad.current != null)
-            return new Vector2(Screen.width / 2f, Screen.height / 2f);
-        return pos;
     }
 }

@@ -18,7 +18,6 @@ public class Instructions : MonoBehaviour
 
     void Start()
     {
-        Time.timeScale = 0;
         InputSystem.onAnyButtonPress.CallOnce(ctrl =>
         {
             if (ctrl.device is Keyboard || ctrl.device is Mouse)
@@ -234,7 +233,6 @@ public class Instructions : MonoBehaviour
 
     public void StateUnpause()
     {
-        Time.timeScale = 1;
         gameObject.SetActive(false);
     }
 }

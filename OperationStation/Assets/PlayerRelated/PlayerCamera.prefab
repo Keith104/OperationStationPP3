@@ -159,7 +159,7 @@ MonoBehaviour:
   moveMin: 0
   moveMax: 255
   zoomMin: -10
-  zoomMax: 10
+  zoomMax: 35
   UI: {fileID: 0}
   selectionBox: {fileID: 0}
   startMousePos: {x: 0, y: 0}
