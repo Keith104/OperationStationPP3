@@ -140,22 +140,18 @@ void Awake()
     void OnFocus(InputAction.CallbackContext _)
     {
         isFocused = !isFocused;
-        if (isFocused && selected.Count > 0 && selected[0])
-        {
-            focusPosition = Vector3.Lerp(transform.position, selected[0].transform.position, 0.5f);
-            transform.position = focusPosition;
-        }
-        else
-        {
-            Vector3 e = transform.eulerAngles;
-            transform.eulerAngles = new Vector3(45f, e.y, e.z);
-        }
     }
 
     void HandleFocus()
     {
         if (isFocused && selected.Count > 0 && selected[0])
-            transform.LookAt(selected[0].transform);
+        {
+            Vector3 direction = selected[0].transform.position - transform.position;
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+
+            transform.rotation = Quaternion.Slerp(
+                transform.rotation, targetRotation, Time.deltaTime * rotateSpeed);
+        }
     }
 
     void HoverObject()
