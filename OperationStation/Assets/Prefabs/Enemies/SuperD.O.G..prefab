@@ -49,7 +49,7 @@ GameObject:
   - component: {fileID: 4930821830705027959}
   - component: {fileID: 4328177918025949657}
   - component: {fileID: 3027847171978397025}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: SuperD.O.G.
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -480,7 +480,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 75c5f445d8eb9e044a08c21f517dc447, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -564,6 +564,10 @@ PrefabInstance:
       propertyPath: m_audioClip
       value: 
       objectReference: {fileID: 8300000, guid: 90fd588c119e3ca47b9f3146abb03ba6, type: 3}
+    - target: {fileID: 4286303333267555199, guid: f115d1b92ccfed14196bef8150d94bc7, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6061539347451195308, guid: f115d1b92ccfed14196bef8150d94bc7, type: 3}
       propertyPath: m_Pitch
       value: 0.6
@@ -576,9 +580,17 @@ PrefabInstance:
       propertyPath: m_audioClip
       value: 
       objectReference: {fileID: 8300000, guid: 90fd588c119e3ca47b9f3146abb03ba6, type: 3}
+    - target: {fileID: 6583596965083420936, guid: f115d1b92ccfed14196bef8150d94bc7, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8737938473530881325, guid: f115d1b92ccfed14196bef8150d94bc7, type: 3}
       propertyPath: m_Name
       value: SoundObject
+      objectReference: {fileID: 0}
+    - target: {fileID: 8737938473530881325, guid: f115d1b92ccfed14196bef8150d94bc7, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
