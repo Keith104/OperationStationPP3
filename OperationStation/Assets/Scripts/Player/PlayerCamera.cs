@@ -172,6 +172,9 @@ public class PlayerCamera : MonoBehaviour
 
     void OnSelectStarted(InputAction.CallbackContext _)
     {
+
+        if (IsOverUIOrDraggingUI()) return;
+
         bool shift = controls.Player.MultiSelectModifer.IsPressed();
         if (!shift && UnitUIManager.instance.unitMenu.activeSelf == false)
             selected.Clear();
@@ -233,6 +236,14 @@ public class PlayerCamera : MonoBehaviour
     void HandleDragSelection()
     {
         if (!controls.Player.Select.IsPressed()) return;
+
+        if (IsOverUIOrDraggingUI())
+        {
+            if (selectionBox && selectionBox.gameObject.activeSelf)
+                selectionBox.gameObject.SetActive(false);
+            return;
+        }
+
         if (!selectionBox.gameObject.activeSelf)
             selectionBox.gameObject.SetActive(true);
         Vector2 cur = GetPointerPosOrCenter();
@@ -279,5 +290,11 @@ public class PlayerCamera : MonoBehaviour
                 TrySelect(go);
             }
         }
+    }
+
+    bool IsOverUIOrDraggingUI()
+    {
+        return EventSystem.current != null &&
+               (EventSystem.current.IsPointerOverGameObject() || DraggableWindow.IsDragging);
     }
 }

@@ -225,6 +225,7 @@ MonoBehaviour:
   - Use the structures around the space station to progress the game.
   - Use your resources wisely to build up the death cat.
   - Use resources to build modules around your space station to progress the game.
+  - Click and drag the instructions panel to move it around.
   hintsAutoSize: 1
   hintsFontSizeMin: 10
   hintsFontSizeMax: 20

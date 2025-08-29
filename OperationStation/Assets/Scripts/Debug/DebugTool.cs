@@ -7,7 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI; // ScrollRect, Layout
+using UnityEngine.UI;
 
 public class DebugTool : MonoBehaviour
 {
@@ -19,9 +19,8 @@ public class DebugTool : MonoBehaviour
     public TMP_InputField inputField;
     public TMP_Text outputText;
 
-    // Scroll View bits
-    public ScrollRect outputScroll;           // assign your Scroll View's ScrollRect
-    public RectTransform contentRoot;         // assign ScrollRect.content (the parent of outputText)
+    public ScrollRect outputScroll;
+    public RectTransform contentRoot;
 
     [Header("Controls")]
     public KeyCode togglekey = KeyCode.BackQuote;
@@ -35,45 +34,38 @@ public class DebugTool : MonoBehaviour
     [Tooltip("Hold or tap to instantly finish the current typewriter chunk.")]
     public KeyCode skipTypewriterKey = KeyCode.Tab;
 
-    // Previous-command recall (Up Arrow)
     string lastCommand = "";
 
-    // Output buffers / typewriter state
     readonly StringBuilder outputBuffer = new();
     readonly Queue<string> typeQueue = new();
     Coroutine typeCo;
 
-    // Prevent same-frame submit (Enter/Escape) from skipping animation
     float _skipSuppressUntil;
 
-    // Command registry
     readonly Dictionary<string, ICommand> commands =
         new Dictionary<string, ICommand>(StringComparer.OrdinalIgnoreCase);
 
-    // --- Config ---
-    const int MaxPerOperation = 1_000_000; // hard cap per add/remove command
+    const int MaxPerOperation = 1_000_000;
 
     void Awake()
     {
         if (consoleRoot) consoleRoot.SetActive(false);
         if (inputField) inputField.onSubmit.AddListener(OnSubmit);
 
-        // TMP label cosmetic margin
         if (outputText)
         {
-            var m = outputText.margin; // left, top, right, bottom
+            var m = outputText.margin;
             outputText.margin = new Vector4(m.x, outputTopMargin, m.z, m.w);
         }
 
-        // Auto-configure the scroll content so it expands DOWN as the text grows
         ConfigureScrollContent();
 
-        // Commands
-        Register(new HelpCommand(() => commands)); // pass key/value pairs so Help sees aliases
+        Register(new HelpCommand(() => commands));
         Register(new AddResourceCommand());
         Register(new RemoveResourceCommand());
         Register(new ListResourceTypesCommand());
         Register(new InvincibilityCommand(), "god", "godmode");
+        Register(new UIChildrenCommand(transform), "uichildren", "uioff", "uion");
     }
 
     void Update()
@@ -91,7 +83,6 @@ public class DebugTool : MonoBehaviour
             }
         }
 
-        // Re-input previous command when focused
         if (consoleRoot && consoleRoot.activeSelf && inputField && inputField.isFocused)
         {
             if (Input.GetKeyDown(KeyCode.UpArrow) && !string.IsNullOrEmpty(lastCommand))
@@ -102,18 +93,15 @@ public class DebugTool : MonoBehaviour
         }
     }
 
-    // ===== Auto-layout config so parent expands DOWN =====
     void ConfigureScrollContent()
     {
         if (!contentRoot) return;
 
-        // Ensure content grows downward: top-stretch anchors, top pivot
         contentRoot.anchorMin = new Vector2(0f, 1f);
         contentRoot.anchorMax = new Vector2(1f, 1f);
         contentRoot.pivot = new Vector2(0.5f, 1f);
-        contentRoot.anchoredPosition = new Vector2(0f, 0f); // sit at top of viewport
+        contentRoot.anchoredPosition = new Vector2(0f, 0f);
 
-        // Add/Configure VerticalLayoutGroup on the CONTENT parent.
         var vlg = contentRoot.GetComponent<VerticalLayoutGroup>();
         if (!vlg) vlg = contentRoot.gameObject.AddComponent<VerticalLayoutGroup>();
         vlg.childAlignment = TextAnchor.UpperLeft;
@@ -124,7 +112,6 @@ public class DebugTool : MonoBehaviour
         vlg.childForceExpandWidth = true;
         vlg.childForceExpandHeight = false;
 
-        // Fit to children
         var fitter = contentRoot.GetComponent<ContentSizeFitter>();
         if (!fitter) fitter = contentRoot.gameObject.AddComponent<ContentSizeFitter>();
         fitter.horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
@@ -141,7 +128,6 @@ public class DebugTool : MonoBehaviour
         }
     }
 
-    // ===== Console plumbing =====
     void OnSubmit(string text)
     {
         if (!consoleAllowed) return;
@@ -151,7 +137,6 @@ public class DebugTool : MonoBehaviour
         var (cmd, args) = Parse(text);
         string result = Execute(cmd, args);
 
-        // CLEAR on every command and type this result only
         SetOutput(result ?? "");
 
         inputField.text = "";
@@ -192,7 +177,6 @@ public class DebugTool : MonoBehaviour
         catch (Exception e) { return $"Error: {e.Message}"; }
     }
 
-    // ===== Output control (CLEAR + typewriter) =====
     void SetOutput(string textToShow)
     {
         if (!string.IsNullOrEmpty(textToShow))
@@ -213,7 +197,7 @@ public class DebugTool : MonoBehaviour
             outputText.text = "";
             typeQueue.Enqueue(textToShow);
 
-            _skipSuppressUntil = Time.unscaledTime + 0.1f; // debounce skip
+            _skipSuppressUntil = Time.unscaledTime + 0.1f;
             typeCo = StartCoroutine(TypewriterCo());
         }
         else
@@ -278,7 +262,6 @@ public class DebugTool : MonoBehaviour
         inputField.ForceLabelUpdate();
     }
 
-    // ===== Scroll helpers =====
     void AutoScrollIfAtBottom()
     {
         if (!outputScroll) return;
@@ -288,30 +271,25 @@ public class DebugTool : MonoBehaviour
 
     IEnumerator CoForceScroll(bool forceToBottom)
     {
-        // Let layout rebuild first so sizes are up-to-date
         yield return null;
         if (forceToBottom && outputScroll)
-            outputScroll.verticalNormalizedPosition = 0f; // 0 == bottom
+            outputScroll.verticalNormalizedPosition = 0f;
     }
 
     void Register(ICommand command, params string[] aliases)
     {
-        commands[command.Name] = command;                // primary
-        foreach (var a in aliases) commands[a] = command; // aliases
+        commands[command.Name] = command;
+        foreach (var a in aliases) commands[a] = command;
     }
 
-    // ===== Helpers visible to commands =====
     static DeathCat FindAnyDeathCat()
     {
-        // includeInactive = true
         var all = GameObject.FindObjectsByType<DeathCat>(FindObjectsSortMode.None);
         return all.FirstOrDefault();
     }
 
-    // --- FIX: Read ResourceManager's *private serialized fields* by name ---
     static class ResourceAccess
     {
-        // Must match your private field names in ResourceManager exactly.
         static readonly Dictionary<ResourceSO.ResourceType, string> FieldByType =
             new Dictionary<ResourceSO.ResourceType, string>
             {
@@ -348,7 +326,6 @@ public class DebugTool : MonoBehaviour
         }
     }
 
-    // Normalizes and validates numeric amounts like "1000000", "1,000,000", "1_000_000"
     static class AmountInput
     {
         public static bool TryParsePositive(string raw, out int amount, out string message)
@@ -364,14 +341,12 @@ public class DebugTool : MonoBehaviour
 
             string trimmed = raw.Trim();
 
-            // Reject negatives right away
             if (trimmed.StartsWith("-"))
             {
                 message = "Amount must be a positive integer.";
                 return false;
             }
 
-            // Allow digits, commas, underscores, and spaces only
             for (int i = 0; i < trimmed.Length; i++)
             {
                 char c = trimmed[i];
@@ -382,7 +357,6 @@ public class DebugTool : MonoBehaviour
                 }
             }
 
-            // Strip separators
             var digitsOnly = new StringBuilder(trimmed.Length);
             foreach (char c in trimmed)
                 if (char.IsDigit(c)) digitsOnly.Append(c);
@@ -393,7 +367,6 @@ public class DebugTool : MonoBehaviour
                 return false;
             }
 
-            // Try parsing as long first to detect overflow cleanly
             if (!long.TryParse(digitsOnly.ToString(), out long big))
             {
                 message = "That number is too large.";
@@ -417,7 +390,6 @@ public class DebugTool : MonoBehaviour
         }
     }
 
-    // ===== Command API =====
     public interface ICommand
     {
         string Name { get; }
@@ -426,10 +398,6 @@ public class DebugTool : MonoBehaviour
         string Run(string[] args);
     }
 
-    // Help shows aliases and prints:
-    // <b>name</b> <usage>
-    //   description
-    //   (aliases: a/b)
     class HelpCommand : ICommand
     {
         public string Name => "help";
@@ -440,7 +408,6 @@ public class DebugTool : MonoBehaviour
         public HelpCommand(Func<IEnumerable<KeyValuePair<string, ICommand>>> getAllPairs)
             => _getAllPairs = getAllPairs;
 
-        // Styling
         const string CmdColor = "#FFFFFF";
         const string UsageColor = "#B9D4FF";
         const string DescColor = "#D1D5DB";
@@ -492,7 +459,6 @@ public class DebugTool : MonoBehaviour
         }
     }
 
-    // Reference-equality comparer for dictionary keyed by ICommand
     sealed class RefEq<T> : IEqualityComparer<T> where T : class
     {
         public static readonly RefEq<T> Instance = new();
@@ -500,7 +466,6 @@ public class DebugTool : MonoBehaviour
         public int GetHashCode(T obj) => RuntimeHelpers.GetHashCode(obj);
     }
 
-    // ===== Resource helpers =====
     static class ResourceParse
     {
         static readonly Dictionary<string, ResourceSO.ResourceType> map =
@@ -509,16 +474,12 @@ public class DebugTool : MonoBehaviour
                 ["tritium"] = ResourceSO.ResourceType.Tritium,
                 ["silver"] = ResourceSO.ResourceType.Silver,
                 ["polonium"] = ResourceSO.ResourceType.Polonium,
-
                 ["ingot"] = ResourceSO.ResourceType.TritiumIngot,
                 ["ingots"] = ResourceSO.ResourceType.TritiumIngot,
-
                 ["coin"] = ResourceSO.ResourceType.SilverCoin,
                 ["coins"] = ResourceSO.ResourceType.SilverCoin,
-
                 ["crystal"] = ResourceSO.ResourceType.PoloniumCrystal,
                 ["crystals"] = ResourceSO.ResourceType.PoloniumCrystal,
-
                 ["energy"] = ResourceSO.ResourceType.Energy,
             };
 
@@ -542,7 +503,6 @@ public class DebugTool : MonoBehaviour
         }
     }
 
-    // ===== Resource commands =====
     class AddResourceCommand : ICommand
     {
         public string Name => "add";
@@ -561,9 +521,8 @@ public class DebugTool : MonoBehaviour
                 return $"Unknown resource '{args[0]}'. Types: {ResourceParse.ValidList()}";
 
             if (!AmountInput.TryParsePositive(args[1], out var requested, out var parseMsg))
-                return parseMsg; // specific feedback (format/overflow/negative/etc.)
+                return parseMsg;
 
-            // Enforce cap explicitly with clear feedback
             int toAdd = requested;
             bool capped = false;
             if (toAdd > MaxPerOperation)
@@ -574,7 +533,6 @@ public class DebugTool : MonoBehaviour
 
             ResourceManager.instance.AddResource(type, toAdd);
 
-            // Build a friendly response
             var sb = new StringBuilder();
             if (capped)
                 sb.Append($"Requested {requested:n0}, but the per-command cap is {MaxPerOperation:n0}. Added {toAdd:n0} instead.");
@@ -606,12 +564,10 @@ public class DebugTool : MonoBehaviour
                 return $"Unknown resource '{args[0]}'. Types: {ResourceParse.ValidList()}";
 
             if (!AmountInput.TryParsePositive(args[1], out var requested, out var parseMsg))
-                return parseMsg; // specific feedback (format/overflow/negative/etc.)
+                return parseMsg;
 
-            // Mirror the add cap for removes too (optional, keeps UX consistent)
             if (requested > MaxPerOperation) requested = MaxPerOperation;
 
-            // Read current via private-field reflection
             if (!ResourceAccess.TryGetAmount(type, out var current))
                 return "Couldn't read current balance; aborting remove to avoid going negative.";
 
@@ -630,7 +586,6 @@ public class DebugTool : MonoBehaviour
             if (toRemove > 0)
                 ResourceManager.instance.RemoveResource(type, toRemove);
 
-            // Build friendly message
             var sb = new StringBuilder();
             if (clampedToAvailable)
                 sb.Append($"Requested to remove {requested:n0}, but you only have {current:n0}. Removed {toRemove:n0}.");
@@ -664,7 +619,6 @@ public class DebugTool : MonoBehaviour
         }
     }
 
-    // ===== Other Commands =====
     class InvincibilityCommand : ICommand
     {
         public string Name => "invincibility";
@@ -704,6 +658,73 @@ public class DebugTool : MonoBehaviour
                     value = false; return true;
                 default:
                     value = default; return false;
+            }
+        }
+    }
+
+    class UIChildrenCommand : ICommand
+    {
+        public string Name => "uichildren";
+        public string Usage => "<on|off>";
+        public string Help => "Enable/disable all UI (uGUI) children under this DebugTool's GameObject.";
+
+        readonly Transform _root;
+        readonly HashSet<GameObject> _disabled = new HashSet<GameObject>();
+
+        public UIChildrenCommand(Transform root) => _root = root;
+
+        public string Run(string[] args)
+        {
+            if (args.Length < 1) return "Usage: uichildren <on|off>";
+
+            if (!TryParseBool(args[0], out bool turnOn))
+                return "Invalid value. Use on/off (also accepts true/false/1/0).";
+
+            if (turnOn)
+            {
+                int count = 0;
+                foreach (var go in _disabled)
+                {
+                    if (go) { go.SetActive(true); count++; }
+                }
+                _disabled.Clear();
+                return $"Re-enabled {count:n0} UI object(s) under '{_root.name}'.";
+            }
+            else
+            {
+                var crs = _root.GetComponentsInChildren<CanvasRenderer>(includeInactive: true);
+                int count = 0;
+
+                for (int i = 0; i < crs.Length; i++)
+                {
+                    var go = crs[i].gameObject;
+                    if (go == _root.gameObject) continue;
+                    if (go.activeSelf)
+                    {
+                        go.SetActive(false);
+                        _disabled.Add(go);
+                        count++;
+                    }
+                }
+
+                return $"Disabled {count:n0} UI object(s) under '{_root.name}'. Use 'uichildren on' to undo.";
+            }
+        }
+
+        static bool TryParseBool(string raw, out bool value)
+        {
+            if (bool.TryParse(raw, out value)) return true;
+            switch (raw.Trim().ToLowerInvariant())
+            {
+                case "1":
+                case "on":
+                case "enable":
+                case "enabled": value = true; return true;
+                case "0":
+                case "off":
+                case "disable":
+                case "disabled": value = false; return true;
+                default: value = default; return false;
             }
         }
     }
