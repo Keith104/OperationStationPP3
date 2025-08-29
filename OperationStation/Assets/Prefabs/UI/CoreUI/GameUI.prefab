@@ -8178,11 +8178,13 @@ MonoBehaviour:
   outputText: {fileID: 1615469951122917990}
   outputScroll: {fileID: 2959373209399195473}
   contentRoot: {fileID: 0}
+  uiNeverDisableRoot: {fileID: 142190858582082203}
   togglekey: 96
   useTypewriter: 1
   typewriterCharsPerSecond: 300
   outputTopMargin: 8
   skipTypewriterKey: 9
+  playerInput: {fileID: 0}
 --- !u!1 &1565437871290111878
 GameObject:
   m_ObjectHideFlags: 0
