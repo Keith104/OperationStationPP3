@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5325266959878535145}
   - component: {fileID: 1826966545551325855}
   - component: {fileID: 5529492935763083910}
+  - component: {fileID: 6318557553315674533}
   m_Layer: 0
   m_Name: MinimapCamera
   m_TagString: MinimapCamera
@@ -97,11 +98,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_RenderShadows: 1
-  m_RequiresDepthTextureOption: 2
-  m_RequiresOpaqueTextureOption: 2
+  m_RequiresDepthTextureOption: 0
+  m_RequiresOpaqueTextureOption: 0
   m_CameraType: 0
   m_Cameras: []
-  m_RendererIndex: -1
+  m_RendererIndex: 1
   m_VolumeLayerMask:
     serializedVersion: 2
     m_Bits: 1
@@ -128,3 +129,17 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+--- !u!114 &6318557553315674533
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1881592783489156477}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9964a20e4b82ab42b1fcdc10c5a0aed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rendererIndex: 1
+  applyEveryFrame: 0
