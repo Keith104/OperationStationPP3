@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnTime: 10
+  startingGracePeriod: 120
   maxEnemies: 3
   spawnPoints:
   - {fileID: 0}
