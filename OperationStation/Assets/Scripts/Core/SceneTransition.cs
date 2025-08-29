@@ -143,7 +143,7 @@ public class SceneTransition : MonoBehaviour
 
     void EnsureEventSystem()
     {
-        var es = EventSystem.current ?? FindObjectOfType<EventSystem>(true);
+        var es = EventSystem.current ?? FindAnyObjectByType<EventSystem>();
         if (es == null)
         {
             es = new GameObject("EventSystem").AddComponent<EventSystem>();
@@ -648,7 +648,7 @@ public class SceneTransition : MonoBehaviour
 
     void EnsureSingleEventSystemFor(Scene scene)
     {
-        var all = FindObjectsOfType<EventSystem>(true);
+        var all = FindObjectsByType<EventSystem>(FindObjectsSortMode.None);
         if (all == null || all.Length == 0) return;
 
         EventSystem keep = null;
