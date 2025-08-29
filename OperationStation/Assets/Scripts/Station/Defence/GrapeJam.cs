@@ -17,8 +17,6 @@ public class GrapeJam : MonoBehaviour
     private Material jamMaterial;
     [SerializeField] float fadeInDuration;
     [SerializeField] float fadeOutDuration; 
-
-    private bool hasItTriggeredOnce = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {

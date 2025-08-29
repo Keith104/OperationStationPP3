@@ -15,7 +15,6 @@ public class DeathCat : MonoBehaviour, ISelectable, IModule, IDamage
     [SerializeField] PlayableDirector timeline;
 
     public bool invincible;
-    private bool deathCatFired = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {

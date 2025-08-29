@@ -1665,6 +1665,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6177590523383384386, guid: c6cdb4723017453458a83b33399a1186, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6248978227986569268, guid: c6cdb4723017453458a83b33399a1186, type: 3}
       propertyPath: m_Name
       value: MinimapBackground
@@ -1927,6 +1931,18 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6450265294638225200, guid: 378dfb21a7053fa45af7872900090337, type: 3}
+      propertyPath: consoleAllowed
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6450265294638225200, guid: 378dfb21a7053fa45af7872900090337, type: 3}
+      propertyPath: uiNeverDisableRoot
+      value: 
+      objectReference: {fileID: 922158423}
+    - target: {fileID: 6450265294638225200, guid: 378dfb21a7053fa45af7872900090337, type: 3}
+      propertyPath: actionsAssetOverride
+      value: 
+      objectReference: {fileID: -944628639613478452, guid: dbce36154c4008e4c96020357277a091, type: 3}
     - target: {fileID: 6798411567293066469, guid: 378dfb21a7053fa45af7872900090337, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 

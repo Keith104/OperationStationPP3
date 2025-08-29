@@ -3,7 +3,6 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
 
 public class PlayerCamera : MonoBehaviour
 {
@@ -35,16 +34,16 @@ public class PlayerCamera : MonoBehaviour
 
     PlayerInput controls;
 
-void Awake()
-{
-    UI = GameObject.FindWithTag("UI").GetComponent<RectTransform>();
-    selectionBox = UI.Find("SelectionBox").GetComponent<RectTransform>();
-    controls = new PlayerInput();
-    clickableLayers = LayerMask.GetMask("Object", "Ship");
-}
+    void Awake()
+    {
+        UI = GameObject.FindWithTag("UI").GetComponent<RectTransform>();
+        selectionBox = UI.Find("SelectionBox").GetComponent<RectTransform>();
+        clickableLayers = LayerMask.GetMask("Object", "Ship");
+    }
 
     void OnEnable()
     {
+        if (controls == null) controls = new PlayerInput();
         controls.Player.Focus.performed += OnFocus;
         controls.Player.Select.started += OnSelectStarted;
         controls.Player.Select.canceled += OnSelectCanceled;
@@ -53,10 +52,17 @@ void Awake()
 
     void OnDisable()
     {
+        if (controls == null) return;
         controls.Player.Focus.performed -= OnFocus;
         controls.Player.Select.started -= OnSelectStarted;
         controls.Player.Select.canceled -= OnSelectCanceled;
         controls.Disable();
+    }
+
+    void OnDestroy()
+    {
+        controls?.Dispose();
+        controls = null;
     }
 
     void Update()
@@ -75,11 +81,7 @@ void Awake()
         float yOrg = transform.position.y;
         Vector2 move = controls.Player.Move.ReadValue<Vector2>();
         Vector3 dir = new Vector3(move.x, 0f, move.y);
-
-        // Movement
         transform.Translate(moveSpeed * Time.deltaTime * dir, Space.Self);
-
-        // Clamp
         Vector3 clampedPos = transform.position;
         clampedPos.x = Mathf.Clamp(clampedPos.x, moveMin, moveMax);
         clampedPos.z = Mathf.Clamp(clampedPos.z, moveMin, moveMax);
@@ -103,16 +105,12 @@ void Awake()
             transform.Rotate(Vector3.right, -look.y * rotateSpeed * Time.deltaTime, Space.Self);
             Vector3 rot = transform.eulerAngles;
             transform.eulerAngles = new Vector3(rot.x, rot.y, 0f);
-
-            // Clamp
             float currentRotX = transform.eulerAngles.x;
             if (currentRotX > 180f) currentRotX -= 360f;
-
             Vector3 clampedRot = transform.eulerAngles;
             clampedRot.x = Mathf.Clamp(currentRotX, -45f, 45f);
             transform.eulerAngles = clampedRot;
         }
-
     }
 
     void Zoom()
@@ -121,7 +119,6 @@ void Awake()
         if (Mathf.Abs(scroll) > 0.0001f)
         {
             transform.position += scroll * scrollSpeed * transform.forward;
-
             if (scroll > 0f)
             {
                 Vector2 pos = GetPointerPosOrCenter();
@@ -130,8 +127,6 @@ void Awake()
                     transform.position = Vector3.Lerp(transform.position, hit.transform.position, 0.5f);
             }
         }
-
-        // Clamp
         Vector3 clampedPos = transform.position;
         clampedPos.y = Mathf.Clamp(clampedPos.y, zoomMin, zoomMax);
         transform.position = clampedPos;
@@ -140,22 +135,17 @@ void Awake()
     void OnFocus(InputAction.CallbackContext _)
     {
         isFocused = !isFocused;
-        if (isFocused && selected.Count > 0 && selected[0])
-        {
-            focusPosition = Vector3.Lerp(transform.position, selected[0].transform.position, 0.5f);
-            transform.position = focusPosition;
-        }
-        else
-        {
-            Vector3 e = transform.eulerAngles;
-            transform.eulerAngles = new Vector3(45f, e.y, e.z);
-        }
     }
 
     void HandleFocus()
     {
         if (isFocused && selected.Count > 0 && selected[0])
-            transform.LookAt(selected[0].transform);
+        {
+            Vector3 direction = selected[0].transform.position - transform.position;
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(
+                transform.rotation, targetRotation, Time.deltaTime * rotateSpeed);
+        }
     }
 
     void HoverObject()
@@ -163,7 +153,6 @@ void Awake()
         Vector2 pos = GetPointerPosOrCenter();
         Ray ray = Camera.main.ScreenPointToRay(pos);
         Debug.DrawRay(ray.origin, ray.direction * 100, Color.green);
-
         if (Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, clickableLayers))
         {
             if (soundHovered == null)
@@ -181,6 +170,9 @@ void Awake()
 
     void OnSelectStarted(InputAction.CallbackContext _)
     {
+
+        if (IsOverUIOrDraggingUI()) return;
+
         bool shift = controls.Player.MultiSelectModifer.IsPressed();
         if (!shift && UnitUIManager.instance.unitMenu.activeSelf == false)
             selected.Clear();
@@ -189,10 +181,8 @@ void Awake()
             selected.Clear();
             UnitUIManager.instance.unitMenu.SetActive(false);
         }
-
         startMousePos = GetPointerPosOrCenter();
         Ray ray = Camera.main.ScreenPointToRay(startMousePos);
-
         if (Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, clickableLayers))
         {
             GameObject go = hit.collider.gameObject;
@@ -224,7 +214,6 @@ void Awake()
         }
     }
 
-
     void TrySelect(GameObject go)
     {
         var ui = UnitUIManager.instance;
@@ -233,7 +222,6 @@ void Awake()
             selectables.FirstOrDefault(s => s is Smelter)
             ?? selectables.FirstOrDefault(s => s.GetType().Name != "Module")
             ?? selectables.FirstOrDefault();
-
         if (ui) ui.currUnit = go;
         if (chosen != null) chosen.TakeControl();
     }
@@ -247,25 +235,28 @@ void Awake()
     {
         if (!controls.Player.Select.IsPressed()) return;
 
+        if (IsOverUIOrDraggingUI())
+        {
+            if (selectionBox && selectionBox.gameObject.activeSelf)
+                selectionBox.gameObject.SetActive(false);
+            return;
+        }
+
         if (!selectionBox.gameObject.activeSelf)
             selectionBox.gameObject.SetActive(true);
-
         Vector2 cur = GetPointerPosOrCenter();
-
         Canvas canvas = selectionBox.GetComponentInParent<Canvas>();
         RectTransform canvasRect = canvas.GetComponent<RectTransform>();
-
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, startMousePos, 
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, startMousePos,
             canvas.worldCamera, out Vector2 localStart);
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, cur, 
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, cur,
             canvas.worldCamera, out Vector2 localCur);
-
         Vector2 diff = localCur - localStart;
         selectionBox.sizeDelta = new Vector2(Mathf.Abs(diff.x), Mathf.Abs(diff.y));
         selectionBox.anchoredPosition = localStart + new Vector2(diff.x / 2f, diff.y / 2f);
-
         DragDetect(cur);
     }
+
     Vector2 GetPointerPosOrCenter()
     {
         if (controls == null) return Vector2.zero;
@@ -279,17 +270,14 @@ void Awake()
     {
         Vector3 ws = Camera.main.ScreenToWorldPoint(new Vector3(startMousePos.x, startMousePos.y, Camera.main.nearClipPlane));
         Vector3 we = Camera.main.ScreenToWorldPoint(new Vector3(cur.x, cur.y, Camera.main.nearClipPlane));
-
         Debug.DrawRay(ws, transform.forward * 100, Color.green);
         Debug.DrawRay(we, transform.forward * 100, Color.green);
-
         Vector3 center = Vector3.Lerp(Camera.main.ScreenPointToRay(startMousePos).origin,
                                       Camera.main.ScreenPointToRay(cur).origin, 0.5f);
         Vector3 size = new Vector3(Mathf.Abs(ws.x - we.x), Mathf.Abs(ws.y - we.y), Mathf.Abs(ws.z - we.z));
         Vector2 dc = Vector2.Lerp(startMousePos, cur, 0.5f);
         Ray ray = Camera.main.ScreenPointToRay(dc);
         if (Physics.Raycast(ray, out _)) Debug.DrawRay(ray.origin, ray.direction * 100, Color.yellow);
-
         Vector3 dir = ray.direction;
         foreach (var hit in Physics.BoxCastAll(center, size * 10f, dir))
         {
@@ -300,5 +288,11 @@ void Awake()
                 TrySelect(go);
             }
         }
+    }
+
+    bool IsOverUIOrDraggingUI()
+    {
+        return EventSystem.current != null &&
+               (EventSystem.current.IsPointerOverGameObject() || DraggableWindow.IsDragging);
     }
 }
