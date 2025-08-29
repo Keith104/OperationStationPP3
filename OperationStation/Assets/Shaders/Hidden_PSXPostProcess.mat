@@ -28,7 +28,7 @@ Material:
     m_Floats:
     - _DitherStrength: 0
     - _EnableDither: 1
-    - _PixelScale: 4
+    - _PixelScale: 10
     - _SRPBatcherBreak: 0
     m_Colors:
     - _PosterizeSteps: {r: 32, g: 32, b: 32, a: 0}

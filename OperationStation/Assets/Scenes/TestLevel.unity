@@ -1665,6 +1665,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6177590523383384386, guid: c6cdb4723017453458a83b33399a1186, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6248978227986569268, guid: c6cdb4723017453458a83b33399a1186, type: 3}
       propertyPath: m_Name
       value: MinimapBackground
@@ -2887,6 +2891,22 @@ PrefabInstance:
     - target: {fileID: 5325266959878535145, guid: 89c81f349c8174d40baacf1394ce8256, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 5529492935763083910, guid: 89c81f349c8174d40baacf1394ce8256, type: 3}
+      propertyPath: m_RendererIndex
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5529492935763083910, guid: 89c81f349c8174d40baacf1394ce8256, type: 3}
+      propertyPath: m_RenderPostProcessing
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5529492935763083910, guid: 89c81f349c8174d40baacf1394ce8256, type: 3}
+      propertyPath: m_RequiresDepthTextureOption
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5529492935763083910, guid: 89c81f349c8174d40baacf1394ce8256, type: 3}
+      propertyPath: m_RequiresOpaqueTextureOption
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -1040,6 +1040,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Untagged
       objectReference: {fileID: 0}
+    - target: {fileID: 1049651787644488027, guid: 8bbab4fe034508a479f493ce51e62e30, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -221.90479
+      objectReference: {fileID: 0}
     - target: {fileID: 2757602734984006788, guid: 8bbab4fe034508a479f493ce51e62e30, type: 3}
       propertyPath: m_TagString
       value: Untagged

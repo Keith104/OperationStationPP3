@@ -88,7 +88,6 @@ public class SceneTransition : MonoBehaviour
 
     float hintsNextCycleAt = 0f;
 
-    // Tracks new-scene Selectables we temporarily disable, so we can restore them
     struct SavedSelectableState { public Selectable sel; public bool wasInteractable; }
     readonly List<SavedSelectableState> _disabledNewSceneUI = new List<SavedSelectableState>();
     bool _armDisableNewSceneUI = false;
@@ -126,7 +125,7 @@ public class SceneTransition : MonoBehaviour
         ort.anchorMax = Vector2.one;
         ort.offsetMin = Vector2.zero;
         ort.offsetMax = Vector2.zero;
-        overlay.raycastTarget = false; // default off; we enable it during transitions
+        overlay.raycastTarget = false;
 
         runtimeMat = new Material(wipeMaterial);
         overlay.material = runtimeMat;
@@ -144,15 +143,18 @@ public class SceneTransition : MonoBehaviour
 
     void EnsureEventSystem()
     {
-        if (EventSystem.current == null)
+        var es = EventSystem.current ?? FindObjectOfType<EventSystem>(true);
+        if (es == null)
         {
-            var es = new GameObject("EventSystem").AddComponent<EventSystem>();
+            es = new GameObject("EventSystem").AddComponent<EventSystem>();
             es.gameObject.AddComponent<InputSystemUIInputModule>();
-            DontDestroyOnLoad(es.gameObject);
         }
-        else if (EventSystem.current.GetComponent<InputSystemUIInputModule>() == null)
+        else
         {
-            EventSystem.current.gameObject.AddComponent<InputSystemUIInputModule>();
+            var legacy = es.GetComponent<StandaloneInputModule>();
+            if (legacy) Destroy(legacy);
+            if (es.GetComponent<InputSystemUIInputModule>() == null)
+                es.gameObject.AddComponent<InputSystemUIInputModule>();
         }
     }
 
@@ -380,11 +382,8 @@ public class SceneTransition : MonoBehaviour
     void OnHintNext(InputAction.CallbackContext ctx) { if (hintsText != null && hintsText.enabled) NextHint(); }
     void OnHintPrev(InputAction.CallbackContext ctx) { if (hintsText != null && hintsText.enabled) PrevHint(); }
 
-    // Clear selection and optional hover arrows
     void ClearUISelectionAndArrows()
     {
-        // If you use a hover arrow helper, you can clear it here.
-        // Remove these two lines if you don't have UIHoverArrow in your project.
         UIHoverArrow.HideAll();
         UIHoverArrow.KeyboardMode = false;
 
@@ -416,15 +415,15 @@ public class SceneTransition : MonoBehaviour
             Instance.StartCoroutine(Instance.CoverLoadRevealOptions(scene, false, false));
     }
 
-    // Disable all Selectables in the newly loaded scene (except our overlay canvas)
     void HandleSceneLoadedDisableUI(Scene scene, LoadSceneMode mode)
     {
         if (!_armDisableNewSceneUI) return;
         _armDisableNewSceneUI = false;
         SceneManager.sceneLoaded -= HandleSceneLoadedDisableUI;
 
-        _disabledNewSceneUI.Clear();
+        EnsureSingleEventSystemFor(scene);
 
+        _disabledNewSceneUI.Clear();
         var roots = scene.GetRootGameObjects();
         foreach (var root in roots)
         {
@@ -457,8 +456,6 @@ public class SceneTransition : MonoBehaviour
 
         runtimeMat.SetFloat("_Progress", 0f);
         overlay.enabled = true;
-
-        // Block all clicks beneath during transition; button will be above overlay
         overlay.raycastTarget = true;
 
         SetLoadingVisible(false);
@@ -496,7 +493,7 @@ public class SceneTransition : MonoBehaviour
                 var es = EventSystem.current;
                 if (es != null)
                 {
-                    UIHoverArrow.KeyboardMode = true; // optional helper
+                    UIHoverArrow.KeyboardMode = true;
                     es.SetSelectedGameObject(continueButton.gameObject);
                 }
 
@@ -513,7 +510,6 @@ public class SceneTransition : MonoBehaviour
 
         ClearUISelectionAndArrows();
 
-        // Arm: as soon as the new scene activates, we disable its UI until reveal completes
         _armDisableNewSceneUI = true;
         SceneManager.sceneLoaded += HandleSceneLoadedDisableUI;
 
@@ -526,9 +522,10 @@ public class SceneTransition : MonoBehaviour
         runtimeMat.SetFloat("_Progress", 1f);
         yield return Animate(1f, 0f, revealDuration, revealEase);
 
-        // Reveal complete: restore new-scene UI and stop blocking raycasts
         RestoreNewSceneUI();
         overlay.raycastTarget = false;
+
+        ForceUnpaused();  // <— ensure gameplay resumes
 
         overlay.enabled = false;
         ClearUISelectionAndArrows();
@@ -545,8 +542,6 @@ public class SceneTransition : MonoBehaviour
 
         runtimeMat.SetFloat("_Progress", 0f);
         overlay.enabled = true;
-
-        // Block all clicks beneath during transition; button will be above overlay
         overlay.raycastTarget = true;
 
         SetLoadingVisible(false);
@@ -584,7 +579,7 @@ public class SceneTransition : MonoBehaviour
                 var es = EventSystem.current;
                 if (es != null)
                 {
-                    UIHoverArrow.KeyboardMode = true; // optional helper
+                    UIHoverArrow.KeyboardMode = true;
                     es.SetSelectedGameObject(continueButton.gameObject);
                 }
 
@@ -613,9 +608,10 @@ public class SceneTransition : MonoBehaviour
         runtimeMat.SetFloat("_Progress", 1f);
         yield return Animate(1f, 0f, revealDuration, revealEase);
 
-        // Reveal complete: restore new-scene UI and stop blocking raycasts
         RestoreNewSceneUI();
         overlay.raycastTarget = false;
+
+        ForceUnpaused();  // <— ensure gameplay resumes
 
         overlay.enabled = false;
         ClearUISelectionAndArrows();
@@ -648,5 +644,30 @@ public class SceneTransition : MonoBehaviour
             hints[j] = tmp;
         }
         currentHintIndex = 0;
+    }
+
+    void EnsureSingleEventSystemFor(Scene scene)
+    {
+        var all = FindObjectsOfType<EventSystem>(true);
+        if (all == null || all.Length == 0) return;
+
+        EventSystem keep = null;
+        foreach (var es in all)
+            if (es && es.gameObject.scene == scene) { keep = es; break; }
+        if (keep == null) keep = all[0];
+
+        foreach (var es in all)
+            if (es && es != keep) Destroy(es.gameObject);
+
+        var legacy = keep.GetComponent<StandaloneInputModule>();
+        if (legacy) Destroy(legacy);
+        if (keep.GetComponent<InputSystemUIInputModule>() == null)
+            keep.gameObject.AddComponent<InputSystemUIInputModule>();
+    }
+
+    static void ForceUnpaused()
+    {
+        if (Time.timeScale != 1f) Time.timeScale = 1f;
+        if (AudioListener.pause) AudioListener.pause = false;
     }
 }
