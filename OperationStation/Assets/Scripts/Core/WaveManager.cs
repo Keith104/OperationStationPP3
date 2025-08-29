@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class WaveManager : MonoBehaviour
 {
@@ -6,19 +7,20 @@ public class WaveManager : MonoBehaviour
     public static WaveManager instance;
 
     [SerializeField] float spawnTime;
+    [SerializeField] float startingGracePeriod;
     [SerializeField] public int maxEnemies;
     [SerializeField] Transform[] spawnPoints;
     [SerializeField] EnemiesSO[] enemies;
 
     public int curEnemies;
     private float timer;
-    private float spawnTimeOG;
+    private int tier = 0;
     private int randSpawn;
+    private bool waiting = false;
     
     void Start()
     {
         instance = this;
-        spawnTimeOG = spawnTime;
     }
 
     void Update()
@@ -38,6 +40,9 @@ public class WaveManager : MonoBehaviour
 
         timer = 0;
 
+        if (waiting)
+            return;
+
         RandomizeSpawn();
 
         //If the max enemies it less than or equal to current amount of enemies they won't spawn anymore
@@ -46,7 +51,7 @@ public class WaveManager : MonoBehaviour
             return;
         }
 
-        Debug.Log("Spawn Enemy 'BowFighter'");
+        /*Debug.Log("Spawn Enemy 'BowFighter'");
         //It makes a BowFighter ups the current enemies and lowers spawn time by 10
         Instantiate(enemies[0].enemyObject, spawnPoints[randSpawn]);
         enemies[0].found = true;
@@ -82,7 +87,50 @@ public class WaveManager : MonoBehaviour
             enemies[3].found = true;
             curEnemies += 3;
         }
-        spawnTime = spawnTimeOG;
+        spawnTime = spawnTimeOG; */
+
+        switch (tier)
+        {
+            case 0:
+                StartCoroutine(Wait(startingGracePeriod));
+                break;
+
+            case 1:
+                Instantiate(enemies[0].enemyObject, spawnPoints[randSpawn]);
+                enemies[0].found = true;
+                curEnemies++;
+                break;
+
+            case 2:
+                Instantiate(enemies[1].enemyObject, spawnPoints[randSpawn]);
+                enemies[1].found = true;
+                curEnemies++;
+                break;
+
+            case 3:
+                Instantiate(enemies[4].enemyObject, spawnPoints[randSpawn]);
+                enemies[4].found = true;
+                curEnemies++;
+                break;
+
+            case 4:
+                Instantiate(enemies[2].enemyObject, spawnPoints[randSpawn]);
+                enemies[2].found = true;
+                curEnemies++;
+                break;
+
+            case 5:
+                Instantiate(enemies[3].enemyObject, spawnPoints[randSpawn]);
+                enemies[3].found = true;
+                curEnemies += 3;
+                break;
+
+            case 6:
+                tier = 0;
+                break;
+        }
+
+        tier++;
     }
 
     //Keeps track of dead enemies with EnemyAI script
@@ -92,8 +140,15 @@ public class WaveManager : MonoBehaviour
     }
 
     //Randomizes the spawnpoints of enemies
-    void RandomizeSpawn()
+    private void RandomizeSpawn()
     {
         randSpawn = Random.Range(0, spawnPoints.Length);
+    }
+
+    private IEnumerator Wait(float waitTime)
+    {
+        waiting = true;
+        yield return new WaitForSeconds(waitTime);
+        waiting = false;
     }
 }
