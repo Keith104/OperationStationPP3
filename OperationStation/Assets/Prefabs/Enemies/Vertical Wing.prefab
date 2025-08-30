@@ -63,6 +63,9 @@ MonoBehaviour:
   enemy: {fileID: 11400000, guid: fc52f24a5ec8df34b9ebcdd704ad542f, type: 2}
   agent: {fileID: 8909417233075275603}
   enemyToSpawn: {fileID: 0}
+  layer:
+    serializedVersion: 2
+    m_Bits: 1
   isSlowed: 0
   shootPos: {fileID: 151835495102035083}
   spinFire: 0

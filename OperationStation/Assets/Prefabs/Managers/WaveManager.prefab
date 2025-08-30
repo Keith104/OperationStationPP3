@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3644007769742378077
 Transform:
   m_ObjectHideFlags: 0
@@ -44,8 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b3a78a144f94aa448a70963a3d52672, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnTime: 10
-  maxEnemies: 3
+  spawnTime: 5
+  maxEnemies: 5
   spawnPoints:
   - {fileID: 0}
   - {fileID: 0}

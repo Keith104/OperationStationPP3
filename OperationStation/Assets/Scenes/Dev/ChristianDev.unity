@@ -307,7 +307,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &106974523
 Transform:
   m_ObjectHideFlags: 0
@@ -1978,18 +1978,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3837993981877510816, guid: 878bd3ae4a8d22d458b4b0888a486e7c, type: 3}
-      propertyPath: spawnTime
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3837993981877510816, guid: 878bd3ae4a8d22d458b4b0888a486e7c, type: 3}
-      propertyPath: maxEnemies
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3837993981877510816, guid: 878bd3ae4a8d22d458b4b0888a486e7c, type: 3}
-      propertyPath: startingGracePeriod
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 3837993981877510816, guid: 878bd3ae4a8d22d458b4b0888a486e7c, type: 3}
       propertyPath: 'spawnPoints.Array.data[0]'
       value: 
       objectReference: {fileID: 904285284}
@@ -2008,10 +1996,6 @@ PrefabInstance:
     - target: {fileID: 8338557429621829542, guid: 878bd3ae4a8d22d458b4b0888a486e7c, type: 3}
       propertyPath: m_Name
       value: WaveManager
-      objectReference: {fileID: 0}
-    - target: {fileID: 8338557429621829542, guid: 878bd3ae4a8d22d458b4b0888a486e7c, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
