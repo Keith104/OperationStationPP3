@@ -566,6 +566,10 @@ MonoBehaviour:
   urpLitShaderName: Universal Render Pipeline/Lit
   psxShaderName: PSX/AffineUnlit
   variantHandling: 0
+  pixelationMaterial: {fileID: 2100000, guid: 1e1149ee75533664d8789ae4f629d024, type: 2}
+  pixelScaleProperty: _PixelScale
+  pixelScale_Standalone: 10
+  pixelScale_WebGL: 4
 --- !u!4 &874101942
 Transform:
   m_ObjectHideFlags: 0
