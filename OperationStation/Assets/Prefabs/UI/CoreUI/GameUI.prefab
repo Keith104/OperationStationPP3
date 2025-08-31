@@ -42687,6 +42687,8 @@ MonoBehaviour:
   buildMenu: {fileID: 4282290852086697411}
   enableBuilding: {fileID: 6955234167214840071}
   worldBuildParent: {fileID: 0}
+  adjacencyRadius: 2
+  armPlacementDelay: 0.25
   deathCatCosts: []
   basicTurretCosts:
   - type: 0

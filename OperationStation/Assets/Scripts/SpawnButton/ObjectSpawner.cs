@@ -32,6 +32,7 @@ public class ObjectSpawner : MonoBehaviour
     [SerializeField] Transform worldBuildParent;
 
     public float adjacencyRadius = 1.25f;
+    public float armPlacementDelay = 0.25f;
 
     private GameObject objectToInstantiate;
     private Vector3 spawnLocation;
@@ -84,7 +85,6 @@ public class ObjectSpawner : MonoBehaviour
 
     void CloseBuildMenu()
     {
-        Debug.Log("[Spawner] Closing build menu.");
         LevelUIManager.instance.SetActiveMenu(enableBuilding);
         awaitingPlacement = false;
         isDefence = false;
@@ -107,13 +107,16 @@ public class ObjectSpawner : MonoBehaviour
 
     void BeginPlacementIfAffordable(GameObject prefab, List<ResourceCostSpawner> costs, bool defence, Action afterBegin)
     {
-        if (!CanAfford(costs))
-        {
-            Debug.LogWarning($"[Spawner] Cannot afford {prefab?.name}");
-            return;
-        }
+        if (!CanAfford(costs)) return;
+        StartCoroutine(DelayedPlacement(prefab, costs, defence, afterBegin));
+    }
 
-        Debug.Log($"[Spawner] Beginning placement for {prefab?.name}, defence={defence}");
+    IEnumerator DelayedPlacement(GameObject prefab, List<ResourceCostSpawner> costs, bool defence, Action afterBegin)
+    {
+        yield return new WaitForSeconds(armPlacementDelay);
+        if (globalPlacingLock) yield break;
+        if (placementOwner != null && placementOwner != this) yield break;
+        if (awaitingPlacement) yield break;
 
         placementOwner = this;
         awaitingPlacement = true;
@@ -138,7 +141,6 @@ public class ObjectSpawner : MonoBehaviour
 
         if (!isDefence)
         {
-            Debug.Log("[Spawner] Trying to place a module...");
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             var hits = Physics.RaycastAll(ray, Mathf.Infinity);
             float bestDist = float.MaxValue;
@@ -154,24 +156,9 @@ public class ObjectSpawner : MonoBehaviour
                     tileGO = t.gameObject;
                 }
             }
-            if (tile == null)
-            {
-                Debug.LogWarning("[Spawner] No tile hit.");
-                return;
-            }
-
-            Debug.Log($"[Spawner] Hit tile {tile.name} at {tile.transform.position}");
-
-            if (!HasAdjacentModule(tile.transform.position))
-            {
-                Debug.LogWarning("[Spawner] Tile not adjacent to any module.");
-                return;
-            }
-            if (!TrySpend(pendingCosts))
-            {
-                Debug.LogWarning("[Spawner] Failed to spend resources.");
-                return;
-            }
+            if (tile == null) return;
+            if (!HasAdjacentModule(tile.transform.position)) return;
+            if (!TrySpend(pendingCosts)) return;
 
             globalPlacingLock = true;
             awaitingPlacement = false;
@@ -179,11 +166,15 @@ public class ObjectSpawner : MonoBehaviour
             spawnLocation = tileGO.transform.position;
             Transform parent = worldBuildParent != null ? worldBuildParent : tileGO.transform.parent;
 
-            Instantiate(objectToInstantiate, spawnLocation, Quaternion.identity, parent);
-            Debug.Log($"[Spawner] Instantiated module {objectToInstantiate.name} at {spawnLocation}");
+            var instance = Instantiate(objectToInstantiate, spawnLocation, Quaternion.identity, parent);
+
+            var clickedGrid = tileGO.GetComponentInParent<GridSystem>();
+            if (clickedGrid) clickedGrid.ForceRefreshImmediate();
+
+            var newGrid = instance.GetComponentInChildren<GridSystem>();
+            if (newGrid) newGrid.ForceRefreshImmediate();
 
             pendingCosts = null;
-
             objectToInstantiate = null;
             if (viewing != null) viewing.isDefenceBuildActive = false;
             HidePlacementTiles();
@@ -193,20 +184,10 @@ public class ObjectSpawner : MonoBehaviour
         }
         else
         {
-            Debug.Log("[Spawner] Trying to place a defence...");
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
-            if (!Physics.Raycast(ray, out hit, Mathf.Infinity, buildLayer))
-            {
-                Debug.LogWarning("[Spawner] Defence raycast missed build layer.");
-                return;
-            }
-
-            if (!TrySpend(pendingCosts))
-            {
-                Debug.LogWarning("[Spawner] Failed to spend resources.");
-                return;
-            }
+            if (!Physics.Raycast(ray, out hit, Mathf.Infinity, buildLayer)) return;
+            if (!TrySpend(pendingCosts)) return;
 
             globalPlacingLock = true;
             awaitingPlacement = false;
@@ -216,8 +197,6 @@ public class ObjectSpawner : MonoBehaviour
             Transform parent = worldBuildParent != null ? worldBuildParent : null;
 
             Instantiate(objectToInstantiate, spawnLocation, Quaternion.identity, parent);
-            Debug.Log($"[Spawner] Instantiated defence {objectToInstantiate.name} at {spawnLocation}");
-
             isDefence = false;
             pendingCosts = null;
 
@@ -232,11 +211,7 @@ public class ObjectSpawner : MonoBehaviour
     IEnumerator RemoveTileNextFrame(GameObject tileGO)
     {
         yield return null;
-        if (tileGO)
-        {
-            Debug.Log($"[Spawner] Destroying tile {tileGO.name}");
-            Destroy(tileGO);
-        }
+        if (tileGO) Destroy(tileGO);
     }
 
     bool HasAdjacentModule(Vector3 position)
@@ -245,25 +220,19 @@ public class ObjectSpawner : MonoBehaviour
         for (int i = 0; i < cols.Length; i++)
         {
             if (!cols[i]) continue;
-            if (cols[i].GetComponentInParent<Module>() != null)
-            {
-                Debug.Log($"[Spawner] Found adjacent module near {position}");
-                return true;
-            }
+            if (cols[i].GetComponentInParent<Module>() != null) return true;
         }
         return false;
     }
 
     void ShowPlacementTiles()
     {
-        Debug.Log("[Spawner] Showing placement tiles.");
         var tiles = FindObjectsByType<Tile>(FindObjectsSortMode.None);
         for (int i = 0; i < tiles.Length; i++) if (tiles[i]) tiles[i].gameObject.SetActive(true);
     }
 
     void HidePlacementTiles()
     {
-        Debug.Log("[Spawner] Hiding placement tiles.");
         var tiles = FindObjectsByType<Tile>(FindObjectsSortMode.None);
         for (int i = 0; i < tiles.Length; i++) if (tiles[i]) tiles[i].gameObject.SetActive(false);
     }
@@ -273,30 +242,20 @@ public class ObjectSpawner : MonoBehaviour
         while (Mouse.current != null ? Mouse.current.leftButton.isPressed : Input.GetMouseButton(0)) yield return null;
         yield return null;
         globalPlacingLock = false;
-        Debug.Log("[Spawner] Released global lock after mouse up.");
     }
 
     bool TrySpend(List<ResourceCostSpawner> costs)
     {
         if (!CanAfford(costs)) return false;
         if (costs == null) return true;
-        foreach (var c in costs)
-        {
-            Debug.Log($"[Spawner] Spending {c.amount} of {c.type}");
-            ResourceManager.instance.RemoveResource(c.type, c.amount);
-        }
+        foreach (var c in costs) ResourceManager.instance.RemoveResource(c.type, c.amount);
         return true;
     }
 
     bool CanAfford(List<ResourceCostSpawner> costs)
     {
         if (costs == null) return true;
-        foreach (var c in costs)
-        {
-            int have = GetAmount(c.type);
-            Debug.Log($"[Spawner] Checking cost: need {c.amount} {c.type}, have {have}");
-            if (have < c.amount) return false;
-        }
+        foreach (var c in costs) if (GetAmount(c.type) < c.amount) return false;
         return true;
     }
 
