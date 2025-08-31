@@ -14,6 +14,9 @@ public struct ResourceCostSpawner
 
 public class ObjectSpawner : MonoBehaviour
 {
+    [SerializeField] GameObject buildButton;
+    [SerializeField] ButtonFunctions buttonFunctions;
+    
     public GameObject deathCat;
     public GameObject basicTurret;
     public GameObject laserTurret;
@@ -225,6 +228,7 @@ public class ObjectSpawner : MonoBehaviour
     {
         if (costs == null) return true;
         foreach (var c in costs) if (GetAmount(c.type) < c.amount) return false;
+        buttonFunctions.SetActiveMenu(buildButton);
         return true;
     }
 

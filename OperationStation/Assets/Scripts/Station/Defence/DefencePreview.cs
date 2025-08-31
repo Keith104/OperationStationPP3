@@ -14,7 +14,7 @@ public class DefencePreview : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isDefenceBuildActive) 
+        if (isDefenceBuildActive == true) 
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
@@ -38,16 +38,11 @@ public class DefencePreview : MonoBehaviour
 
         }
 
-        if(preview != null && isDefenceBuildActive == false)
-        {
-            Destroy(preview);
-        }
+        if (preview != null && isDefenceBuildActive == false)Destroy(preview);
     }
 
     public void PreviewDefence(GameObject defence)
     {
-        BoxCollider defenceCollider = defence.GetComponent<BoxCollider>();
-        defenceCollider.enabled = false;
         isDefenceBuildActive = true;
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -56,5 +51,7 @@ public class DefencePreview : MonoBehaviour
         Vector3 spawnLocation = hit.point + hit.normal * 0.5f;
 
         preview = Instantiate(defence, spawnLocation, Quaternion.identity);
+        BoxCollider defenceCollider = preview.GetComponent<BoxCollider>();
+        defenceCollider.enabled = false;
     }
 }
