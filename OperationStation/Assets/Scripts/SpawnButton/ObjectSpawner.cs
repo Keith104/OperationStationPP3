@@ -19,7 +19,6 @@ public class ObjectSpawner : MonoBehaviour
     public GameObject nullSpaceFabricator;
     public GameObject wall;
     public GameObject grapeJam;
-
     public GameObject poloniumReactor;
     public GameObject smelter;
     public GameObject solarPanelArray;
@@ -51,6 +50,8 @@ public class ObjectSpawner : MonoBehaviour
     public DefencePreview viewing;
 
     PlayerInput controls;
+
+    bool placingLock;
 
     void Awake()
     {
@@ -109,6 +110,7 @@ public class ObjectSpawner : MonoBehaviour
     void Update()
     {
         if (!(awaitingPlacement && Input.GetMouseButtonDown(0) && objectToInstantiate != null)) return;
+        if (placingLock) return;
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
@@ -132,20 +134,26 @@ public class ObjectSpawner : MonoBehaviour
             if (tile == null) return;
             if (!TrySpend(pendingCosts)) return;
 
+            awaitingPlacement = false;
+            placingLock = true;
+
             var grid = tile.GetComponentInParent<GridSystem>();
             Vector3 location = hitObject.transform.position;
             if (grid != null) grid.spawnAvailableSpaces();
             spawnLocation = location;
 
             Instantiate(objectToInstantiate, spawnLocation, Quaternion.identity, hitObject.transform.parent);
-            awaitingPlacement = false;
             pendingCosts = null;
             Destroy(hitObject);
+            StartCoroutine(ReleasePlacingLockEndOfFrame());
         }
         else
         {
             if (defence != null || tile != null) return;
             if (!TrySpend(pendingCosts)) return;
+
+            awaitingPlacement = false;
+            placingLock = true;
 
             spawnLocation = hit.point + hit.normal * 0.5f;
 
@@ -157,11 +165,19 @@ public class ObjectSpawner : MonoBehaviour
             }
 
             Instantiate(objectToInstantiate, spawnLocation, Quaternion.identity, parent);
-            awaitingPlacement = false;
             isDefence = false;
             pendingCosts = null;
             if (viewing != null) viewing.isDefenceBuildActive = false;
+
+            StartCoroutine(ReleasePlacingLockEndOfFrame());
         }
+    }
+
+    IEnumerator ReleasePlacingLockEndOfFrame()
+    {
+        yield return new WaitForEndOfFrame();
+        objectToInstantiate = null;
+        placingLock = false;
     }
 
     bool TrySpend(List<ResourceCostSpawner> costs)

@@ -1861,7 +1861,7 @@ PrefabInstance:
       objectReference: {fileID: 773878212}
     - target: {fileID: 407044232399590319, guid: 378dfb21a7053fa45af7872900090337, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: QuitButton
+      value: ToMainMenuButton
       objectReference: {fileID: 0}
     - target: {fileID: 696664918294572944, guid: 378dfb21a7053fa45af7872900090337, type: 3}
       propertyPath: cat
@@ -1927,14 +1927,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 6450265294638225200, guid: 378dfb21a7053fa45af7872900090337, type: 3}
-      propertyPath: consoleAllowed
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6450265294638225200, guid: 378dfb21a7053fa45af7872900090337, type: 3}
-      propertyPath: uiNeverDisableRoot
-      value: 
-      objectReference: {fileID: 922158423}
     - target: {fileID: 6450265294638225200, guid: 378dfb21a7053fa45af7872900090337, type: 3}
       propertyPath: actionsAssetOverride
       value: 

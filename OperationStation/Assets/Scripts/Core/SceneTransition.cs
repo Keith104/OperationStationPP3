@@ -90,7 +90,9 @@ public class SceneTransition : MonoBehaviour
 
     struct SavedSelectableState { public Selectable sel; public bool wasInteractable; }
     readonly List<SavedSelectableState> _disabledNewSceneUI = new List<SavedSelectableState>();
+    readonly List<SavedSelectableState> _disabledActiveSceneUI = new List<SavedSelectableState>();
     bool _armDisableNewSceneUI = false;
+    bool _continueClicked = false;
 
     void Awake()
     {
@@ -280,9 +282,17 @@ public class SceneTransition : MonoBehaviour
             le.preferredHeight = r.sizeDelta.y;
         }
 
+        btn.onClick.RemoveAllListeners();
+        btn.onClick.AddListener(OnContinuePressed);
+
         btn.gameObject.SetActive(false);
         btn.transform.SetAsLastSibling();
         return btn;
+    }
+
+    void OnContinuePressed()
+    {
+        _continueClicked = true;
     }
 
     void SetLoadingVisible(bool v)
@@ -386,7 +396,6 @@ public class SceneTransition : MonoBehaviour
     {
         UIHoverArrow.HideAll();
         UIHoverArrow.KeyboardMode = false;
-
         var es = EventSystem.current;
         if (es != null) es.SetSelectedGameObject(null);
     }
@@ -447,6 +456,34 @@ public class SceneTransition : MonoBehaviour
         _disabledNewSceneUI.Clear();
     }
 
+    void DisableAllSelectablesExceptContinue()
+    {
+        _disabledActiveSceneUI.Clear();
+        var scene = SceneManager.GetActiveScene();
+        var roots = scene.GetRootGameObjects();
+        foreach (var root in roots)
+        {
+            var sels = root.GetComponentsInChildren<Selectable>(true);
+            foreach (var s in sels)
+            {
+                if (!s) continue;
+                if (continueButton != null && s == continueButton) continue;
+                _disabledActiveSceneUI.Add(new SavedSelectableState { sel = s, wasInteractable = s.interactable });
+                s.interactable = false;
+            }
+        }
+    }
+
+    void RestoreActiveSceneUI()
+    {
+        for (int i = 0; i < _disabledActiveSceneUI.Count; i++)
+        {
+            var entry = _disabledActiveSceneUI[i];
+            if (entry.sel) entry.sel.interactable = entry.wasInteractable;
+        }
+        _disabledActiveSceneUI.Clear();
+    }
+
     IEnumerator CoverLoadRevealOptions(string sceneName, bool showHintsDuringLoad, bool showContinueButton)
     {
         if (isRunning) yield break;
@@ -480,28 +517,23 @@ public class SceneTransition : MonoBehaviour
 
         if (showContinueButton)
         {
+            SetLoadingVisible(false);
+            if (overlay != null) overlay.raycastTarget = false;
             if (continueButton == null) continueButton = BuildContinueButton();
-            if (continueButton != null)
+            continueButton.transform.SetAsLastSibling();
+            continueButton.interactable = true;
+            continueButton.gameObject.SetActive(true);
+            DisableAllSelectablesExceptContinue();
+            _continueClicked = false;
+            var es = EventSystem.current;
+            if (es != null)
             {
-                SetLoadingVisible(false);
-                continueButton.gameObject.SetActive(true);
-
-                bool clicked = false;
-                continueButton.onClick.RemoveAllListeners();
-                continueButton.onClick.AddListener(() => clicked = true);
-
-                var es = EventSystem.current;
-                if (es != null)
-                {
-                    UIHoverArrow.KeyboardMode = true;
-                    es.SetSelectedGameObject(continueButton.gameObject);
-                }
-
-                while (!clicked) yield return null;
-
-                ClearUISelectionAndArrows();
-                continueButton.gameObject.SetActive(false);
+                UIHoverArrow.KeyboardMode = true;
+                es.SetSelectedGameObject(continueButton.gameObject);
             }
+            while (!_continueClicked) yield return null;
+            ClearUISelectionAndArrows();
+            continueButton.gameObject.SetActive(false);
         }
         else
         {
@@ -513,6 +545,7 @@ public class SceneTransition : MonoBehaviour
         _armDisableNewSceneUI = true;
         SceneManager.sceneLoaded += HandleSceneLoadedDisableUI;
 
+        RestoreActiveSceneUI();
         op.allowSceneActivation = true;
         while (!op.isDone) yield return null;
 
@@ -525,7 +558,7 @@ public class SceneTransition : MonoBehaviour
         RestoreNewSceneUI();
         overlay.raycastTarget = false;
 
-        ForceUnpaused();  // <— ensure gameplay resumes
+        ForceUnpaused();
 
         overlay.enabled = false;
         ClearUISelectionAndArrows();
@@ -566,28 +599,23 @@ public class SceneTransition : MonoBehaviour
 
         if (showContinueButton)
         {
+            SetLoadingVisible(false);
+            if (overlay != null) overlay.raycastTarget = false;
             if (continueButton == null) continueButton = BuildContinueButton();
-            if (continueButton != null)
+            continueButton.transform.SetAsLastSibling();
+            continueButton.interactable = true;
+            continueButton.gameObject.SetActive(true);
+            DisableAllSelectablesExceptContinue();
+            _continueClicked = false;
+            var es = EventSystem.current;
+            if (es != null)
             {
-                SetLoadingVisible(false);
-                continueButton.gameObject.SetActive(true);
-
-                bool clicked = false;
-                continueButton.onClick.RemoveAllListeners();
-                continueButton.onClick.AddListener(() => clicked = true);
-
-                var es = EventSystem.current;
-                if (es != null)
-                {
-                    UIHoverArrow.KeyboardMode = true;
-                    es.SetSelectedGameObject(continueButton.gameObject);
-                }
-
-                while (!clicked) yield return null;
-
-                ClearUISelectionAndArrows();
-                continueButton.gameObject.SetActive(false);
+                UIHoverArrow.KeyboardMode = true;
+                es.SetSelectedGameObject(continueButton.gameObject);
             }
+            while (!_continueClicked) yield return null;
+            ClearUISelectionAndArrows();
+            continueButton.gameObject.SetActive(false);
         }
         else
         {
@@ -599,6 +627,7 @@ public class SceneTransition : MonoBehaviour
         _armDisableNewSceneUI = true;
         SceneManager.sceneLoaded += HandleSceneLoadedDisableUI;
 
+        RestoreActiveSceneUI();
         op.allowSceneActivation = true;
         while (!op.isDone) yield return null;
 
@@ -611,7 +640,7 @@ public class SceneTransition : MonoBehaviour
         RestoreNewSceneUI();
         overlay.raycastTarget = false;
 
-        ForceUnpaused();  // <— ensure gameplay resumes
+        ForceUnpaused();
 
         overlay.enabled = false;
         ClearUISelectionAndArrows();

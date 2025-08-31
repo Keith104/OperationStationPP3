@@ -170,8 +170,11 @@ public class PauseManager : MonoBehaviour
 #endif
     }
 
-    public void ToMainMenuButton(string sceneName) =>
+    public void ToMainMenuButton(string sceneName)
+    {
         SceneTransition.RunNoHints(sceneName);
+        UnlockOtherUI();
+    }
 
     public void AddToActiveMenus(GameObject menuToAdd)
     {

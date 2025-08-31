@@ -8172,7 +8172,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03c498d8148c7de4c8bdb84aec9846f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  consoleAllowed: 0
+  consoleAllowed: 1
   consoleRoot: {fileID: 142190858582082203}
   inputField: {fileID: 4816384362861038367}
   outputText: {fileID: 1615469951122917990}
