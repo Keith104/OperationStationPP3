@@ -75,10 +75,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   module: {fileID: 6441910625288224433}
-  _tilePrefab: {fileID: 2818478639610119390, guid: c0c9f63d750695548aa9826a36d776a2, type: 3}
+  tilePrefab: {fileID: 2818478639610119390, guid: c0c9f63d750695548aa9826a36d776a2, type: 3}
   modelOne: {fileID: 6997819737401769385}
   modelTwo: {fileID: 8948778342279051381}
   highlight: {fileID: 2100000, guid: 483273422efa533489715501a270de4a, type: 2}
+  cellSize: 1
+  checkRadius: 0.4
+  refreshInterval: 0.15
 --- !u!114 &6441910625288224433
 MonoBehaviour:
   m_ObjectHideFlags: 0

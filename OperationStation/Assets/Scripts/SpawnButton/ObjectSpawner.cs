@@ -61,7 +61,6 @@ public class ObjectSpawner : MonoBehaviour
     void Awake()
     {
         controls = new PlayerInput();
-        HidePlacementTiles();
     }
 
     void OnEnable()
@@ -92,7 +91,6 @@ public class ObjectSpawner : MonoBehaviour
         pendingCosts = null;
         if (viewing != null) viewing.isDefenceBuildActive = false;
         if (placementOwner == this) placementOwner = null;
-        HidePlacementTiles();
     }
 
     public void DeathCatSpawn() { BeginPlacementIfAffordable(deathCat, deathCatCosts, false, null); }
@@ -124,9 +122,6 @@ public class ObjectSpawner : MonoBehaviour
         objectToInstantiate = prefab;
         pendingCosts = (costs != null) ? new List<ResourceCostSpawner>(costs) : null;
         afterBegin?.Invoke();
-
-        if (!defence) ShowPlacementTiles();
-        else HidePlacementTiles();
     }
 
     void Update()
@@ -157,7 +152,6 @@ public class ObjectSpawner : MonoBehaviour
                 }
             }
             if (tile == null) return;
-            if (!HasAdjacentModule(tile.transform.position)) return;
             if (!TrySpend(pendingCosts)) return;
 
             globalPlacingLock = true;
@@ -177,7 +171,6 @@ public class ObjectSpawner : MonoBehaviour
             pendingCosts = null;
             objectToInstantiate = null;
             if (viewing != null) viewing.isDefenceBuildActive = false;
-            HidePlacementTiles();
             StartCoroutine(RemoveTileNextFrame(tileGO));
             StartCoroutine(ReleaseGlobalLockAfterMouseUp());
             placementOwner = null;
@@ -202,7 +195,6 @@ public class ObjectSpawner : MonoBehaviour
 
             objectToInstantiate = null;
             if (viewing != null) viewing.isDefenceBuildActive = false;
-            HidePlacementTiles();
             StartCoroutine(ReleaseGlobalLockAfterMouseUp());
             placementOwner = null;
         }
@@ -212,29 +204,6 @@ public class ObjectSpawner : MonoBehaviour
     {
         yield return null;
         if (tileGO) Destroy(tileGO);
-    }
-
-    bool HasAdjacentModule(Vector3 position)
-    {
-        var cols = Physics.OverlapSphere(position, adjacencyRadius);
-        for (int i = 0; i < cols.Length; i++)
-        {
-            if (!cols[i]) continue;
-            if (cols[i].GetComponentInParent<Module>() != null) return true;
-        }
-        return false;
-    }
-
-    void ShowPlacementTiles()
-    {
-        var tiles = FindObjectsByType<Tile>(FindObjectsSortMode.None);
-        for (int i = 0; i < tiles.Length; i++) if (tiles[i]) tiles[i].gameObject.SetActive(true);
-    }
-
-    void HidePlacementTiles()
-    {
-        var tiles = FindObjectsByType<Tile>(FindObjectsSortMode.None);
-        for (int i = 0; i < tiles.Length; i++) if (tiles[i]) tiles[i].gameObject.SetActive(false);
     }
 
     IEnumerator ReleaseGlobalLockAfterMouseUp()
