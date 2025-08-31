@@ -141,6 +141,7 @@ public class PauseManager : MonoBehaviour
         }
 
         Debug.Log("Loading Main Menu");
+        ResourceManager.instance.ResetResources();
         SceneTransition.RunNoHints(sceneName);
 #else
         if (quitConfirmPopup != null)
@@ -172,6 +173,7 @@ public class PauseManager : MonoBehaviour
 
     public void ToMainMenuButton(string sceneName)
     {
+        ResourceManager.instance.ResetResources();
         SceneTransition.RunNoHints(sceneName);
         UnlockOtherUI();
     }

@@ -43,12 +43,14 @@ public class ButtonFunctions : MonoBehaviour
 
     public void Restart()
     {
+        ResourceManager.instance.ResetResources();
         PlayClick();
         StartCoroutine(RestartWaitForSourceToFinish(clickSource));
     }
 
     public void LoadScene(int scene)
     {
+        ResourceManager.instance.ResetResources();
         PlayClick();
         StartCoroutine(LoadSceneWaitForSourceToFinish(clickSource, scene));
     }

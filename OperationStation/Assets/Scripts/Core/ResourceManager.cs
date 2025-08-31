@@ -122,4 +122,15 @@ public class ResourceManager : MonoBehaviour
         };
     }
 
+    public void ResetResources()
+    {
+        tritium = 0;
+        silver = 0;
+        polonium = 0;
+        tritiumIngot = 0;
+        silverCoins = 0;
+        poloniumCrystal = 0;
+        energy = 100;
+    }
+
 }
