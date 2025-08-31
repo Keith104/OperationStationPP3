@@ -58,11 +58,13 @@ MonoBehaviour:
   fragmentModel: {fileID: 4374726823771554570}
   stats: {fileID: 11400000, guid: 403dba74d08f6134494fe9b01a48ffaf, type: 2}
   firstHealth: 0
+  doesntDie: 0
   agent: {fileID: 2505229040864052261}
   playerCam: {fileID: 0}
   goHere: {fileID: 3611655240735372612}
   soundModulation: {fileID: 7885078006477406400}
   damageSource: {fileID: 1094766714909806917}
+  playerControlled: 0
 --- !u!195 &2505229040864052261
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -104,10 +106,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1.45
-  m_Height: 2
+  m_Radius: 1.016671
+  m_Height: 2.9
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: -0.007869244, y: 0, z: -0.04002452}
 --- !u!82 &1094766714909806917
 AudioSource:
   m_ObjectHideFlags: 0

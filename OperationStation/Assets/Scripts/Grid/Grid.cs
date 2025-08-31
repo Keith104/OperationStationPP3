@@ -8,6 +8,8 @@ public class GridSystem : MonoBehaviour
     [SerializeField] Renderer modelOne;
     [SerializeField] Renderer modelTwo;
 
+    private bool hasEntered = false;
+
     public Material highlight;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -69,14 +71,18 @@ public class GridSystem : MonoBehaviour
 
     void OnMouseEnter()
     {
-        Renderer objectRenderer = GetComponent<Renderer>();
-        bool placementActive = ObjectSpawner.awaitingPlacement;
-        bool isDefence = ObjectSpawner.isDefence;
-        if (objectRenderer != null && placementActive == false && isDefence == false)
+        if (hasEntered == false)
         {
-            modelOne.material = highlight;
-            modelTwo.material = highlight;
+            Renderer objectRenderer = GetComponent<Renderer>();
+            bool placementActive = ObjectSpawner.awaitingPlacement;
+            bool isDefence = ObjectSpawner.isDefence;
+            if (objectRenderer != null && placementActive == false && isDefence == false)
+            {
+                modelOne.material = highlight;
+                modelTwo.material = highlight;
 
+            }
+            hasEntered = true;
         }
     }
 
@@ -86,5 +92,6 @@ public class GridSystem : MonoBehaviour
 
         modelOne.material = objectRenderer.material;
         modelTwo.material = objectRenderer.material;
+        hasEntered = false;
     }
 }

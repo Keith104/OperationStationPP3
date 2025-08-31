@@ -11,11 +11,11 @@ GameObject:
   - component: {fileID: 6393130529554726897}
   - component: {fileID: 5612627323844087658}
   - component: {fileID: 7625927308510609161}
-  - component: {fileID: 6901402491665857037}
   - component: {fileID: 5053440431739187927}
   - component: {fileID: -5860168214977723858}
   - component: {fileID: 9089107403820886792}
   - component: {fileID: 2315513264197548960}
+  - component: {fileID: 6901402491665857037}
   m_Layer: 11
   m_Name: Smelter
   m_TagString: Player
@@ -114,27 +114,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &6901402491665857037
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5181112579491600659}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!82 &5053440431739187927
 AudioSource:
   m_ObjectHideFlags: 0
@@ -278,6 +257,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   module: {fileID: 5612627323844087658}
+--- !u!65 &6901402491665857037
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5181112579491600659}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.1240315, y: 0.568106, z: 1}
+  m_Center: {x: 0.009009838, y: -0.21594694, z: 0}
 --- !u!1 &5488464771257996387
 GameObject:
   m_ObjectHideFlags: 0

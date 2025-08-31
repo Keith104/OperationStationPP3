@@ -2722,6 +2722,7 @@ MonoBehaviour:
   minimapRect: {fileID: 8193038912272997064}
   minimapImage: {fileID: 6621286097257624433}
   worldPosition: {x: 0, y: 0, z: 0}
+  lerpSpeed: 0
 --- !u!82 &2024861428870533909
 AudioSource:
   m_ObjectHideFlags: 0
@@ -6623,6 +6624,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b8d355440d67034eac3b204a5216fa8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buildButton: {fileID: 8484636428498490321}
+  buttonFunctions: {fileID: 4413211416663752983}
   deathCat: {fileID: 1826742274521941465, guid: 79625718a0588914fab3fbb9e64337af, type: 3}
   basicTurret: {fileID: 9109297272713609667, guid: 1db07d84c7772e14ab3328a0a89b54b3, type: 3}
   laserTurret: {fileID: 7521965396716934447, guid: e2cee4584f43562409b92fc4b77cd282, type: 3}
@@ -6632,7 +6635,12 @@ MonoBehaviour:
   poloniumReactor: {fileID: 2773928973720823125, guid: 8d0b58627e7f6af4e89b51b86434a803, type: 3}
   smelter: {fileID: 5181112579491600659, guid: 8110eec864f71ff4a99e7a36a3716b2b, type: 3}
   solarPanelArray: {fileID: 5181112579491600659, guid: 075e225452f63ce42943d3fac77bc975, type: 3}
+  buildLayer:
+    serializedVersion: 2
+    m_Bits: 2048
   buildMenu: {fileID: 0}
+  enableBuilding: {fileID: 0}
+  worldBuildParent: {fileID: 0}
   deathCatCosts: []
   basicTurretCosts: []
   laserTurretCosts: []
@@ -6656,6 +6664,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDefenceBuildActive: 0
+  isModuleBuildActive: 0
 --- !u!1 &4166876707929551227
 GameObject:
   m_ObjectHideFlags: 0
