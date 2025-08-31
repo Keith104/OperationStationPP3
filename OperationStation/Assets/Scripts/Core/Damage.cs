@@ -36,7 +36,6 @@ public class Damage : MonoBehaviour
 
     void DealDamage(Collider other)
     {
-       Debug.Log("Check");
        IDamage dmg = other.GetComponent<IDamage>();
        
         if (dmg != null)

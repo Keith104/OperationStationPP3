@@ -11,7 +11,6 @@ public class AsteroidSoundTrigger : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Asteroid Collision");
         soundBank.SetSourceToRandomClip();
         audioSource.volume = mainRB.linearVelocity.magnitude;
         audioSource.Play();

@@ -8120,6 +8120,7 @@ MonoBehaviour:
       nameText: {fileID: 9114213649013331956}
       valueText: {fileID: 6193158284837308798}
     spendButton: {fileID: 4493815434001930007}
+  refreshInterval: 0.1
 --- !u!114 &3744272129828678251
 MonoBehaviour:
   m_ObjectHideFlags: 0

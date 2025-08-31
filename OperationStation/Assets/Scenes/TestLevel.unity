@@ -796,6 +796,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 950224737957574739, guid: 79625718a0588914fab3fbb9e64337af, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 950224737957574739, guid: 79625718a0588914fab3fbb9e64337af, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 950224737957574739, guid: 79625718a0588914fab3fbb9e64337af, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 950224737957574739, guid: 79625718a0588914fab3fbb9e64337af, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1826742274521941465, guid: 79625718a0588914fab3fbb9e64337af, type: 3}
       propertyPath: m_Name
       value: DeathCat
@@ -1407,17 +1423,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7968828503138180067, guid: 378dfb21a7053fa45af7872900090337, type: 3}
   m_PrefabInstance: {fileID: 1406415260}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1011557026 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2122067389483109813, guid: 378dfb21a7053fa45af7872900090337, type: 3}
-  m_PrefabInstance: {fileID: 1406415260}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1011557023}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7523338c6aca8b84a841947ed6878050, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1113695156 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4920707660556514152, guid: 378dfb21a7053fa45af7872900090337, type: 3}
@@ -1876,12 +1881,8 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 590750028}
     - target: {fileID: 1228889219232478714, guid: 378dfb21a7053fa45af7872900090337, type: 3}
-      propertyPath: viewing
-      value: 
-      objectReference: {fileID: 1011557026}
-    - target: {fileID: 1228889219232478714, guid: 378dfb21a7053fa45af7872900090337, type: 3}
-      propertyPath: buildLayer.m_Bits
-      value: 2112
+      propertyPath: adjacencyRadius
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 1228889219232478714, guid: 378dfb21a7053fa45af7872900090337, type: 3}
       propertyPath: buildRaycastMask.m_Bits
