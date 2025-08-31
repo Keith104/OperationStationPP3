@@ -469,14 +469,6 @@ PrefabInstance:
       value: AsteroidSpawner
       objectReference: {fileID: 0}
     - target: {fileID: 6976757701605088510, guid: 74e6f18b0aee97a49beaf9a4dfa102e2, type: 3}
-      propertyPath: rareSpawnPoints.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 6976757701605088510, guid: 74e6f18b0aee97a49beaf9a4dfa102e2, type: 3}
-      propertyPath: commonSpawnPoints.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 6976757701605088510, guid: 74e6f18b0aee97a49beaf9a4dfa102e2, type: 3}
       propertyPath: 'rareSpawnPoints.Array.data[0]'
       value: 
       objectReference: {fileID: 266248566}

@@ -74,6 +74,5 @@ MonoBehaviour:
     weight: 0.5
   spawnIntervalMin: 1
   spawnIntervalMax: 3
-  maxAsteroids: 20
+  maxAsteroids: 30
   spawnRadius: 2
-  parent: {fileID: 0}
